@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:id="@+id/mainContainer">
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connected to 50-Amp Power Supply"
+        android:onClick="powerSupplyClicked"
+        android:id="@+id/powerCheck"/>
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/source"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@android:color/holo_green_dark"
+        app:flexWrap="wrap"
+        app:justifyContent="center">
+
+
+
+        <TextView
+            android:id="@+id/toaster"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Toaster"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/kettle"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Portable electric hot water kettle"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/towHeatHigh"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Tower heater (high or auto)"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/towHeatLow"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Tower heater (low)"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/vacuum"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Shark RV Vacuum"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/refrigerator"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Refrigerator"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/workComp"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Dad's work computer"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/laptop"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="13-inch laptop"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/compMon"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Standalone computer moniter"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <!--
+        <TextView
+            android:id="@+id/batChar"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Battery charger for inverter"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tankHeat"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Tank heaters (not hot water)"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="TV"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g1"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="1-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g2"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="2-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g3"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="3-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g4"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="4-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g5"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="5-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g6"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="6-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g7"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="7-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g8"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="8-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g9"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="9-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g10"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="10-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g11"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="11-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g12"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="12-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g13"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="13-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g14"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="14-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/g15"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="15-Amp"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
+            -->
+            </com.google.android.flexbox.FlexboxLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollMain">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.example.camperpowerdistribution.VerticalTextView
+                    android:id="@+id/mainTitle1"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:text="Main Circuit 1"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:background="@android:color/holo_blue_bright"
+                    />
+                <com.example.camperpowerdistribution.VerticalTextView
+                    android:id="@+id/mainC1Cap"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:text="Amps vs Rated Amps: 0.0/30.0"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:background="@android:color/holo_blue_bright"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/mainC1">
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main1MBR"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_light"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/MBRTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:text="MBR: Receptacles in right front compartment, receptacles by master bed (not TV), and receptacle by dinette"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <TextView
+                            android:id="@+id/MBRUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/MBRCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main1Refer"
+                        android:layout_width="match_parent"
+                        android:layout_height="275dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_dark"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+
+                        <TextView
+                            android:id="@+id/referTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:text="Refer: Refrigerator, exterior receptacles, all receptacles in kitchen, receptacles at main TV and master BR TV"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <TextView
+                            android:id="@+id/referUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/referCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TV in-use"
+                            android:onClick="referTVClicked"
+                            android:id="@+id/referTVCheck"
+                            android:background="@android:color/holo_blue_dark"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main1GFI"
+                        android:layout_width="match_parent"
+                        android:layout_height="195dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_light"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/GFITitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:text="GFI: Receptacles in bathroom and by couch"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <TextView
+                            android:id="@+id/GFIUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/GFICustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main1Micro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_dark"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/microTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:text="Micro: Microwave Oven"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <TextView
+                            android:id="@+id/microUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/microCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Microwave in-use"
+                            android:onClick="microClicked"
+                            android:id="@+id/microCheck"
+                            android:background="@android:color/holo_blue_dark"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.example.camperpowerdistribution.VerticalTextView
+                    android:id="@+id/mainTitle2"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:text="Main Circuit 2"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:background="@color/teal_200"
+                    />
+                <com.example.camperpowerdistribution.VerticalTextView
+                    android:id="@+id/mainC2Cap"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:text="Amps vs Rated Amps: 0.0/30.0"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:background="@color/teal_200"
+                    />
+                <LinearLayout
+                    android:id="@+id/mainC2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main2WaterHeater"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_light"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/waterHeaterTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:inputType="textMultiLine"
+                            android:text="Water Heater: Electric water tank heater"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <TextView
+                            android:id="@+id/waterHeaterUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/waterHeaterCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Water tank heater in-use"
+                            android:onClick="waterHeatClicked"
+                            android:id="@+id/waterHeatCheck"
+                            android:background="@android:color/holo_blue_light"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main2AC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_dark"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/ACTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:inputType="textMultiLine"
+                            android:text="A/C: Rear (main) air conditioner"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <TextView
+                            android:id="@+id/ACUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:text="Amps vs Rated Amps: 0.0/20.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/ACCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="A/C on"
+                            android:onClick="airConditionerClicked"
+                            android:id="@+id/ACCheck"
+                            android:background="@android:color/holo_blue_dark"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/main2Converter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_blue_light"
+                        app:flexWrap="wrap"
+                        app:justifyContent="center">
+                        <TextView
+                            android:id="@+id/converterTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:inputType="textMultiLine"
+                            android:text="Converter: DC power converter (supplies all 12 VDC loads)"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <TextView
+                            android:id="@+id/converterUsage"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:text="Amps vs Rated Amps: 0.0/15.0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:background="@android:color/holo_blue_light"/>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/converterCustomInputField"
+                            android:textAlignment="center"
+                            android:hint="Enter Custom Power Consumption"
+                            />
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Converter in-use"
+                            android:onClick="converterClicked"
+                            android:id="@+id/converterCheck"
+                            android:background="@android:color/holo_blue_light"/>
+                    </com.google.android.flexbox.FlexboxLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

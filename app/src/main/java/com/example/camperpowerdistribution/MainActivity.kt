@@ -41,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         var lastCustomConverter = 0.0
 
         //Non-Droppable Views
+        val main2Converter: FlexboxLayout = findViewById(R.id.main2Converter)
+        val main2AC: FlexboxLayout = findViewById(R.id.main2AC)
+        val main1Micro: FlexboxLayout = findViewById(R.id.main1Micro)
+        val main2WaterHeater: FlexboxLayout = findViewById(R.id.main2WaterHeater)
+
         var main1AmpUsageM: TextView = findViewById(R.id.mainC1Cap)
         val main2AmpUsageM: TextView = findViewById(R.id.mainC2Cap)
         var powerCheck: CheckBox = findViewById(R.id.powerCheck)
@@ -70,10 +75,6 @@ class MainActivity : AppCompatActivity() {
         var main1MBR: FlexboxLayout = findViewById(R.id.main1MBR)
         var main1Refer: FlexboxLayout = findViewById(R.id.main1Refer)
         val main1GFI: FlexboxLayout = findViewById(R.id.main1GFI)
-        val main1Micro: FlexboxLayout = findViewById(R.id.main1Micro)
-        val main2WaterHeater: FlexboxLayout = findViewById(R.id.main2WaterHeater)
-        val main2AC: FlexboxLayout = findViewById(R.id.main2AC)
-        val main2Converter: FlexboxLayout = findViewById(R.id.main2Converter)
 
 
 
@@ -90,14 +91,14 @@ class MainActivity : AppCompatActivity() {
         components[findViewById(R.id.kettle)] = ElectronicComponent(11.0)
         components[findViewById(R.id.towHeatHigh)] = ElectronicComponent(11.0)
         components[findViewById(R.id.towHeatLow)] = ElectronicComponent(4.0)
-        components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
+        //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
         components[findViewById(R.id.vacuum)] = ElectronicComponent(4.0)
-        components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
+        //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
         components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
         components[findViewById(R.id.workComp)] = ElectronicComponent(2.5)
         components[findViewById(R.id.laptop)] = ElectronicComponent(1.5)
         components[findViewById(R.id.compMon)] = ElectronicComponent(1.5)
-        components[findViewById(R.id.tv)] = ElectronicComponent(1.5)
+        //components[findViewById(R.id.tv)] = ElectronicComponent(1.5)
 
         //Generic power consumers
         /*
@@ -134,6 +135,11 @@ class MainActivity : AppCompatActivity() {
         */
 
         //Non-Droppable
+        main2Converter.setOnDragListener(inertDragListener)
+        main2AC.setOnDragListener(inertDragListener)
+        main1Micro.setOnDragListener(inertDragListener)
+        main2WaterHeater.setOnDragListener(inertDragListener)
+
         mainCircuit1Title.setOnDragListener(inertDragListener)
         mainCircuit2Title.setOnDragListener(inertDragListener)
         powerCheck.setOnDragListener(inertDragListener)
@@ -164,10 +170,7 @@ class MainActivity : AppCompatActivity() {
         main1MBR.setOnDragListener(dragListener)
         main1Refer.setOnDragListener(dragListener)
         main1GFI.setOnDragListener(dragListener)
-        main1Micro.setOnDragListener(dragListener)
-        main2WaterHeater.setOnDragListener(dragListener)
-        main2AC.setOnDragListener(dragListener)
-        main2Converter.setOnDragListener(dragListener)
+
 
         for(i in components){
             i.key.setOnLongClickListener{
@@ -374,7 +377,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-        //This is a test
 
 
 
@@ -442,7 +444,6 @@ class MainActivity : AppCompatActivity() {
                         val amps = components[v]!!.ampsUsed
                         main2Used -= amps
                     }
-
 
 
                     findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
@@ -586,5 +587,109 @@ class MainActivity : AppCompatActivity() {
                 main1Used.toString() + "/" + main1Cap.toString()
         findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
                 main2Used.toString() + "/" + main2Cap.toString()
+    }
+
+    fun referTVClicked(v: View?) {
+        var refer: FlexboxLayout = findViewById(R.id.main1Refer)
+        if((v as CheckBox).isChecked){
+            main1Used += 1.5
+            circuits[refer]!!.ampsUsed += 1.5
+        }
+        else{
+            main1Used -= 1.5
+            circuits[refer]!!.ampsUsed -= 1.5
+        }
+
+        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                main1Used.toString() + "/" + main1Cap.toString()
+
+        findViewById<TextView>(R.id.referUsage).text = "Amps vs Rated Amps: " +
+                circuits[refer]!!.ampsUsed.toString() + "/" +
+                circuits[refer]!!.ampCapacity.toString()
+
+
+    }
+    fun converterClicked(v: View?) {
+        var converter: FlexboxLayout = findViewById(R.id.main2Converter)
+        if((v as CheckBox).isChecked){
+            main2Used += 9
+            circuits[converter]!!.ampsUsed += 9
+        }
+        else{
+            main2Used -= 9
+            circuits[converter]!!.ampsUsed -= 9
+        }
+
+        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                main2Used.toString() + "/" + main2Cap.toString()
+
+        findViewById<TextView>(R.id.converterUsage).text = "Amps vs Rated Amps: " +
+                circuits[converter]!!.ampsUsed.toString() + "/" +
+                circuits[converter]!!.ampCapacity.toString()
+
+
+    }
+    fun airConditionerClicked(v: View?) {
+        var airCon: FlexboxLayout = findViewById(R.id.main2AC)
+        var amount = 13.0
+        if((v as CheckBox).isChecked){
+            main2Used += amount
+            circuits[airCon]!!.ampsUsed += amount
+        }
+        else{
+            main2Used -= amount
+            circuits[airCon]!!.ampsUsed -= amount
+        }
+
+        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                main2Used.toString() + "/" + main2Cap.toString()
+
+        findViewById<TextView>(R.id.ACUsage).text = "Amps vs Rated Amps: " +
+                circuits[airCon]!!.ampsUsed.toString() + "/" +
+                circuits[airCon]!!.ampCapacity.toString()
+
+
+    }
+    fun microClicked(v: View?) {
+        var micro: FlexboxLayout = findViewById(R.id.main2AC)
+        var amount = 15.0
+        if((v as CheckBox).isChecked){
+            main1Used += amount
+            circuits[micro]!!.ampsUsed += amount
+        }
+        else{
+            main1Used -= amount
+            circuits[micro]!!.ampsUsed -= amount
+        }
+
+        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                main1Used.toString() + "/" + main1Cap.toString()
+
+        findViewById<TextView>(R.id.microUsage).text = "Amps vs Rated Amps: " +
+                circuits[micro]!!.ampsUsed.toString() + "/" +
+                circuits[micro]!!.ampCapacity.toString()
+
+
+    }
+    fun waterHeatClicked(v: View?) {
+        var water: FlexboxLayout = findViewById(R.id.main2AC)
+        var amount = 11.0
+        if((v as CheckBox).isChecked){
+            main2Used += amount
+            circuits[water]!!.ampsUsed += amount
+        }
+        else{
+            main2Used -= amount
+            circuits[water]!!.ampsUsed -= amount
+        }
+
+        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                main2Used.toString() + "/" + main2Cap.toString()
+
+        findViewById<TextView>(R.id.waterHeaterUsage).text = "Amps vs Rated Amps: " +
+                circuits[water]!!.ampsUsed.toString() + "/" +
+                circuits[water]!!.ampCapacity.toString()
+
+
     }
 }
