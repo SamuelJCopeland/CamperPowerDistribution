@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
         components[findViewById(R.id.vacuum)] = ElectronicComponent(4.0)
         //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
-        components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
+        //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
         components[findViewById(R.id.workComp)] = ElectronicComponent(2.5)
         components[findViewById(R.id.laptop)] = ElectronicComponent(1.5)
         components[findViewById(R.id.compMon)] = ElectronicComponent(1.5)
@@ -672,7 +672,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun waterHeatClicked(v: View?) {
-        var water: FlexboxLayout = findViewById(R.id.main2AC)
+        var water: FlexboxLayout = findViewById(R.id.main2WaterHeater)
         var amount = 11.0
         if((v as CheckBox).isChecked){
             main2Used += amount
@@ -691,5 +691,21 @@ class MainActivity : AppCompatActivity() {
                 circuits[water]!!.ampCapacity.toString()
 
 
+    }
+    fun referFrigeClicked(v: View?) {
+        var refer: FlexboxLayout = findViewById(R.id.main1Refer)
+        if ((v as CheckBox).isChecked) {
+            main1Used += 2
+            circuits[refer]!!.ampsUsed += 2
+        } else {
+            main1Used -= 2
+            circuits[refer]!!.ampsUsed -= 2
+        }
+        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                main1Used.toString() + "/" + main1Cap.toString()
+
+        findViewById<TextView>(R.id.referUsage).text = "Amps vs Rated Amps: " +
+                circuits[refer]!!.ampsUsed.toString() + "/" +
+                circuits[refer]!!.ampCapacity.toString()
     }
 }

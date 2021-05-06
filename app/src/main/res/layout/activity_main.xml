@@ -69,15 +69,6 @@
             android:textAlignment="center"
             android:textColor="@color/black" />
         <TextView
-            android:id="@+id/refrigerator"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:autoSizeTextType="uniform"
-            android:background="@android:color/holo_orange_light"
-            android:text="Refrigerator"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
-        <TextView
             android:id="@+id/workComp"
             android:layout_width="70dp"
             android:layout_height="45dp"
@@ -105,6 +96,15 @@
             android:textAlignment="center"
             android:textColor="@color/black" />
         <!--
+        <TextView
+            android:id="@+id/refrigerator"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:autoSizeTextType="uniform"
+            android:background="@android:color/holo_orange_light"
+            android:text="Refrigerator"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/batChar"
             android:layout_width="70dp"
@@ -377,11 +377,18 @@
                             android:hint="Enter Custom Power Consumption"
                             />
                         <CheckBox
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:text="TV in-use"
                             android:onClick="referTVClicked"
                             android:id="@+id/referTVCheck"
+                            android:background="@android:color/holo_blue_dark"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Refrigerator in-use"
+                            android:onClick="referFrigeClicked"
+                            android:id="@+id/referFrigeCheck"
                             android:background="@android:color/holo_blue_dark"/>
                     </com.google.android.flexbox.FlexboxLayout>
                     <com.google.android.flexbox.FlexboxLayout
