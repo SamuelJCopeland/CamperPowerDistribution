@@ -5,15 +5,17 @@ import android.content.ClipDescription
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.view.DragEvent
 import android.view.View
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
 import org.w3c.dom.Text
-import java.util.*
-import kotlin.collections.HashMap
+import java.io.File
+import java.io.FileInputStream
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,18 +29,22 @@ class MainActivity : AppCompatActivity() {
     var main2Cap = 30.0
     var main1Used = 0.0
     var main2Used = 0.0
+    var lastCustomMBR = 0.0
+    var lastCustomRefer = 0.0
+    var lastCustomGFI = 0.0
+    var lastCustomMicro = 0.0
+    var lastCustomWaterHeater = 0.0
+    var lastCustomAC = 0.0
+    var lastCustomConverter = 0.0
+    var file: File = File("invalidPath")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var lastCustomMBR = 0.0
-        var lastCustomRefer = 0.0
-        var lastCustomGFI = 0.0
-        var lastCustomMicro = 0.0
-        var lastCustomWaterHeater = 0.0
-        var lastCustomAC = 0.0
-        var lastCustomConverter = 0.0
+        file = File(this.filesDir, "saved_state")
+        file.createNewFile()
+
 
         //Non-Droppable Views
         val main2Converter: FlexboxLayout = findViewById(R.id.main2Converter)
@@ -91,14 +97,14 @@ class MainActivity : AppCompatActivity() {
         components[findViewById(R.id.kettle)] = ElectronicComponent(11.0)
         components[findViewById(R.id.towHeatHigh)] = ElectronicComponent(11.0)
         components[findViewById(R.id.towHeatLow)] = ElectronicComponent(4.0)
-        //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
         components[findViewById(R.id.vacuum)] = ElectronicComponent(4.0)
-        //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
-        //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
         components[findViewById(R.id.workComp)] = ElectronicComponent(2.5)
         components[findViewById(R.id.laptop)] = ElectronicComponent(1.5)
         components[findViewById(R.id.compMon)] = ElectronicComponent(1.5)
         //components[findViewById(R.id.tv)] = ElectronicComponent(1.5)
+        //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
+        //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
+        //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
 
         //Generic power consumers
         /*
@@ -193,7 +199,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputMBR.text.toString().toDoubleOrNull() != null) {
+                if (customInputMBR.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputMBR.text.toString().toDouble()
                 }
                 circuits[main1MBR]!!.ampsUsed -= (lastCustomMBR - customInput)
@@ -220,7 +226,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputRefer.text.toString().toDoubleOrNull() != null) {
+                if (customInputRefer.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputRefer.text.toString().toDouble()
                 }
                 circuits[main1Refer]!!.ampsUsed -= (lastCustomRefer - customInput)
@@ -247,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputGFI.text.toString().toDoubleOrNull() != null) {
+                if (customInputGFI.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputGFI.text.toString().toDouble()
                 }
                 circuits[main1GFI]!!.ampsUsed -= (lastCustomGFI - customInput)
@@ -274,7 +280,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputMicro.text.toString().toDoubleOrNull() != null) {
+                if (customInputMicro.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputMicro.text.toString().toDouble()
                 }
                 circuits[main1Micro]!!.ampsUsed -= (lastCustomMicro - customInput)
@@ -301,7 +307,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputWaterHeater.text.toString().toDoubleOrNull() != null) {
+                if (customInputWaterHeater.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputWaterHeater.text.toString().toDouble()
                 }
                 circuits[main2WaterHeater]!!.ampsUsed -= (lastCustomWaterHeater - customInput)
@@ -328,7 +334,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputAC.text.toString().toDoubleOrNull() != null) {
+                if (customInputAC.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputAC.text.toString().toDouble()
                 }
                 circuits[main2AC]!!.ampsUsed -= (lastCustomAC - customInput)
@@ -355,7 +361,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
                 var customInput: Double = 0.0
 
-                if(customInputConverter.text.toString().toDoubleOrNull() != null) {
+                if (customInputConverter.text.toString().toDoubleOrNull() != null) {
                     customInput = customInputConverter.text.toString().toDouble()
                 }
                 circuits[main2Converter]!!.ampsUsed -= (lastCustomConverter - customInput)
@@ -381,6 +387,180 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    /*
+    var circuits = HashMap<FlexboxLayout, AmpUsage>(8)
+    var main1Cap = 30.0
+    var main2Cap = 30.0
+    var main1Used = 0.0
+    var main2Used = 0.0
+    var lastCustomMBR = 0.0
+    var lastCustomRefer = 0.0
+    var lastCustomGFI = 0.0
+    var lastCustomMicro = 0.0
+    var lastCustomWaterHeater = 0.0
+    var lastCustomAC = 0.0
+    var lastCustomConverter = 0.0*/
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted
+
+
+        //Save the stuff in the circuits hashmap to the bundle individually
+        var j = 0
+
+        for(i in circuits){
+            var myKey = "kID$j"
+            var ampUNum = "aUNum$j"
+            var ampCNum = "aCNum$j"
+            var ampUINum = "aUINum$j"
+            j++
+
+            savedInstanceState.putInt(myKey, i.key.id)
+            savedInstanceState.putDouble(ampUNum, circuits[i.key]!!.ampsUsed)
+            savedInstanceState.putDouble(ampCNum, circuits[i.key]!!.ampCapacity)
+            savedInstanceState.putInt(ampUINum, circuits[i.key]!!.userInterface.id)
+        }
+
+
+        savedInstanceState.putDouble("main1Cap", main1Cap)
+        savedInstanceState.putDouble("main2Cap", main2Cap)
+        savedInstanceState.putDouble("main1Used", main1Used)
+        savedInstanceState.putDouble("main2Used", main2Used)
+        savedInstanceState.putDouble("lastCustomMBR", lastCustomMBR)
+        savedInstanceState.putDouble("lastCustomRefer", lastCustomRefer)
+        savedInstanceState.putDouble("lastCustomGFI", lastCustomGFI)
+        savedInstanceState.putDouble("lastCustomMicro", lastCustomMicro)
+        savedInstanceState.putDouble("lastCustomWaterHeater", lastCustomWaterHeater)
+        savedInstanceState.putDouble("lastCustomAC", lastCustomAC)
+        savedInstanceState.putDouble("lastCustomConverter", lastCustomConverter)
+
+        //Save the states of the checkboxes
+        savedInstanceState.putBoolean(R.id.powerCheck.toString(), findViewById<CheckBox>(R.id.powerCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.ACCheck.toString(), findViewById<CheckBox>(R.id.ACCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.converterCheck.toString(), findViewById<CheckBox>(R.id.converterCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.waterHeatCheck.toString(), findViewById<CheckBox>(R.id.waterHeatCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.microCheck.toString(), findViewById<CheckBox>(R.id.microCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.referTVCheck.toString(), findViewById<CheckBox>(R.id.referTVCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.referFrigeCheck.toString(), findViewById<CheckBox>(R.id.referFrigeCheck).isChecked)
+
+        //Save the state of the custom inputs
+        savedInstanceState.putString(R.id.MBRCustomInputField.toString(), findViewById<EditText>(R.id.MBRCustomInputField).text.toString())
+        savedInstanceState.putString(R.id.referCustomInputField.toString(), findViewById<EditText>(R.id.referCustomInputField).text.toString())
+        savedInstanceState.putString(R.id.GFICustomInputField.toString(), findViewById<EditText>(R.id.GFICustomInputField).text.toString())
+        savedInstanceState.putString(R.id.microCustomInputField.toString(), findViewById<EditText>(R.id.microCustomInputField).text.toString())
+        savedInstanceState.putString(R.id.waterHeaterCustomInputField.toString(), findViewById<EditText>(R.id.waterHeaterCustomInputField).text.toString())
+        savedInstanceState.putString(R.id.ACCustomInputField.toString(), findViewById<EditText>(R.id.ACCustomInputField).text.toString())
+        savedInstanceState.putString(R.id.converterCustomInputField.toString(), findViewById<EditText>(R.id.converterCustomInputField).text.toString())
+
+        //Save the locations of the dragables
+        savedInstanceState.putInt(R.id.toaster.toString(), (findViewById<View>(R.id.toaster).parent as View).id)
+        savedInstanceState.putInt(R.id.kettle.toString(), (findViewById<View>(R.id.kettle).parent as View).id)
+        savedInstanceState.putInt(R.id.towHeatHigh.toString(), (findViewById<View>(R.id.towHeatHigh).parent as View).id)
+        savedInstanceState.putInt(R.id.towHeatLow.toString(), (findViewById<View>(R.id.towHeatLow).parent as View).id)
+        savedInstanceState.putInt(R.id.vacuum.toString(), (findViewById<View>(R.id.vacuum).parent as View).id)
+        savedInstanceState.putInt(R.id.workComp.toString(), (findViewById<View>(R.id.workComp).parent as View).id)
+        savedInstanceState.putInt(R.id.laptop.toString(), (findViewById<View>(R.id.laptop).parent as View).id)
+        savedInstanceState.putInt(R.id.compMon.toString(), (findViewById<View>(R.id.compMon).parent as View).id)
+    }
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        main1Cap = savedInstanceState.getDouble("main1Cap")
+        main2Cap = savedInstanceState.getDouble("main2Cap")
+        main1Used = savedInstanceState.getDouble("main1Used")
+        main2Used = savedInstanceState.getDouble("main2Used")
+        lastCustomMBR = savedInstanceState.getDouble("lastCustomMBR")
+        lastCustomRefer = savedInstanceState.getDouble("lastCustomRefer")
+        lastCustomGFI = savedInstanceState.getDouble("lastCustomGFI")
+        lastCustomMicro = savedInstanceState.getDouble("lastCustomMicro")
+        lastCustomWaterHeater = savedInstanceState.getDouble("lastCustomWaterHeater")
+        lastCustomAC = savedInstanceState.getDouble("lastCustomAC")
+        lastCustomConverter = savedInstanceState.getDouble("lastCustomConverter")
+
+        //Restore the states of the checkboxes
+        findViewById<CheckBox>(R.id.powerCheck).isChecked = savedInstanceState.getBoolean(R.id.powerCheck.toString())
+        findViewById<CheckBox>(R.id.ACCheck).isChecked = savedInstanceState.getBoolean(R.id.ACCheck.toString())
+        findViewById<CheckBox>(R.id.converterCheck).isChecked = savedInstanceState.getBoolean(R.id.converterCheck.toString())
+        findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = savedInstanceState.getBoolean(R.id.waterHeatCheck.toString())
+        findViewById<CheckBox>(R.id.microCheck).isChecked = savedInstanceState.getBoolean(R.id.microCheck.toString())
+        findViewById<CheckBox>(R.id.referTVCheck).isChecked = savedInstanceState.getBoolean(R.id.referTVCheck.toString())
+        findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = savedInstanceState.getBoolean(R.id.referFrigeCheck.toString())
+
+
+        //Restore the locations of the dragables
+        val toasterP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.toaster.toString()))
+        val kettleP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.kettle.toString()))
+        val towHeatHighP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.towHeatHigh.toString()))
+        val towHeatLowP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.towHeatLow.toString()))
+        val vacuumP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.vacuum.toString()))
+        val workCompP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.workComp.toString()))
+        val laptopP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.laptop.toString()))
+        val compMonP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.compMon.toString()))
+
+        val toaster = findViewById<TextView>(R.id.toaster)
+        val kettle = findViewById<TextView>(R.id.kettle)
+        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+        val vacuum = findViewById<TextView>(R.id.vacuum)
+        val workComp = findViewById<TextView>(R.id.workComp)
+        val laptop = findViewById<TextView>(R.id.laptop)
+        val compMon = findViewById<TextView>(R.id.compMon)
+
+        val source = findViewById<FlexboxLayout>(R.id.source)
+
+        source.removeView(toaster)
+        toasterP.addView(toaster)
+        source.removeView(kettle)
+        kettleP.addView(kettle)
+        source.removeView(towHeatHigh)
+        towHeatHighP.addView(towHeatHigh)
+        source.removeView(towHeatLow)
+        towHeatLowP.addView(towHeatLow)
+        source.removeView(vacuum)
+        vacuumP.addView(vacuum)
+        source.removeView(workComp)
+        workCompP.addView(workComp)
+        source.removeView(laptop)
+        laptopP.addView(laptop)
+        source.removeView(compMon)
+        compMonP.addView(compMon)
+
+
+
+        var j = 0
+        for(i in circuits){
+            var myKey = "kID$j"
+            var ampUNum = "aUNum$j"
+            var ampCNum = "aCNum$j"
+            var ampUINum = "aUINum$j"
+            j++
+
+            var theKey = findViewById<FlexboxLayout>(savedInstanceState.getInt(myKey))
+            circuits[theKey] = AmpUsage(savedInstanceState.getDouble(ampCNum), savedInstanceState.getDouble(ampUNum), findViewById(savedInstanceState.getInt(ampUINum)))
+
+
+        }
+
+        //Restore the state of the custom inputs
+        findViewById<EditText>(R.id.MBRCustomInputField).setText(savedInstanceState.getString(R.id.MBRCustomInputField.toString()))
+        findViewById<EditText>(R.id.referCustomInputField).setText(savedInstanceState.getString(R.id.referCustomInputField.toString()))
+        findViewById<EditText>(R.id.GFICustomInputField).setText(savedInstanceState.getString(R.id.GFICustomInputField.toString()))
+        findViewById<EditText>(R.id.microCustomInputField).setText(savedInstanceState.getString(R.id.microCustomInputField.toString()))
+        findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(savedInstanceState.getString(R.id.waterHeaterCustomInputField.toString()))
+        findViewById<EditText>(R.id.ACCustomInputField).setText(savedInstanceState.getString(R.id.ACCustomInputField.toString()))
+        findViewById<EditText>(R.id.converterCustomInputField).setText(savedInstanceState.getString(R.id.converterCustomInputField.toString()))
+    }
+
 
     val dragListener = View.OnDragListener{ view, event ->
         when(event.action){
@@ -413,34 +593,29 @@ class MainActivity : AppCompatActivity() {
 
                 val destination = view as FlexboxLayout
 
-                if(destination.id != owner.id){
-                    if((destination.parent as View).id == R.id.mainC1 &&
-                            (owner.parent as View).id == R.id.mainC2){
+                if (destination.id != owner.id) {
+                    if ((destination.parent as View).id == R.id.mainC1 &&
+                            (owner.parent as View).id == R.id.mainC2) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
                         main2Used -= amps
-                    }
-                    else if((destination.parent as View).id == R.id.mainC2 &&
-                            (owner.parent as View).id == R.id.mainC1){
+                    } else if ((destination.parent as View).id == R.id.mainC2 &&
+                            (owner.parent as View).id == R.id.mainC1) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
                         main1Used -= amps
-                    }
-                    else if(owner.id == R.id.source &&
-                            (destination.parent as View).id == R.id.mainC1){
+                    } else if (owner.id == R.id.source &&
+                            (destination.parent as View).id == R.id.mainC1) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
-                    }
-                    else if(owner.id == R.id.source &&
-                            (destination.parent as View).id == R.id.mainC2){
+                    } else if (owner.id == R.id.source &&
+                            (destination.parent as View).id == R.id.mainC2) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
-                    }
-                    else if((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source){
+                    } else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
                         val amps = components[v]!!.ampsUsed
                         main1Used -= amps
-                    }
-                    else if((owner.parent as View).id == R.id.mainC2 && destination.id == R.id.source){
+                    } else if ((owner.parent as View).id == R.id.mainC2 && destination.id == R.id.source) {
                         val amps = components[v]!!.ampsUsed
                         main2Used -= amps
                     }
@@ -451,14 +626,14 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
                             main2Used.toString() + "/" + main2Cap.toString()
                 }
-                if(circuits.containsKey(destination)){
+                if (circuits.containsKey(destination)) {
                     val amps = components[v]!!.ampsUsed
                     val ampCap = circuits[destination]!!.ampCapacity
                     circuits[destination]!!.ampsUsed += amps
                     val ampUsed = circuits[destination]!!.ampsUsed
                     circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString()
                 }
-                if(circuits.containsKey(owner)){
+                if (circuits.containsKey(owner)) {
                     val amps = components[v]!!.ampsUsed
                     val ampCap = circuits[owner]!!.ampCapacity
                     circuits[owner]!!.ampsUsed -= amps
@@ -509,7 +684,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                    && dupedComponents.contains(v)
+                        && dupedComponents.contains(v)
                 ) {
                     dupedComponents.remove(v)
                     numDupedItems--
@@ -707,5 +882,186 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.referUsage).text = "Amps vs Rated Amps: " +
                 circuits[refer]!!.ampsUsed.toString() + "/" +
                 circuits[refer]!!.ampCapacity.toString()
+    }
+    fun saveClicked(v: View?) {
+        file.writeText("")
+
+        //Save the stuff in the circuits hashmap to the bundle individually
+        var j = 0
+
+        for(i in circuits){
+            j++
+
+            file.appendText("" + i.key.id + "\n")
+            file.appendText("" +  circuits[i.key]!!.ampsUsed + "\n")
+            file.appendText("" + circuits[i.key]!!.ampCapacity + "\n")
+            file.appendText("" + circuits[i.key]!!.userInterface.id + "\n")
+        }
+
+
+        file.appendText("$main1Cap\n")
+        file.appendText("$main2Cap\n")
+        file.appendText("$main1Used\n")
+        file.appendText("$main2Used\n")
+        file.appendText("$lastCustomMBR\n")
+        file.appendText("$lastCustomRefer\n")
+        file.appendText("$lastCustomGFI\n")
+        file.appendText("$lastCustomMicro\n")
+        file.appendText("$lastCustomWaterHeater\n")
+        file.appendText("$lastCustomAC\n")
+        file.appendText("$lastCustomConverter\n")
+
+        //Save the states of the checkboxes
+        file.appendText("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.waterHeatCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.microCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
+
+        //Save the locations of the dragables
+        file.appendText("" + (findViewById<View>(R.id.toaster).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.kettle).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.towHeatHigh).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.towHeatLow).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.vacuum).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.workComp).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.laptop).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.compMon).parent as View).id + "\n")
+
+        //Save the state of the custom inputs
+        file.appendText(findViewById<EditText>(R.id.MBRCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.referCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.GFICustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.microCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.waterHeaterCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.ACCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.converterCustomInputField).text.toString() + "\n")
+    }
+    fun loadClicked(v: View?){
+        val readResult = FileInputStream(file).bufferedReader().use{ it.readText() }
+
+        //Save the stuff in the circuits hashmap to the bundle individually
+
+        val lines = readResult.toString().split("\n").toTypedArray()
+
+        var j = 0
+
+        for(i in circuits){
+            var keyID = lines[j].toInt()
+            j++
+            var ampsU = lines[j].toDouble()
+            j++
+            var ampC = lines[j].toDouble()
+            j++
+            var iID = lines[j].toInt()
+            j++
+
+            var theKey = findViewById<FlexboxLayout>(keyID)
+            circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
+        }
+
+
+        main1Cap = lines[j].toDouble()
+        j++
+        main2Cap = lines[j].toDouble()
+        j++
+        main1Used = lines[j].toDouble()
+        j++
+        main2Used = lines[j].toDouble()
+        j++
+        lastCustomMBR = lines[j].toDouble()
+        j++
+        lastCustomRefer = lines[j].toDouble()
+        j++
+        lastCustomGFI = lines[j].toDouble()
+        j++
+        lastCustomMicro = lines[j].toDouble()
+        j++
+        lastCustomWaterHeater = lines[j].toDouble()
+        j++
+        lastCustomAC = lines[j].toDouble()
+        j++
+        lastCustomConverter = lines[j].toDouble()
+        j++
+
+        //Save the states of the checkboxes
+        findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+        j++
+        findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+        j++
+
+        //Save the locations of the dragables
+        val toaster = findViewById<TextView>(R.id.toaster)
+        val kettle = findViewById<TextView>(R.id.kettle)
+        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+        val vacuum = findViewById<TextView>(R.id.vacuum)
+        val workComp = findViewById<TextView>(R.id.workComp)
+        val laptop = findViewById<TextView>(R.id.laptop)
+        val compMon = findViewById<TextView>(R.id.compMon)
+
+        val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+        val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
+        j++
+
+        val source = findViewById<FlexboxLayout>(R.id.source)
+
+        source.removeView(toaster)
+        toasterP.addView(toaster)
+        source.removeView(kettle)
+        kettleP.addView(kettle)
+        source.removeView(towHeatHigh)
+        towHeatHighP.addView(towHeatHigh)
+        source.removeView(towHeatLow)
+        towHeatLowP.addView(towHeatLow)
+        source.removeView(vacuum)
+        vacuumP.addView(vacuum)
+        source.removeView(workComp)
+        workCompP.addView(workComp)
+        source.removeView(laptop)
+        laptopP.addView(laptop)
+        source.removeView(compMon)
+        compMonP.addView(compMon)
+
+        //Save the state of the custom inputs
+        findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+        j++
+        findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+        j++
     }
 }
