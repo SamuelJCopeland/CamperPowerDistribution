@@ -1298,11 +1298,18 @@ class MainActivity : AppCompatActivity() {
         file.appendText(findViewById<EditText>(R.id.converterCustomInputField).text.toString() + "\n")
     }
     fun loadClicked(v: View?){
+        if(file.length() == 0.toLong()){
+            Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val readResult = FileInputStream(file).bufferedReader().use{ it.readText() }
 
         //Save the stuff in the circuits hashmap to the bundle individually
 
         val lines = readResult.toString().split("\n").toTypedArray()
+
+
 
         var j = 0
 
