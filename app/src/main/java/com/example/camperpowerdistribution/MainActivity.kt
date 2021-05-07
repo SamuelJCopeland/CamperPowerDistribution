@@ -1,11 +1,16 @@
 package com.example.camperpowerdistribution
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipDescription
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.DragEvent
@@ -17,8 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
 import org.w3c.dom.Text
-import java.io.File
-import java.io.FileInputStream
+import java.io.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        file = File(this.filesDir, "saved_state.cps")
+        file = File(this.filesDir, "saved_state.txt")
         file.createNewFile()
 
 
@@ -1396,22 +1400,41 @@ class MainActivity : AppCompatActivity() {
 
         val source = findViewById<FlexboxLayout>(R.id.source)
 
-        source.removeView(toaster)
+        if((toaster.parent as FlexboxLayout) == source) {
+            source.removeView(toaster)
+            toasterP.addView(toaster)
+        }
+        if((kettle.parent as FlexboxLayout) == source) {
+            source.removeView(kettle)
+            kettleP.addView(kettle)
+        }
+        if((toaster.parent as FlexboxLayout) == source)
+            source.removeView(toaster)
         toasterP.addView(toaster)
-        source.removeView(kettle)
-        kettleP.addView(kettle)
-        source.removeView(towHeatHigh)
-        towHeatHighP.addView(towHeatHigh)
-        source.removeView(towHeatLow)
-        towHeatLowP.addView(towHeatLow)
-        source.removeView(vacuum)
-        vacuumP.addView(vacuum)
-        source.removeView(workComp)
-        workCompP.addView(workComp)
-        source.removeView(laptop)
-        laptopP.addView(laptop)
-        source.removeView(compMon)
-        compMonP.addView(compMon)
+        if((towHeatHigh.parent as FlexboxLayout) == source) {
+            source.removeView(towHeatHigh)
+            towHeatHighP.addView(towHeatHigh)
+        }
+        if((towHeatLow.parent as FlexboxLayout) == source) {
+            source.removeView(towHeatLow)
+            towHeatLowP.addView(towHeatLow)
+        }
+        if((vacuum.parent as FlexboxLayout) == source) {
+            source.removeView(vacuum)
+            vacuumP.addView(vacuum)
+        }
+        if((workComp.parent as FlexboxLayout) == source) {
+            source.removeView(workComp)
+            workCompP.addView(workComp)
+        }
+        if((laptop.parent as FlexboxLayout) == source) {
+            source.removeView(laptop)
+            laptopP.addView(laptop)
+        }
+        if((compMon.parent as FlexboxLayout) == source) {
+            source.removeView(compMon)
+            compMonP.addView(compMon)
+        }
 
         //Save the state of the custom inputs
         findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
@@ -1428,5 +1451,279 @@ class MainActivity : AppCompatActivity() {
         j++
         findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
         j++
+    }
+
+    //External Storage
+    fun extSaveClicked(v: View?) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TITLE, "camperPowerSave")
+        }
+        startActivityForResult(intent, 1)
+
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        if (requestCode == 1
+                && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+            resultData?.data?.also { uri ->
+                // Perform operations on the document using its URI.
+                try {
+                    contentResolver.openFileDescriptor(uri, "w")?.use {
+                        FileOutputStream(it.fileDescriptor).use {
+                            //it.write(("Append Test\n").toByteArray())
+
+                            //Save the stuff in the circuits hashmap to the bundle individually
+                            var j = 0
+
+                            for(i in circuits){
+                                j++
+
+                                it.write(("" + i.key.id + "\n").toByteArray())
+                                it.write(("" +  circuits[i.key]!!.ampsUsed + "\n").toByteArray())
+                                it.write(("" + circuits[i.key]!!.ampCapacity + "\n").toByteArray())
+                                it.write(("" + circuits[i.key]!!.userInterface.id + "\n").toByteArray())
+                            }
+
+
+                            it.write(("$main1Cap\n").toByteArray())
+                            it.write(("$main2Cap\n").toByteArray())
+                            it.write(("$main1Used\n").toByteArray())
+                            it.write(("$main2Used\n").toByteArray())
+                            it.write(("$lastCustomMBR\n").toByteArray())
+                            it.write(("$lastCustomRefer\n").toByteArray())
+                            it.write(("$lastCustomGFI\n").toByteArray())
+                            it.write(("$lastCustomMicro\n").toByteArray())
+                            it.write(("$lastCustomWaterHeater\n").toByteArray())
+                            it.write(("$lastCustomAC\n").toByteArray())
+                            it.write(("$lastCustomConverter\n").toByteArray())
+
+                            //Save the states of the checkboxes
+                            it.write(("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.waterHeatCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.microCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n").toByteArray())
+
+                            //Save the locations of the dragables
+                            it.write(("" + (findViewById<View>(R.id.toaster).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.kettle).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.towHeatHigh).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.towHeatLow).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.vacuum).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.workComp).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.laptop).parent as View).id + "\n").toByteArray())
+                            it.write(("" + (findViewById<View>(R.id.compMon).parent as View).id + "\n").toByteArray())
+
+                            //Save the state of the custom inputs
+                            it.write((findViewById<EditText>(R.id.MBRCustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.referCustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.GFICustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.microCustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.waterHeaterCustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.ACCustomInputField).text.toString() + "\n").toByteArray())
+                            it.write((findViewById<EditText>(R.id.converterCustomInputField).text.toString() + "\n").toByteArray())
+                        }
+                    }
+                } catch (e: FileNotFoundException) {
+                    Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    Toast.makeText(getApplicationContext(),"IOException",Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+        }
+        else if(requestCode == 2){
+            val stringBuilder = StringBuilder()
+
+            resultData?.data?.also { uri ->
+                contentResolver.openInputStream(uri)?.use { inputStream ->
+                    BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                        var line: String? = reader.readLine()
+                        while (line != null) {
+                            stringBuilder.append(line + "\n")
+                            line = reader.readLine()
+                        }
+                    }
+                }
+            }
+            var fileInput = stringBuilder.toString()
+
+
+            if(fileInput == ""){
+                Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            //Save the stuff in the circuits hashmap to the bundle individually
+
+            val lines = fileInput.split("\n").toTypedArray()
+
+
+
+            var j = 0
+
+            for(i in circuits){
+                var keyID = lines[j].toInt()
+                j++
+                var ampsU = lines[j].toDouble()
+                j++
+                var ampC = lines[j].toDouble()
+                j++
+                var iID = lines[j].toInt()
+                j++
+
+                var theKey = findViewById<FlexboxLayout>(keyID)
+                circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
+            }
+
+
+            main1Cap = lines[j].toDouble()
+            j++
+            main2Cap = lines[j].toDouble()
+            j++
+            main1Used = lines[j].toDouble()
+            j++
+            main2Used = lines[j].toDouble()
+            j++
+            lastCustomMBR = lines[j].toDouble()
+            j++
+            lastCustomRefer = lines[j].toDouble()
+            j++
+            lastCustomGFI = lines[j].toDouble()
+            j++
+            lastCustomMicro = lines[j].toDouble()
+            j++
+            lastCustomWaterHeater = lines[j].toDouble()
+            j++
+            lastCustomAC = lines[j].toDouble()
+            j++
+            lastCustomConverter = lines[j].toDouble()
+            j++
+
+            //Save the states of the checkboxes
+            findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+            j++
+
+            //Save the locations of the dragables
+            val toaster = findViewById<TextView>(R.id.toaster)
+            val kettle = findViewById<TextView>(R.id.kettle)
+            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+            val vacuum = findViewById<TextView>(R.id.vacuum)
+            val workComp = findViewById<TextView>(R.id.workComp)
+            val laptop = findViewById<TextView>(R.id.laptop)
+            val compMon = findViewById<TextView>(R.id.compMon)
+
+            val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+
+            val source = findViewById<FlexboxLayout>(R.id.source)
+            if((toaster.parent as FlexboxLayout) == source) {
+                source.removeView(toaster)
+                toasterP.addView(toaster)
+            }
+            if((kettle.parent as FlexboxLayout) == source) {
+                source.removeView(kettle)
+                kettleP.addView(kettle)
+            }
+            if((toaster.parent as FlexboxLayout) == source)
+                source.removeView(toaster)
+                toasterP.addView(toaster)
+            if((towHeatHigh.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatHigh)
+                towHeatHighP.addView(towHeatHigh)
+            }
+            if((towHeatLow.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatLow)
+                towHeatLowP.addView(towHeatLow)
+            }
+            if((vacuum.parent as FlexboxLayout) == source) {
+                source.removeView(vacuum)
+                vacuumP.addView(vacuum)
+            }
+            if((workComp.parent as FlexboxLayout) == source) {
+                source.removeView(workComp)
+                workCompP.addView(workComp)
+            }
+            if((laptop.parent as FlexboxLayout) == source) {
+                source.removeView(laptop)
+                laptopP.addView(laptop)
+            }
+            if((compMon.parent as FlexboxLayout) == source) {
+                source.removeView(compMon)
+                compMonP.addView(compMon)
+            }
+
+
+            //Save the state of the custom inputs
+            findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+            j++
+
+
+        }
+    }
+
+
+    fun extLoadClicked(v: View?){
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/plain"
+
+            // Optionally, specify a URI for the file that should appear in the
+            // system file picker when it loads.
+            //putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+
+        startActivityForResult(intent, 2)
+
+
     }
 }
