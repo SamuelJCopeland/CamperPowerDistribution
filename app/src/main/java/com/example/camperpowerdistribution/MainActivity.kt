@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     var genericComponents = mutableListOf<TextView>()
     var components = HashMap<TextView, ElectronicComponent>(30)
+    var colors = HashMap<View, Int>(15)
     var heaters = HashMap<String, TextView>(2)
     var circuits = HashMap<FlexboxLayout, AmpUsage>(8)
     var dupedComponents = mutableListOf<TextView>()
@@ -109,7 +110,15 @@ class MainActivity : AppCompatActivity() {
         var main1Refer: FlexboxLayout = findViewById(R.id.main1Refer)
         val main1GFI: FlexboxLayout = findViewById(R.id.main1GFI)
 
-
+        colors[main1AmpUsageM] = (main1AmpUsageM.background as ColorDrawable).color
+        colors[main2AmpUsageM] = (main2AmpUsageM.background as ColorDrawable).color
+        colors[main1MBR] = (main1MBR.background as ColorDrawable).color
+        colors[main1Refer] = (main1Refer.background as ColorDrawable).color
+        colors[main1GFI] = (main1GFI.background as ColorDrawable).color
+        colors[main1Micro] = (main1Micro.background as ColorDrawable).color
+        colors[main2WaterHeater] = (main2WaterHeater.background as ColorDrawable).color
+        colors[main2AC] = (main2AC.background as ColorDrawable).color
+        colors[main2Converter] = (main2Converter.background as ColorDrawable).color
 
         circuits[main1MBR] = AmpUsage(15.0, 0.0, circuitMBRCap)
         circuits[main1Refer] = AmpUsage(15.0, 0.0, circuitReferCap)
@@ -1776,14 +1785,12 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun blink(v: View?){
-        var color = Color.TRANSPARENT
-        val background: Drawable = v!!.background
-        if (background is ColorDrawable) color = background.color
+        var color = colors[v] as Int
         val anim = ObjectAnimator.ofInt(v, "backgroundColor", color, Color.RED, color)
         anim.duration = 250
         anim.setEvaluator(ArgbEvaluator())
         anim.repeatMode = ValueAnimator.REVERSE
-        anim.repeatCount = 1
+        anim.repeatCount = 2
         anim.start()
     }
 }
