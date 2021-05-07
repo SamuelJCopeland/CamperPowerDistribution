@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     var genericComponents = mutableListOf<TextView>()
     var components = HashMap<TextView, ElectronicComponent>(30)
+    var heaters = HashMap<String, TextView>(2)
     var circuits = HashMap<FlexboxLayout, AmpUsage>(8)
     var dupedComponents = mutableListOf<TextView>()
     var numDupedItems = 0
@@ -132,6 +133,9 @@ class MainActivity : AppCompatActivity() {
         //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
         //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
         //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
+
+        heaters["high"] = findViewById(R.id.towHeatHigh)
+        heaters["low"] = findViewById(R.id.towHeatLow)
 
         //Generic power consumers
         /*
@@ -780,15 +784,18 @@ class MainActivity : AppCompatActivity() {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
                         main1Used -= amps
-                    } else if (owner.id == R.id.source &&
-                            (destination.parent as View).id == R.id.mainC1) {
-                        val amps = components[v]!!.ampsUsed
-                        main1Used += amps
-                    } else if (owner.id == R.id.source &&
-                            (destination.parent as View).id == R.id.mainC2) {
-                        val amps = components[v]!!.ampsUsed
-                        main2Used += amps
-                    } else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
+                    }
+                    else if (owner.id == R.id.source) {
+                        if ((destination.parent as View).id == R.id.mainC1) {
+                            val amps = components[v]!!.ampsUsed
+                            main1Used += amps
+                        }
+                        else if ((destination.parent as View).id == R.id.mainC2) {
+                            val amps = components[v]!!.ampsUsed
+                            main2Used += amps
+                        }
+                    }
+                    else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
                         val amps = components[v]!!.ampsUsed
                         main1Used -= amps
                     } else if ((owner.parent as View).id == R.id.mainC2 && destination.id == R.id.source) {
@@ -874,35 +881,53 @@ class MainActivity : AppCompatActivity() {
                             val dragShadowBuilder = View.DragShadowBuilder(it)
                             it.startDragAndDrop(data, dragShadowBuilder, it, 0)
 
-                            it.visibility = View.INVISIBLE
+                            //it.visibility = View.INVISIBLE
                             true
                         }
                         val amps = components[v]!!.ampsUsed
                         components[newText] = ElectronicComponent(amps)
-                        movedItem = newText
                         numDupedItems++
-                    } else {
+                    }
+                    else {
+
                         owner.removeView(v)
                         destination.addView(v)
-                        movedItem = v
+                        if(v.id == R.id.towHeatLow){
+                            findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                        }
+                        else if(v.id == R.id.towHeatHigh){
+                            val other = findViewById<TextView>(R.id.towHeatLow)
+                            other.visibility = View.GONE
+                        }
                     }
-                } else {
+                }
+                else {
                     owner.removeView(v)
                     destination.addView(v)
-                    movedItem = v
 
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                        && dupedComponents.contains(v)
-                ) {
+                        && dupedComponents.contains(v)) {
                     dupedComponents.remove(v)
                     numDupedItems--
                     v.visibility = View.GONE
                     components.remove(v)
                     destination.removeView(v)
+
                 }
                 v.visibility = View.VISIBLE
+
+                if(destination.id == R.id.source && owner.id != destination.id){
+                    if(v.id == R.id.towHeatLow){
+                        findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.towHeatHigh){
+                        findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                    }
+                }
+
+
 
 
 

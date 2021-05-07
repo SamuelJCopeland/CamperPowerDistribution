@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:id="@+id/mainContainer">
+    android:id="@+id/mainContainer"
+    android:background="@color/black">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +17,8 @@
             android:layout_height="wrap_content"
             android:text="Connected to 50-Amp Power Supply"
             android:onClick="powerSupplyClicked"
-            android:id="@+id/powerCheck"/>
+            android:id="@+id/powerCheck"
+            android:background="@color/white"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -321,7 +323,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollMain">
+        android:id="@+id/scrollMain"
+        android:background="@color/black">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -329,7 +332,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/black">
 
                 <com.example.camperpowerdistribution.VerticalTextView
                     android:id="@+id/mainTitle1"
@@ -338,7 +342,6 @@
                     android:text="Main Circuit 1"
                     android:textAlignment="center"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:background="@android:color/holo_blue_bright"
                     />
                 <com.example.camperpowerdistribution.VerticalTextView
@@ -348,14 +351,14 @@
                     android:text="Amps vs Rated Amps: 0.0/30.0"
                     android:textAlignment="center"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:background="@android:color/holo_blue_bright"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/mainC1">
+                    android:id="@+id/mainC1"
+                    android:background="@color/black">
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1MBR"
                         android:layout_width="match_parent"
@@ -390,6 +393,11 @@
                             android:hint="Enter Custom Power Consumption"
                             />
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1Refer"
                         android:layout_width="match_parent"
@@ -439,6 +447,11 @@
                             android:id="@+id/referFrigeCheck"
                             android:background="@android:color/holo_blue_dark"/>
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1GFI"
                         android:layout_width="match_parent"
@@ -473,6 +486,11 @@
                             android:hint="Enter Custom Power Consumption"
                             />
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1Micro"
                         android:layout_width="match_parent"
@@ -514,6 +532,11 @@
                             android:id="@+id/microCheck"
                             android:background="@android:color/holo_blue_dark"/>
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -587,6 +610,11 @@
                             android:id="@+id/waterHeatCheck"
                             android:background="@android:color/holo_blue_light"/>
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main2AC"
                         android:layout_width="match_parent"
@@ -628,6 +656,11 @@
                             android:id="@+id/ACCheck"
                             android:background="@android:color/holo_blue_dark"/>
                     </com.google.android.flexbox.FlexboxLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="#00008B"
+                        android:orientation="vertical"/>
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main2Converter"
                         android:layout_width="match_parent"
