@@ -12,13 +12,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <CheckBox
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Connected to 50-Amp Power Supply"
-            android:onClick="powerSupplyClicked"
-            android:id="@+id/powerCheck"
-            android:background="@color/white"/>
+            android:orientation="horizontal"
+            android:gravity="center">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connected to 50-Amp Power Supply"
+                android:onClick="powerSupplyClicked"
+                android:id="@+id/powerCheck"
+                android:background="@color/white"/>
+            <Button
+                android:layout_width="85dp"
+                android:layout_height="45dp"
+                android:textSize="12sp"
+                android:text="Reset"
+                android:onClick="resetClicked"
+                android:id="@+id/resetButton"
+                android:layout_marginRight="2.5dp"
+                android:layout_marginLeft="2.5dp"
+                android:paddingLeft="20dp"/>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -343,6 +360,7 @@
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:background="#00DDFF"
+                    android:textColor="@color/black"
                     />
                 <com.example.camperpowerdistribution.VerticalTextView
                     android:id="@+id/mainC1Cap"
@@ -352,6 +370,7 @@
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:background="#00DDFF"
+                    android:textColor="@color/black"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"

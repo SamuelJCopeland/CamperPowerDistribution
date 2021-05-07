@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Intent
@@ -1347,162 +1348,165 @@ class MainActivity : AppCompatActivity() {
         file.appendText(findViewById<EditText>(R.id.converterCustomInputField).text.toString() + "\n")
     }
     fun loadClicked(v: View?){
-        if(file.length() == 0.toLong()){
-            Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
-            return
-        }
+        try {
+            if (file.length() == 0.toLong()) {
+                Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
+                return
+            }
 
-        val readResult = FileInputStream(file).bufferedReader().use{ it.readText() }
+            val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
 
-        //Save the stuff in the circuits hashmap to the bundle individually
+            //Save the stuff in the circuits hashmap to the bundle individually
 
-        val lines = readResult.toString().split("\n").toTypedArray()
+            val lines = readResult.toString().split("\n").toTypedArray()
 
 
+            var j = 0
 
-        var j = 0
+            for (i in circuits) {
+                var keyID = lines[j].toInt()
+                j++
+                var ampsU = lines[j].toDouble()
+                j++
+                var ampC = lines[j].toDouble()
+                j++
+                var iID = lines[j].toInt()
+                j++
 
-        for(i in circuits){
-            var keyID = lines[j].toInt()
+                var theKey = findViewById<FlexboxLayout>(keyID)
+                circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
+            }
+
+
+            main1Cap = lines[j].toDouble()
             j++
-            var ampsU = lines[j].toDouble()
+            main2Cap = lines[j].toDouble()
             j++
-            var ampC = lines[j].toDouble()
+            main1Used = lines[j].toDouble()
             j++
-            var iID = lines[j].toInt()
+            main2Used = lines[j].toDouble()
+            j++
+            lastCustomMBR = lines[j].toDouble()
+            j++
+            lastCustomRefer = lines[j].toDouble()
+            j++
+            lastCustomGFI = lines[j].toDouble()
+            j++
+            lastCustomMicro = lines[j].toDouble()
+            j++
+            lastCustomWaterHeater = lines[j].toDouble()
+            j++
+            lastCustomAC = lines[j].toDouble()
+            j++
+            lastCustomConverter = lines[j].toDouble()
             j++
 
-            var theKey = findViewById<FlexboxLayout>(keyID)
-            circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
-        }
+            //Save the states of the checkboxes
+            findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+            j++
 
+            //Save the locations of the dragables
+            val toaster = findViewById<TextView>(R.id.toaster)
+            val kettle = findViewById<TextView>(R.id.kettle)
+            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+            val vacuum = findViewById<TextView>(R.id.vacuum)
+            val workComp = findViewById<TextView>(R.id.workComp)
+            val laptop = findViewById<TextView>(R.id.laptop)
+            val compMon = findViewById<TextView>(R.id.compMon)
 
-        main1Cap = lines[j].toDouble()
-        j++
-        main2Cap = lines[j].toDouble()
-        j++
-        main1Used = lines[j].toDouble()
-        j++
-        main2Used = lines[j].toDouble()
-        j++
-        lastCustomMBR = lines[j].toDouble()
-        j++
-        lastCustomRefer = lines[j].toDouble()
-        j++
-        lastCustomGFI = lines[j].toDouble()
-        j++
-        lastCustomMicro = lines[j].toDouble()
-        j++
-        lastCustomWaterHeater = lines[j].toDouble()
-        j++
-        lastCustomAC = lines[j].toDouble()
-        j++
-        lastCustomConverter = lines[j].toDouble()
-        j++
+            val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
 
-        //Save the states of the checkboxes
-        findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
-        j++
-        findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
-        j++
+            if (towHeatHighP != findViewById(R.id.source)) {
+                towHeatLow.visibility = View.GONE
+            } else if (towHeatLowP != findViewById(R.id.source)) {
+                towHeatHigh.visibility = View.GONE
+            }
 
-        //Save the locations of the dragables
-        val toaster = findViewById<TextView>(R.id.toaster)
-        val kettle = findViewById<TextView>(R.id.kettle)
-        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
-        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
-        val vacuum = findViewById<TextView>(R.id.vacuum)
-        val workComp = findViewById<TextView>(R.id.workComp)
-        val laptop = findViewById<TextView>(R.id.laptop)
-        val compMon = findViewById<TextView>(R.id.compMon)
+            val source = findViewById<FlexboxLayout>(R.id.source)
 
-        val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-        val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
-        j++
-
-        if(towHeatHighP != findViewById(R.id.source)){
-            towHeatLow.visibility = View.GONE
-        }
-        else if(towHeatLowP != findViewById(R.id.source)){
-            towHeatHigh.visibility = View.GONE
-        }
-
-        val source = findViewById<FlexboxLayout>(R.id.source)
-
-        if((toaster.parent as FlexboxLayout) == source) {
-            source.removeView(toaster)
+            if ((toaster.parent as FlexboxLayout) == source) {
+                source.removeView(toaster)
+                toasterP.addView(toaster)
+            }
+            if ((kettle.parent as FlexboxLayout) == source) {
+                source.removeView(kettle)
+                kettleP.addView(kettle)
+            }
+            if ((toaster.parent as FlexboxLayout) == source)
+                source.removeView(toaster)
             toasterP.addView(toaster)
-        }
-        if((kettle.parent as FlexboxLayout) == source) {
-            source.removeView(kettle)
-            kettleP.addView(kettle)
-        }
-        if((toaster.parent as FlexboxLayout) == source)
-            source.removeView(toaster)
-        toasterP.addView(toaster)
-        if((towHeatHigh.parent as FlexboxLayout) == source) {
-            source.removeView(towHeatHigh)
-            towHeatHighP.addView(towHeatHigh)
-        }
-        if((towHeatLow.parent as FlexboxLayout) == source) {
-            source.removeView(towHeatLow)
-            towHeatLowP.addView(towHeatLow)
-        }
-        if((vacuum.parent as FlexboxLayout) == source) {
-            source.removeView(vacuum)
-            vacuumP.addView(vacuum)
-        }
-        if((workComp.parent as FlexboxLayout) == source) {
-            source.removeView(workComp)
-            workCompP.addView(workComp)
-        }
-        if((laptop.parent as FlexboxLayout) == source) {
-            source.removeView(laptop)
-            laptopP.addView(laptop)
-        }
-        if((compMon.parent as FlexboxLayout) == source) {
-            source.removeView(compMon)
-            compMonP.addView(compMon)
-        }
+            if ((towHeatHigh.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatHigh)
+                towHeatHighP.addView(towHeatHigh)
+            }
+            if ((towHeatLow.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatLow)
+                towHeatLowP.addView(towHeatLow)
+            }
+            if ((vacuum.parent as FlexboxLayout) == source) {
+                source.removeView(vacuum)
+                vacuumP.addView(vacuum)
+            }
+            if ((workComp.parent as FlexboxLayout) == source) {
+                source.removeView(workComp)
+                workCompP.addView(workComp)
+            }
+            if ((laptop.parent as FlexboxLayout) == source) {
+                source.removeView(laptop)
+                laptopP.addView(laptop)
+            }
+            if ((compMon.parent as FlexboxLayout) == source) {
+                source.removeView(compMon)
+                compMonP.addView(compMon)
+            }
 
-        //Save the state of the custom inputs
-        findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
-        j++
-        findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
-        j++
+            //Save the state of the custom inputs
+            findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+            j++
+        }
+        catch(e: Exception){
+            Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+        }
     }
 
     //External Storage
@@ -1610,163 +1614,164 @@ class MainActivity : AppCompatActivity() {
             }
             var fileInput = stringBuilder.toString()
 
+            try {
+                if (fileInput == "") {
+                    Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-            if(fileInput == ""){
-                Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
-                return
-            }
+                //Save the stuff in the circuits hashmap to the bundle individually
 
-            //Save the stuff in the circuits hashmap to the bundle individually
-
-            val lines = fileInput.split("\n").toTypedArray()
+                val lines = fileInput.split("\n").toTypedArray()
 
 
+                var j = 0
 
-            var j = 0
+                for (i in circuits) {
+                    var keyID = lines[j].toInt()
+                    j++
+                    var ampsU = lines[j].toDouble()
+                    j++
+                    var ampC = lines[j].toDouble()
+                    j++
+                    var iID = lines[j].toInt()
+                    j++
 
-            for(i in circuits){
-                var keyID = lines[j].toInt()
+                    var theKey = findViewById<FlexboxLayout>(keyID)
+                    circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
+                }
+
+
+                main1Cap = lines[j].toDouble()
                 j++
-                var ampsU = lines[j].toDouble()
+                main2Cap = lines[j].toDouble()
                 j++
-                var ampC = lines[j].toDouble()
+                main1Used = lines[j].toDouble()
                 j++
-                var iID = lines[j].toInt()
+                main2Used = lines[j].toDouble()
+                j++
+                lastCustomMBR = lines[j].toDouble()
+                j++
+                lastCustomRefer = lines[j].toDouble()
+                j++
+                lastCustomGFI = lines[j].toDouble()
+                j++
+                lastCustomMicro = lines[j].toDouble()
+                j++
+                lastCustomWaterHeater = lines[j].toDouble()
+                j++
+                lastCustomAC = lines[j].toDouble()
+                j++
+                lastCustomConverter = lines[j].toDouble()
                 j++
 
-                var theKey = findViewById<FlexboxLayout>(keyID)
-                circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
-            }
+                //Save the states of the checkboxes
+                findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+                j++
 
+                //Save the locations of the dragables
+                val toaster = findViewById<TextView>(R.id.toaster)
+                val kettle = findViewById<TextView>(R.id.kettle)
+                val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+                val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+                val vacuum = findViewById<TextView>(R.id.vacuum)
+                val workComp = findViewById<TextView>(R.id.workComp)
+                val laptop = findViewById<TextView>(R.id.laptop)
+                val compMon = findViewById<TextView>(R.id.compMon)
 
-            main1Cap = lines[j].toDouble()
-            j++
-            main2Cap = lines[j].toDouble()
-            j++
-            main1Used = lines[j].toDouble()
-            j++
-            main2Used = lines[j].toDouble()
-            j++
-            lastCustomMBR = lines[j].toDouble()
-            j++
-            lastCustomRefer = lines[j].toDouble()
-            j++
-            lastCustomGFI = lines[j].toDouble()
-            j++
-            lastCustomMicro = lines[j].toDouble()
-            j++
-            lastCustomWaterHeater = lines[j].toDouble()
-            j++
-            lastCustomAC = lines[j].toDouble()
-            j++
-            lastCustomConverter = lines[j].toDouble()
-            j++
+                val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
 
-            //Save the states of the checkboxes
-            findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
-            j++
+                if (towHeatHighP != findViewById(R.id.source)) {
+                    towHeatLow.visibility = View.GONE
+                } else if (towHeatLowP != findViewById(R.id.source)) {
+                    towHeatHigh.visibility = View.GONE
+                }
 
-            //Save the locations of the dragables
-            val toaster = findViewById<TextView>(R.id.toaster)
-            val kettle = findViewById<TextView>(R.id.kettle)
-            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
-            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
-            val vacuum = findViewById<TextView>(R.id.vacuum)
-            val workComp = findViewById<TextView>(R.id.workComp)
-            val laptop = findViewById<TextView>(R.id.laptop)
-            val compMon = findViewById<TextView>(R.id.compMon)
-
-            val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-            val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
-            j++
-
-            if(towHeatHighP != findViewById(R.id.source)){
-                towHeatLow.visibility = View.GONE
-            }
-            else if(towHeatLowP != findViewById(R.id.source)){
-                towHeatHigh.visibility = View.GONE
-            }
-
-            val source = findViewById<FlexboxLayout>(R.id.source)
-            if((toaster.parent as FlexboxLayout) == source) {
-                source.removeView(toaster)
+                val source = findViewById<FlexboxLayout>(R.id.source)
+                if ((toaster.parent as FlexboxLayout) == source) {
+                    source.removeView(toaster)
+                    toasterP.addView(toaster)
+                }
+                if ((kettle.parent as FlexboxLayout) == source) {
+                    source.removeView(kettle)
+                    kettleP.addView(kettle)
+                }
+                if ((toaster.parent as FlexboxLayout) == source)
+                    source.removeView(toaster)
                 toasterP.addView(toaster)
-            }
-            if((kettle.parent as FlexboxLayout) == source) {
-                source.removeView(kettle)
-                kettleP.addView(kettle)
-            }
-            if((toaster.parent as FlexboxLayout) == source)
-                source.removeView(toaster)
-                toasterP.addView(toaster)
-            if((towHeatHigh.parent as FlexboxLayout) == source) {
-                source.removeView(towHeatHigh)
-                towHeatHighP.addView(towHeatHigh)
-            }
-            if((towHeatLow.parent as FlexboxLayout) == source) {
-                source.removeView(towHeatLow)
-                towHeatLowP.addView(towHeatLow)
-            }
-            if((vacuum.parent as FlexboxLayout) == source) {
-                source.removeView(vacuum)
-                vacuumP.addView(vacuum)
-            }
-            if((workComp.parent as FlexboxLayout) == source) {
-                source.removeView(workComp)
-                workCompP.addView(workComp)
-            }
-            if((laptop.parent as FlexboxLayout) == source) {
-                source.removeView(laptop)
-                laptopP.addView(laptop)
-            }
-            if((compMon.parent as FlexboxLayout) == source) {
-                source.removeView(compMon)
-                compMonP.addView(compMon)
-            }
+                if ((towHeatHigh.parent as FlexboxLayout) == source) {
+                    source.removeView(towHeatHigh)
+                    towHeatHighP.addView(towHeatHigh)
+                }
+                if ((towHeatLow.parent as FlexboxLayout) == source) {
+                    source.removeView(towHeatLow)
+                    towHeatLowP.addView(towHeatLow)
+                }
+                if ((vacuum.parent as FlexboxLayout) == source) {
+                    source.removeView(vacuum)
+                    vacuumP.addView(vacuum)
+                }
+                if ((workComp.parent as FlexboxLayout) == source) {
+                    source.removeView(workComp)
+                    workCompP.addView(workComp)
+                }
+                if ((laptop.parent as FlexboxLayout) == source) {
+                    source.removeView(laptop)
+                    laptopP.addView(laptop)
+                }
+                if ((compMon.parent as FlexboxLayout) == source) {
+                    source.removeView(compMon)
+                    compMonP.addView(compMon)
+                }
 
 
-            //Save the state of the custom inputs
-            findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
-            j++
+                //Save the state of the custom inputs
+                findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+                j++
 
-
+            }
+            catch(e: Exception){
+                Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -1792,5 +1797,96 @@ class MainActivity : AppCompatActivity() {
         anim.repeatMode = ValueAnimator.REVERSE
         anim.repeatCount = 2
         anim.start()
+    }
+
+    fun resetClicked(v:View?){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Reset Confirmation")
+        builder.setMessage("Are you sure you want to reset?")
+        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+        builder.setPositiveButton("Yes") { dialog, which ->
+
+            for(i in circuits){
+                circuits[i.key] = AmpUsage(circuits[i.key]!!.ampCapacity, 0.0, circuits[i.key]!!.userInterface)
+            }
+
+
+            main1Cap = 30.0
+            main2Cap = 30.0
+            main1Used = 0.0
+            main2Used = 0.0
+            lastCustomMBR = 0.0
+            lastCustomRefer = 0.0
+            lastCustomGFI = 0.0
+            lastCustomMicro = 0.0
+            lastCustomWaterHeater = 0.0
+            lastCustomAC = 0.0
+            lastCustomConverter = 0.0
+
+            //Save the states of the checkboxes
+            findViewById<CheckBox>(R.id.powerCheck).isChecked = false
+            findViewById<CheckBox>(R.id.ACCheck).isChecked = false
+            findViewById<CheckBox>(R.id.converterCheck).isChecked = false
+            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = false
+            findViewById<CheckBox>(R.id.microCheck).isChecked = false
+            findViewById<CheckBox>(R.id.referTVCheck).isChecked = false
+            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = false
+
+            //Save the locations of the dragables
+            val toaster = findViewById<TextView>(R.id.toaster)
+            val kettle = findViewById<TextView>(R.id.kettle)
+            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+            val vacuum = findViewById<TextView>(R.id.vacuum)
+            val workComp = findViewById<TextView>(R.id.workComp)
+            val laptop = findViewById<TextView>(R.id.laptop)
+            val compMon = findViewById<TextView>(R.id.compMon)
+
+            val toasterP = (toaster.parent as FlexboxLayout)
+            val kettleP = kettle.parent as FlexboxLayout
+            val towHeatHighP = towHeatHigh.parent as FlexboxLayout
+            val towHeatLowP = towHeatLow.parent as FlexboxLayout
+            val vacuumP = vacuum.parent as FlexboxLayout
+            val workCompP = workComp.parent as FlexboxLayout
+            val laptopP = laptop.parent as FlexboxLayout
+            val compMonP = compMon.parent as FlexboxLayout
+
+            towHeatLow.visibility = View.VISIBLE
+            towHeatHigh.visibility = View.VISIBLE
+
+            val source = findViewById<FlexboxLayout>(R.id.source)
+
+            toasterP.removeView(toaster)
+            source.addView(toaster)
+            kettleP.removeView(kettle)
+            source.addView(kettle)
+            towHeatHighP.removeView(towHeatHigh)
+            source.addView(towHeatHigh)
+            towHeatLowP.removeView(towHeatLow)
+            source.addView(towHeatLow)
+            vacuumP.removeView(vacuum)
+            source.addView(vacuum)
+            workCompP.removeView(workComp)
+            source.addView(workComp)
+            laptopP.removeView(laptop)
+            source.addView(laptop)
+            compMonP.removeView(compMon)
+            source.addView(compMon)
+
+            //Save the state of the custom inputs
+            findViewById<EditText>(R.id.MBRCustomInputField).setText("")
+            findViewById<EditText>(R.id.referCustomInputField).setText("")
+            findViewById<EditText>(R.id.GFICustomInputField).setText("")
+            findViewById<EditText>(R.id.microCustomInputField).setText("")
+            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText("")
+            findViewById<EditText>(R.id.ACCustomInputField).setText("")
+            findViewById<EditText>(R.id.converterCustomInputField).setText("")
+        }
+
+        builder.setNegativeButton("No") { dialog, which ->
+
+        }
+        builder.show()
     }
 }
