@@ -1,5 +1,8 @@
 package com.example.camperpowerdistribution
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipDescription
@@ -7,10 +10,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.DocumentsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.DragEvent
@@ -21,7 +21,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
-import org.w3c.dom.Text
 import java.io.*
 
 
@@ -246,20 +245,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main1MBR]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main1MBR]!!.ampsUsed.toString() + "/" +
                             circuits[main1MBR]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main1MBR)
 
                     circuits[main1MBR]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main1Used < main1Cap){
+                if (main1Used < main1Cap) {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString()
                     main1AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString() + " OVERLOAD!"
+                    blink(main1AmpUsageM)
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -302,15 +302,14 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                if (main1Used < main1Cap){
+                if (main1Used < main1Cap) {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString()
                     main1AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString() + " OVERLOAD!"
-
+                    blink(main1AmpUsageM)
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
             }
@@ -344,20 +343,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main1GFI]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main1GFI]!!.ampsUsed.toString() + "/" +
                             circuits[main1GFI]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main1GFI)
 
                     circuits[main1GFI]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main1Used < main1Cap){
+                if (main1Used < main1Cap) {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString()
                     main1AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString() + " OVERLOAD!"
+                    blink(main1AmpUsageM)
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -392,20 +392,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main1Micro]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main1Micro]!!.ampsUsed.toString() + "/" +
                             circuits[main1Micro]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main1Micro)
 
                     circuits[main1Micro]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main1Used < main1Cap){
+                if (main1Used < main1Cap) {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString()
                     main1AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                             main1Cap.toString() + " OVERLOAD!"
+                    blink(main1AmpUsageM)
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -440,20 +441,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main2WaterHeater]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main2WaterHeater]!!.ampsUsed.toString() + "/" +
                             circuits[main2WaterHeater]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main2WaterHeater)
 
                     circuits[main2WaterHeater]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main2Used < main2Cap){
+                if (main2Used < main2Cap) {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString()
                     main2AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString() + " OVERLOAD!"
+                    blink(main2AmpUsageM)
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -488,20 +490,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main2AC]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main2AC]!!.ampsUsed.toString() + "/" +
                             circuits[main2AC]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main2AC)
 
                     circuits[main2AC]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main2Used < main2Cap){
+                if (main2Used < main2Cap) {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString()
                     main2AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString() + " OVERLOAD!"
+                    blink(main2AmpUsageM)
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -536,20 +539,21 @@ class MainActivity : AppCompatActivity() {
                     circuits[main2Converter]!!.userInterface.text = "Amps vs Rated Amps: " +
                             circuits[main2Converter]!!.ampsUsed.toString() + "/" +
                             circuits[main2Converter]!!.ampCapacity.toString() + " OVERLOAD!"
+                    blink(main2Converter)
 
                     circuits[main2Converter]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
                 }
 
-                if (main2Used < main2Cap){
+                if (main2Used < main2Cap) {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString()
                     main2AmpUsageM.setTextColor(Color.parseColor("#000000"))
-                }
-                else{
+                } else {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                             main2Cap.toString() + " OVERLOAD!"
+                    blink(main2AmpUsageM)
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -784,18 +788,15 @@ class MainActivity : AppCompatActivity() {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
                         main1Used -= amps
-                    }
-                    else if (owner.id == R.id.source) {
+                    } else if (owner.id == R.id.source) {
                         if ((destination.parent as View).id == R.id.mainC1) {
                             val amps = components[v]!!.ampsUsed
                             main1Used += amps
-                        }
-                        else if ((destination.parent as View).id == R.id.mainC2) {
+                        } else if ((destination.parent as View).id == R.id.mainC2) {
                             val amps = components[v]!!.ampsUsed
                             main2Used += amps
                         }
-                    }
-                    else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
+                    } else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
                         val amps = components[v]!!.ampsUsed
                         main1Used -= amps
                     } else if ((owner.parent as View).id == R.id.mainC2 && destination.id == R.id.source) {
@@ -803,27 +804,27 @@ class MainActivity : AppCompatActivity() {
                         main2Used -= amps
                     }
 
-                    if (main1Used < main1Cap){
+                    if (main1Used < main1Cap) {
                         findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                                 main1Cap.toString()
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
-                    }
-                    else{
+                    } else {
                         findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
                                 main1Cap.toString() + " OVERLOAD!"
 
+                        blink(findViewById<TextView>(R.id.mainC1Cap))
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
 
-                    if (main2Used < main2Cap){
+                    if (main2Used < main2Cap) {
                         findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                                 main2Cap.toString()
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
-                    }
-                    else{
+                    } else {
                         findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
                                 main2Cap.toString() + " OVERLOAD!"
 
+                        blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
                 }
@@ -833,13 +834,13 @@ class MainActivity : AppCompatActivity() {
                     circuits[destination]!!.ampsUsed += amps
                     val ampUsed = circuits[destination]!!.ampsUsed
 
-                    if(ampUsed <= ampCap){
+                    if (ampUsed <= ampCap) {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString()
-                    }
-                    else{
+                    } else {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString() + " OVERLOAD!"
+                        blink(destination)
                     }
                 }
                 if (circuits.containsKey(owner)) {
@@ -848,13 +849,13 @@ class MainActivity : AppCompatActivity() {
                     circuits[owner]!!.ampsUsed -= amps
                     val ampUsed = circuits[owner]!!.ampsUsed
 
-                    if(ampUsed <= ampCap){
+                    if (ampUsed <= ampCap) {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString()
-                    }
-                    else{
+                    } else {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString() + " OVERLOAD!"
+                        blink(owner)
                     }
                 }
 
@@ -887,21 +888,18 @@ class MainActivity : AppCompatActivity() {
                         val amps = components[v]!!.ampsUsed
                         components[newText] = ElectronicComponent(amps)
                         numDupedItems++
-                    }
-                    else {
+                    } else {
 
                         owner.removeView(v)
                         destination.addView(v)
-                        if(v.id == R.id.towHeatLow){
+                        if (v.id == R.id.towHeatLow) {
                             findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.towHeatHigh){
+                        } else if (v.id == R.id.towHeatHigh) {
                             val other = findViewById<TextView>(R.id.towHeatLow)
                             other.visibility = View.GONE
                         }
                     }
-                }
-                else {
+                } else {
                     owner.removeView(v)
                     destination.addView(v)
 
@@ -918,11 +916,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 v.visibility = View.VISIBLE
 
-                if(destination.id == R.id.source && owner.id != destination.id){
-                    if(v.id == R.id.towHeatLow){
+                if (destination.id == R.id.source && owner.id != destination.id) {
+                    if (v.id == R.id.towHeatLow) {
                         findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.towHeatHigh){
+                    } else if (v.id == R.id.towHeatHigh) {
                         findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
                     }
                 }
@@ -1002,6 +999,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
                     main1Used.toString() + "/" + main1Cap.toString() + " OVERLOAD!"
+            blink(findViewById<TextView>(R.id.mainC1Cap))
         }
 
         if(main2Used <= main2Cap){
@@ -1013,6 +1011,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
                     main2Used.toString() + "/" + main2Cap.toString() + " OVERLOAD!"
+            blink(findViewById<TextView>(R.id.mainC2Cap))
         }
 
     }
@@ -1039,6 +1038,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[refer]!!.ampsUsed.toString() + "/" +
                     circuits[refer]!!.ampCapacity.toString() + " OVERLOAD!"
 
+            blink(refer)
             circuits[refer]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
@@ -1054,6 +1054,7 @@ class MainActivity : AppCompatActivity() {
                     main1Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC1Cap))
         }
 
 
@@ -1082,6 +1083,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[converter]!!.ampCapacity.toString() + " OVERLOAD!"
 
             circuits[converter]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+            blink(converter)
 
 
         }
@@ -1096,6 +1098,7 @@ class MainActivity : AppCompatActivity() {
                     main2Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC2Cap))
         }
 
     }
@@ -1124,6 +1127,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[airCon]!!.ampCapacity.toString() + " OVERLOAD!"
 
             circuits[airCon]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+            blink(airCon)
 
 
         }
@@ -1138,6 +1142,7 @@ class MainActivity : AppCompatActivity() {
                     main2Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC2Cap))
         }
     }
     fun microClicked(v: View?) {
@@ -1164,6 +1169,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[micro]!!.ampCapacity.toString() + " OVERLOAD!"
 
             circuits[micro]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+            blink(micro)
 
 
         }
@@ -1178,6 +1184,7 @@ class MainActivity : AppCompatActivity() {
                     main1Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC1Cap))
         }
 
         findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
@@ -1214,6 +1221,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[water]!!.ampCapacity.toString() + " OVERLOAD!"
 
             circuits[water]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+            blink(water)
 
 
         }
@@ -1228,6 +1236,7 @@ class MainActivity : AppCompatActivity() {
                     main2Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC2Cap))
         }
 
 
@@ -1254,6 +1263,7 @@ class MainActivity : AppCompatActivity() {
                     circuits[refer]!!.ampCapacity.toString() + " OVERLOAD!"
 
             circuits[refer]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+            blink(refer)
 
 
         }
@@ -1268,6 +1278,7 @@ class MainActivity : AppCompatActivity() {
                     main1Cap.toString() + " OVERLOAD!"
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC1Cap))
         }
     }
     fun saveClicked(v: View?) {
@@ -1280,7 +1291,7 @@ class MainActivity : AppCompatActivity() {
             j++
 
             file.appendText("" + i.key.id + "\n")
-            file.appendText("" +  circuits[i.key]!!.ampsUsed + "\n")
+            file.appendText("" + circuits[i.key]!!.ampsUsed + "\n")
             file.appendText("" + circuits[i.key]!!.ampCapacity + "\n")
             file.appendText("" + circuits[i.key]!!.userInterface.id + "\n")
         }
@@ -1328,7 +1339,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun loadClicked(v: View?){
         if(file.length() == 0.toLong()){
-            Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+            Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -1423,6 +1434,13 @@ class MainActivity : AppCompatActivity() {
         val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
         j++
 
+        if(towHeatHighP != findViewById(R.id.source)){
+            towHeatLow.visibility = View.GONE
+        }
+        else if(towHeatLowP != findViewById(R.id.source)){
+            towHeatHigh.visibility = View.GONE
+        }
+
         val source = findViewById<FlexboxLayout>(R.id.source)
 
         if((toaster.parent as FlexboxLayout) == source) {
@@ -1511,7 +1529,7 @@ class MainActivity : AppCompatActivity() {
                                 j++
 
                                 it.write(("" + i.key.id + "\n").toByteArray())
-                                it.write(("" +  circuits[i.key]!!.ampsUsed + "\n").toByteArray())
+                                it.write(("" + circuits[i.key]!!.ampsUsed + "\n").toByteArray())
                                 it.write(("" + circuits[i.key]!!.ampCapacity + "\n").toByteArray())
                                 it.write(("" + circuits[i.key]!!.userInterface.id + "\n").toByteArray())
                             }
@@ -1559,10 +1577,10 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } catch (e: FileNotFoundException) {
-                    Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 } catch (e: IOException) {
-                    Toast.makeText(getApplicationContext(),"IOException",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(getApplicationContext(), "IOException", Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
             }
@@ -1585,7 +1603,7 @@ class MainActivity : AppCompatActivity() {
 
 
             if(fileInput == ""){
-                Toast.makeText(getApplicationContext(),"No Save State",Toast.LENGTH_SHORT).show()
+                Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -1678,6 +1696,13 @@ class MainActivity : AppCompatActivity() {
             val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
             j++
 
+            if(towHeatHighP != findViewById(R.id.source)){
+                towHeatLow.visibility = View.GONE
+            }
+            else if(towHeatLowP != findViewById(R.id.source)){
+                towHeatHigh.visibility = View.GONE
+            }
+
             val source = findViewById<FlexboxLayout>(R.id.source)
             if((toaster.parent as FlexboxLayout) == source) {
                 source.removeView(toaster)
@@ -1746,9 +1771,19 @@ class MainActivity : AppCompatActivity() {
             // system file picker when it loads.
             //putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
         }
-
         startActivityForResult(intent, 2)
 
 
+    }
+    fun blink(v: View?){
+        var color = Color.TRANSPARENT
+        val background: Drawable = v!!.background
+        if (background is ColorDrawable) color = background.color
+        val anim = ObjectAnimator.ofInt(v, "backgroundColor", color, Color.RED, color)
+        anim.duration = 250
+        anim.setEvaluator(ArgbEvaluator())
+        anim.repeatMode = ValueAnimator.REVERSE
+        anim.repeatCount = 1
+        anim.start()
     }
 }

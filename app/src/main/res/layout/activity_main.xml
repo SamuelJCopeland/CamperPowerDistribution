@@ -7,13 +7,13 @@
     tools:context=".MainActivity"
     android:orientation="vertical"
     android:id="@+id/mainContainer"
-    android:background="@color/black">
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <CheckBox
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Connected to 50-Amp Power Supply"
             android:onClick="powerSupplyClicked"
@@ -342,7 +342,7 @@
                     android:text="Main Circuit 1"
                     android:textAlignment="center"
                     android:textSize="16sp"
-                    android:background="@android:color/holo_blue_bright"
+                    android:background="#00DDFF"
                     />
                 <com.example.camperpowerdistribution.VerticalTextView
                     android:id="@+id/mainC1Cap"
@@ -351,7 +351,7 @@
                     android:text="Amps vs Rated Amps: 0.0/30.0"
                     android:textAlignment="center"
                     android:textSize="16sp"
-                    android:background="@android:color/holo_blue_bright"
+                    android:background="#00DDFF"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -364,7 +364,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="230dp"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_light"
+                        android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -375,7 +375,7 @@
                             android:text="MBR: Receptacles in right front compartment, receptacles by master bed (not TV), and receptacle by dinette"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <TextView
                             android:id="@+id/MBRUsage"
                             android:layout_width="match_parent"
@@ -383,7 +383,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -403,7 +403,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="275dp"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_dark"
+                        android:background="#0099CC"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
 
@@ -415,7 +415,7 @@
                             android:text="Refer: Refrigerator, exterior receptacles, all receptacles in kitchen, receptacles at main TV and master BR TV"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <TextView
                             android:id="@+id/referUsage"
                             android:layout_width="match_parent"
@@ -423,7 +423,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -438,14 +438,14 @@
                             android:text="TV in-use"
                             android:onClick="referTVClicked"
                             android:id="@+id/referTVCheck"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <CheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Refrigerator in-use"
                             android:onClick="referFrigeClicked"
                             android:id="@+id/referFrigeCheck"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -457,7 +457,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="195dp"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_light"
+                        android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -468,7 +468,7 @@
                             android:text="GFI: Receptacles in bathroom and by couch"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <TextView
                             android:id="@+id/GFIUsage"
                             android:layout_width="match_parent"
@@ -476,7 +476,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -496,7 +496,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_dark"
+                        android:background="#0099CC"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -507,7 +507,7 @@
                             android:text="Micro: Microwave Oven"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <TextView
                             android:id="@+id/microUsage"
                             android:layout_width="match_parent"
@@ -515,7 +515,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -530,7 +530,7 @@
                             android:text="Microwave in-use"
                             android:onClick="microClicked"
                             android:id="@+id/microCheck"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -552,7 +552,7 @@
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:background="@color/teal_200"
+                    android:background="#03DAC5"
                     />
                 <com.example.camperpowerdistribution.VerticalTextView
                     android:id="@+id/mainC2Cap"
@@ -574,7 +574,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_light"
+                        android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -585,7 +585,7 @@
                             android:text="Water Heater: Electric water tank heater"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <TextView
                             android:id="@+id/waterHeaterUsage"
                             android:layout_width="match_parent"
@@ -593,7 +593,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -608,7 +608,7 @@
                             android:text="Water tank heater in-use"
                             android:onClick="waterHeatClicked"
                             android:id="@+id/waterHeatCheck"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -620,7 +620,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_dark"
+                        android:background="#0099CC"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -631,7 +631,7 @@
                             android:text="A/C: Rear (main) air conditioner"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <TextView
                             android:id="@+id/ACUsage"
                             android:layout_width="match_parent"
@@ -639,7 +639,7 @@
                             android:text="Amps vs Rated Amps: 0.0/20.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -654,7 +654,7 @@
                             android:text="A/C on"
                             android:onClick="airConditionerClicked"
                             android:id="@+id/ACCheck"
-                            android:background="@android:color/holo_blue_dark"/>
+                            android:background="#0099CC"/>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -666,7 +666,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:color/holo_blue_light"
+                        android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
@@ -677,7 +677,7 @@
                             android:text="Converter: DC power converter (supplies all 12 VDC loads)"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <TextView
                             android:id="@+id/converterUsage"
                             android:layout_width="match_parent"
@@ -685,7 +685,7 @@
                             android:text="Amps vs Rated Amps: 0.0/15.0"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -700,7 +700,7 @@
                             android:text="Converter in-use"
                             android:onClick="converterClicked"
                             android:id="@+id/converterCheck"
-                            android:background="@android:color/holo_blue_light"/>
+                            android:background="#33B5E5"/>
                     </com.google.android.flexbox.FlexboxLayout>
                 </LinearLayout>
             </LinearLayout>
