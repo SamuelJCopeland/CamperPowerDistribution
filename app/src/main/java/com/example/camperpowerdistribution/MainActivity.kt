@@ -11,6 +11,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,6 +23,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
+import org.w3c.dom.Text
 import java.io.*
 
 
@@ -130,11 +132,11 @@ class MainActivity : AppCompatActivity() {
         circuits[main2Converter] = AmpUsage(15.0, 0.0, circuitConverterCap)
 
 
-        components[findViewById(R.id.toaster)] = ElectronicComponent(12.5)
-        components[findViewById(R.id.kettle)] = ElectronicComponent(11.0)
-        components[findViewById(R.id.towHeatHigh)] = ElectronicComponent(11.0)
-        components[findViewById(R.id.towHeatLow)] = ElectronicComponent(4.0)
-        components[findViewById(R.id.vacuum)] = ElectronicComponent(4.0)
+        components[findViewById(R.id.toaster)] = ElectronicComponent(12.6)
+        components[findViewById(R.id.kettle)] = ElectronicComponent(12.5)
+        components[findViewById(R.id.towHeatHigh)] = ElectronicComponent(11.3)
+        components[findViewById(R.id.towHeatLow)] = ElectronicComponent(9.2)
+        components[findViewById(R.id.vacuum)] = ElectronicComponent(3.9)
         components[findViewById(R.id.workComp)] = ElectronicComponent(2.5)
         components[findViewById(R.id.laptop)] = ElectronicComponent(1.5)
         components[findViewById(R.id.compMon)] = ElectronicComponent(1.5)
@@ -578,8 +580,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
-
+        reset()
     }
     /*
     var circuits = HashMap<FlexboxLayout, AmpUsage>(8)
@@ -637,6 +638,7 @@ class MainActivity : AppCompatActivity() {
 
         //Save the states of the checkboxes
         savedInstanceState.putBoolean(R.id.powerCheck.toString(), findViewById<CheckBox>(R.id.powerCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.chargerCheck.toString(), findViewById<CheckBox>(R.id.chargerCheck).isChecked)
         savedInstanceState.putBoolean(R.id.ACCheck.toString(), findViewById<CheckBox>(R.id.ACCheck).isChecked)
         savedInstanceState.putBoolean(R.id.converterCheck.toString(), findViewById<CheckBox>(R.id.converterCheck).isChecked)
         savedInstanceState.putBoolean(R.id.waterHeatCheck.toString(), findViewById<CheckBox>(R.id.waterHeatCheck).isChecked)
@@ -654,6 +656,19 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState.putString(R.id.converterCustomInputField.toString(), findViewById<EditText>(R.id.converterCustomInputField).text.toString())
 
         //Save the locations of the dragables
+        savedInstanceState.putInt("compSize", components.size)
+        var i = 0
+        for(c in components){
+            var parKey = "compP$i"
+            var compKey = "comp$i"
+            var usedKey = "compUsed$i"
+            i++
+            savedInstanceState.putInt(parKey, (c.key.parent as View).id)
+            savedInstanceState.putInt(compKey, c.key.id)
+            savedInstanceState.putDouble(usedKey, components[c.key]!!.ampsUsed)
+        }
+
+        /*
         savedInstanceState.putInt(R.id.toaster.toString(), (findViewById<View>(R.id.toaster).parent as View).id)
         savedInstanceState.putInt(R.id.kettle.toString(), (findViewById<View>(R.id.kettle).parent as View).id)
         savedInstanceState.putInt(R.id.towHeatHigh.toString(), (findViewById<View>(R.id.towHeatHigh).parent as View).id)
@@ -662,6 +677,7 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState.putInt(R.id.workComp.toString(), (findViewById<View>(R.id.workComp).parent as View).id)
         savedInstanceState.putInt(R.id.laptop.toString(), (findViewById<View>(R.id.laptop).parent as View).id)
         savedInstanceState.putInt(R.id.compMon.toString(), (findViewById<View>(R.id.compMon).parent as View).id)
+        */
     }
 
 
@@ -683,6 +699,7 @@ class MainActivity : AppCompatActivity() {
 
         //Restore the states of the checkboxes
         findViewById<CheckBox>(R.id.powerCheck).isChecked = savedInstanceState.getBoolean(R.id.powerCheck.toString())
+        findViewById<CheckBox>(R.id.chargerCheck).isChecked = savedInstanceState.getBoolean(R.id.chargerCheck.toString())
         findViewById<CheckBox>(R.id.ACCheck).isChecked = savedInstanceState.getBoolean(R.id.ACCheck.toString())
         findViewById<CheckBox>(R.id.converterCheck).isChecked = savedInstanceState.getBoolean(R.id.converterCheck.toString())
         findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = savedInstanceState.getBoolean(R.id.waterHeatCheck.toString())
@@ -692,6 +709,30 @@ class MainActivity : AppCompatActivity() {
 
 
         //Restore the locations of the dragables
+        var i = 0
+        while(i < savedInstanceState.getInt("compSize")){
+            var parKey = "compP$i"
+            var compKey = "comp$i"
+            var usedKey = "compUsed$i"
+            i++
+
+            var parent = findViewById<FlexboxLayout>(savedInstanceState.getInt(parKey))
+            var component = findViewById<TextView>(savedInstanceState.getInt(compKey))
+            var used = savedInstanceState.getDouble(usedKey)
+            var source = findViewById<FlexboxLayout>(R.id.source)
+
+            components[component] = ElectronicComponent(used)
+            source.removeView(component)
+            parent.addView(component)
+
+        }
+        if((findViewById<TextView>(R.id.towHeatLow).parent as View).id != R.id.source){
+            findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+        }
+        else if((findViewById<TextView>(R.id.towHeatHigh).parent as View).id != R.id.source){
+            findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+        }
+        /*
         val toasterP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.toaster.toString()))
         val kettleP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.kettle.toString()))
         val towHeatHighP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.towHeatHigh.toString()))
@@ -728,6 +769,8 @@ class MainActivity : AppCompatActivity() {
         laptopP.addView(laptop)
         source.removeView(compMon)
         compMonP.addView(compMon)
+
+         */
 
 
 
@@ -1025,16 +1068,59 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    fun chargerClicked(v: View?) {
+        var mbr: FlexboxLayout = findViewById(R.id.main1MBR)
+        if((v as CheckBox).isChecked){
+            main1Used += 6
+            circuits[mbr]!!.ampsUsed += 6
+        }
+        else{
+            main1Used -= 6
+            circuits[mbr]!!.ampsUsed -= 6
+        }
+
+        if (circuits[mbr]!!.ampsUsed <= circuits[mbr]!!.ampCapacity) {
+            circuits[mbr]!!.userInterface.text = "Amps vs Rated Amps: " +
+                    circuits[mbr]!!.ampsUsed.toString() + "/" +
+                    circuits[mbr]!!.ampCapacity.toString()
+            circuits[mbr]!!.userInterface.setTextColor(Color.parseColor("#000000"))
+
+        } else {
+            circuits[mbr]!!.userInterface.text = "Amps vs Rated Amps: " +
+                    circuits[mbr]!!.ampsUsed.toString() + "/" +
+                    circuits[mbr]!!.ampCapacity.toString() + " OVERLOAD!"
+
+            blink(mbr)
+            circuits[mbr]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+
+
+        }
+
+        if (main1Used < main1Cap){
+            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
+                    main1Cap.toString()
+            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
+        }
+        else{
+            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
+                    main1Cap.toString() + " OVERLOAD!"
+
+            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+            blink(findViewById<TextView>(R.id.mainC1Cap))
+        }
+
+
+    }
 
     fun referTVClicked(v: View?) {
         var refer: FlexboxLayout = findViewById(R.id.main1Refer)
         if((v as CheckBox).isChecked){
-            main1Used += 1.5
-            circuits[refer]!!.ampsUsed += 1.5
+            main1Used += 0.4
+            circuits[refer]!!.ampsUsed += 0.4
         }
         else{
-            main1Used -= 1.5
-            circuits[refer]!!.ampsUsed -= 1.5
+            main1Used -= 0.4
+            circuits[refer]!!.ampsUsed -= 0.4
         }
 
         if (circuits[refer]!!.ampsUsed <= circuits[refer]!!.ampCapacity) {
@@ -1321,6 +1407,7 @@ class MainActivity : AppCompatActivity() {
 
         //Save the states of the checkboxes
         file.appendText("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.waterHeatCheck).isChecked + "\n")
@@ -1328,6 +1415,15 @@ class MainActivity : AppCompatActivity() {
         file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
 
+        file.appendText(components.size.toString() + "\n")
+        var i = 0
+        for(c in components){
+            i++
+            file.appendText((c.key.parent as View).id.toString() + "\n")
+            file.appendText(c.key.id.toString() + "\n")
+            file.appendText(components[c.key]!!.ampsUsed.toString() + "\n")
+        }
+        /*
         //Save the locations of the dragables
         file.appendText("" + (findViewById<View>(R.id.toaster).parent as View).id + "\n")
         file.appendText("" + (findViewById<View>(R.id.kettle).parent as View).id + "\n")
@@ -1337,6 +1433,8 @@ class MainActivity : AppCompatActivity() {
         file.appendText("" + (findViewById<View>(R.id.workComp).parent as View).id + "\n")
         file.appendText("" + (findViewById<View>(R.id.laptop).parent as View).id + "\n")
         file.appendText("" + (findViewById<View>(R.id.compMon).parent as View).id + "\n")
+
+         */
 
         //Save the state of the custom inputs
         file.appendText(findViewById<EditText>(R.id.MBRCustomInputField).text.toString() + "\n")
@@ -1358,7 +1456,7 @@ class MainActivity : AppCompatActivity() {
 
             //Save the stuff in the circuits hashmap to the bundle individually
 
-            val lines = readResult.toString().split("\n").toTypedArray()
+            val lines = readResult.split("\n").toTypedArray()
 
 
             var j = 0
@@ -1404,6 +1502,8 @@ class MainActivity : AppCompatActivity() {
             //Save the states of the checkboxes
             findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
             j++
+            findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
+            j++
             findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
             j++
             findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
@@ -1417,6 +1517,36 @@ class MainActivity : AppCompatActivity() {
             findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
             j++
 
+            var repeatTimes = lines[j].toInt()
+            j++
+            var i = 0
+            while(i < repeatTimes){
+                i++
+
+                var parent = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                var component = findViewById<TextView>(lines[j].toInt())
+                j++
+                var used = lines[j].toDouble()
+                j++
+
+                var source = findViewById<FlexboxLayout>(R.id.source)
+
+                components[component] = ElectronicComponent(used)
+
+                var curPar = (component.parent as FlexboxLayout)
+
+                curPar.removeView(component)
+                parent.addView(component)
+            }
+            if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
+                findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+            }
+            else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
+                findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+            }
+
+            /*
             //Save the locations of the dragables
             val toaster = findViewById<TextView>(R.id.toaster)
             val kettle = findViewById<TextView>(R.id.kettle)
@@ -1488,6 +1618,8 @@ class MainActivity : AppCompatActivity() {
                 compMonP.addView(compMon)
             }
 
+             */
+
             //Save the state of the custom inputs
             findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
             j++
@@ -1505,7 +1637,8 @@ class MainActivity : AppCompatActivity() {
             j++
         }
         catch(e: Exception){
-            Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getApplicationContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -1562,6 +1695,7 @@ class MainActivity : AppCompatActivity() {
 
                             //Save the states of the checkboxes
                             it.write(("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.waterHeatCheck).isChecked + "\n").toByteArray())
@@ -1569,6 +1703,15 @@ class MainActivity : AppCompatActivity() {
                             it.write(("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n").toByteArray())
 
+                            it.write((components.size.toString() + "\n").toByteArray())
+                            var i = 0
+                            for(c in components){
+                                i++
+                                it.write(((c.key.parent as View).id.toString() + "\n").toByteArray())
+                                it.write((c.key.id.toString() + "\n").toByteArray())
+                                it.write((components[c.key]!!.ampsUsed.toString() + "\n").toByteArray())
+                            }
+                            /*
                             //Save the locations of the dragables
                             it.write(("" + (findViewById<View>(R.id.toaster).parent as View).id + "\n").toByteArray())
                             it.write(("" + (findViewById<View>(R.id.kettle).parent as View).id + "\n").toByteArray())
@@ -1578,6 +1721,8 @@ class MainActivity : AppCompatActivity() {
                             it.write(("" + (findViewById<View>(R.id.workComp).parent as View).id + "\n").toByteArray())
                             it.write(("" + (findViewById<View>(R.id.laptop).parent as View).id + "\n").toByteArray())
                             it.write(("" + (findViewById<View>(R.id.compMon).parent as View).id + "\n").toByteArray())
+
+                             */
 
                             //Save the state of the custom inputs
                             it.write((findViewById<EditText>(R.id.MBRCustomInputField).text.toString() + "\n").toByteArray())
@@ -1598,6 +1743,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        //STILL NEED TO ADD LOADING FROM EXTERNAL FILE
         else if(requestCode == 2){
             val stringBuilder = StringBuilder()
 
@@ -1668,6 +1814,8 @@ class MainActivity : AppCompatActivity() {
                 //Save the states of the checkboxes
                 findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
                 j++
+                findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
+                j++
                 findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
@@ -1681,6 +1829,36 @@ class MainActivity : AppCompatActivity() {
                 findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
                 j++
 
+                var repeatTimes = lines[j].toInt()
+                j++
+                var i = 0
+                while(i < repeatTimes){
+                    i++
+
+                    var parent = findViewById<FlexboxLayout>(lines[j].toInt())
+                    j++
+                    var component = findViewById<TextView>(lines[j].toInt())
+                    j++
+                    var used = lines[j].toDouble()
+                    j++
+
+                    var source = findViewById<FlexboxLayout>(R.id.source)
+
+                    components[component] = ElectronicComponent(used)
+
+                    var curPar = (component.parent as FlexboxLayout)
+
+                    curPar.removeView(component)
+                    parent.addView(component)
+                }
+                if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
+                    findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+                }
+                else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
+                    findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                }
+
+                /*
                 //Save the locations of the dragables
                 val toaster = findViewById<TextView>(R.id.toaster)
                 val kettle = findViewById<TextView>(R.id.kettle)
@@ -1715,6 +1893,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val source = findViewById<FlexboxLayout>(R.id.source)
+
                 if ((toaster.parent as FlexboxLayout) == source) {
                     source.removeView(toaster)
                     toasterP.addView(toaster)
@@ -1751,6 +1930,7 @@ class MainActivity : AppCompatActivity() {
                     compMonP.addView(compMon)
                 }
 
+                 */
 
                 //Save the state of the custom inputs
                 findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
@@ -1806,82 +1986,8 @@ class MainActivity : AppCompatActivity() {
         //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
         builder.setPositiveButton("Yes") { dialog, which ->
+            reset()
 
-            for(i in circuits){
-                circuits[i.key] = AmpUsage(circuits[i.key]!!.ampCapacity, 0.0, circuits[i.key]!!.userInterface)
-            }
-
-
-            main1Cap = 30.0
-            main2Cap = 30.0
-            main1Used = 0.0
-            main2Used = 0.0
-            lastCustomMBR = 0.0
-            lastCustomRefer = 0.0
-            lastCustomGFI = 0.0
-            lastCustomMicro = 0.0
-            lastCustomWaterHeater = 0.0
-            lastCustomAC = 0.0
-            lastCustomConverter = 0.0
-
-            //Save the states of the checkboxes
-            findViewById<CheckBox>(R.id.powerCheck).isChecked = false
-            findViewById<CheckBox>(R.id.ACCheck).isChecked = false
-            findViewById<CheckBox>(R.id.converterCheck).isChecked = false
-            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = false
-            findViewById<CheckBox>(R.id.microCheck).isChecked = false
-            findViewById<CheckBox>(R.id.referTVCheck).isChecked = false
-            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = false
-
-            //Save the locations of the dragables
-            val toaster = findViewById<TextView>(R.id.toaster)
-            val kettle = findViewById<TextView>(R.id.kettle)
-            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
-            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
-            val vacuum = findViewById<TextView>(R.id.vacuum)
-            val workComp = findViewById<TextView>(R.id.workComp)
-            val laptop = findViewById<TextView>(R.id.laptop)
-            val compMon = findViewById<TextView>(R.id.compMon)
-
-            val toasterP = (toaster.parent as FlexboxLayout)
-            val kettleP = kettle.parent as FlexboxLayout
-            val towHeatHighP = towHeatHigh.parent as FlexboxLayout
-            val towHeatLowP = towHeatLow.parent as FlexboxLayout
-            val vacuumP = vacuum.parent as FlexboxLayout
-            val workCompP = workComp.parent as FlexboxLayout
-            val laptopP = laptop.parent as FlexboxLayout
-            val compMonP = compMon.parent as FlexboxLayout
-
-            towHeatLow.visibility = View.VISIBLE
-            towHeatHigh.visibility = View.VISIBLE
-
-            val source = findViewById<FlexboxLayout>(R.id.source)
-
-            toasterP.removeView(toaster)
-            source.addView(toaster)
-            kettleP.removeView(kettle)
-            source.addView(kettle)
-            towHeatHighP.removeView(towHeatHigh)
-            source.addView(towHeatHigh)
-            towHeatLowP.removeView(towHeatLow)
-            source.addView(towHeatLow)
-            vacuumP.removeView(vacuum)
-            source.addView(vacuum)
-            workCompP.removeView(workComp)
-            source.addView(workComp)
-            laptopP.removeView(laptop)
-            source.addView(laptop)
-            compMonP.removeView(compMon)
-            source.addView(compMon)
-
-            //Save the state of the custom inputs
-            findViewById<EditText>(R.id.MBRCustomInputField).setText("")
-            findViewById<EditText>(R.id.referCustomInputField).setText("")
-            findViewById<EditText>(R.id.GFICustomInputField).setText("")
-            findViewById<EditText>(R.id.microCustomInputField).setText("")
-            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText("")
-            findViewById<EditText>(R.id.ACCustomInputField).setText("")
-            findViewById<EditText>(R.id.converterCustomInputField).setText("")
         }
 
         builder.setNegativeButton("No") { dialog, which ->
@@ -1889,4 +1995,86 @@ class MainActivity : AppCompatActivity() {
         }
         builder.show()
     }
+    fun reset(){
+        for(i in circuits){
+            circuits[i.key] = AmpUsage(circuits[i.key]!!.ampCapacity, 0.0, circuits[i.key]!!.userInterface)
+        }
+
+
+        main1Cap = 30.0
+        main2Cap = 30.0
+        main1Used = 0.0
+        main2Used = 0.0
+        lastCustomMBR = 0.0
+        lastCustomRefer = 0.0
+        lastCustomGFI = 0.0
+        lastCustomMicro = 0.0
+        lastCustomWaterHeater = 0.0
+        lastCustomAC = 0.0
+        lastCustomConverter = 0.0
+
+        //Save the states of the checkboxes
+        findViewById<CheckBox>(R.id.powerCheck).isChecked = false
+        findViewById<CheckBox>(R.id.chargerCheck).isChecked = true
+        chargerClicked(findViewById<CheckBox>(R.id.chargerCheck))
+        findViewById<CheckBox>(R.id.ACCheck).isChecked = false
+        findViewById<CheckBox>(R.id.converterCheck).isChecked = true
+        converterClicked(findViewById<CheckBox>(R.id.converterCheck))
+        findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = false
+        findViewById<CheckBox>(R.id.microCheck).isChecked = false
+        findViewById<CheckBox>(R.id.referTVCheck).isChecked = false
+        findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = true
+        referFrigeClicked(findViewById<CheckBox>(R.id.referFrigeCheck))
+
+        //Save the locations of the dragables
+        val toaster = findViewById<TextView>(R.id.toaster)
+        val kettle = findViewById<TextView>(R.id.kettle)
+        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+        val vacuum = findViewById<TextView>(R.id.vacuum)
+        val workComp = findViewById<TextView>(R.id.workComp)
+        val laptop = findViewById<TextView>(R.id.laptop)
+        val compMon = findViewById<TextView>(R.id.compMon)
+
+        val toasterP = (toaster.parent as FlexboxLayout)
+        val kettleP = kettle.parent as FlexboxLayout
+        val towHeatHighP = towHeatHigh.parent as FlexboxLayout
+        val towHeatLowP = towHeatLow.parent as FlexboxLayout
+        val vacuumP = vacuum.parent as FlexboxLayout
+        val workCompP = workComp.parent as FlexboxLayout
+        val laptopP = laptop.parent as FlexboxLayout
+        val compMonP = compMon.parent as FlexboxLayout
+
+        towHeatLow.visibility = View.VISIBLE
+        towHeatHigh.visibility = View.VISIBLE
+
+        val source = findViewById<FlexboxLayout>(R.id.source)
+
+        toasterP.removeView(toaster)
+        source.addView(toaster)
+        kettleP.removeView(kettle)
+        source.addView(kettle)
+        towHeatHighP.removeView(towHeatHigh)
+        source.addView(towHeatHigh)
+        towHeatLowP.removeView(towHeatLow)
+        source.addView(towHeatLow)
+        vacuumP.removeView(vacuum)
+        source.addView(vacuum)
+        workCompP.removeView(workComp)
+        source.addView(workComp)
+        laptopP.removeView(laptop)
+        source.addView(laptop)
+        compMonP.removeView(compMon)
+        source.addView(compMon)
+
+        //Save the state of the custom inputs
+        findViewById<EditText>(R.id.MBRCustomInputField).setText("")
+        findViewById<EditText>(R.id.referCustomInputField).setText("")
+        findViewById<EditText>(R.id.GFICustomInputField).setText("")
+        findViewById<EditText>(R.id.microCustomInputField).setText("")
+        findViewById<EditText>(R.id.waterHeaterCustomInputField).setText("")
+        findViewById<EditText>(R.id.ACCustomInputField).setText("")
+        findViewById<EditText>(R.id.converterCustomInputField).setText("")
+    }
 }
+
