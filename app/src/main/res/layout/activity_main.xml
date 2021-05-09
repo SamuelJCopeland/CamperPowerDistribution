@@ -85,8 +85,10 @@
         android:layout_height="90dp"
         android:orientation="vertical">
         <ScrollView
+            android:id="@+id/sourceScroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="90dp"
+            android:background="@android:color/holo_green_dark">
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/source"
                 android:layout_width="match_parent"
@@ -94,7 +96,6 @@
                 android:background="@android:color/holo_green_dark"
                 app:flexWrap="wrap"
                 app:justifyContent="center">
-
                 <TextView
                     android:id="@+id/vornadoHeatFan"
                     android:layout_width="70dp"
@@ -103,7 +104,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (fan only)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
                 <TextView
                     android:id="@+id/vornadoHeatLow"
                     android:layout_width="70dp"
@@ -112,7 +114,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (low heat)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
                 <TextView
                     android:id="@+id/vornadoHeatHigh"
                     android:layout_width="70dp"
@@ -121,7 +124,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (high heat)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
 
 
                 <TextView
@@ -132,7 +136,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Toaster"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
                 <TextView
                     android:id="@+id/kettle"
                     android:layout_width="70dp"
@@ -141,7 +146,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Portable electric hot water kettle"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
                 <TextView
                     android:id="@+id/towHeatHigh"
                     android:layout_width="70dp"
@@ -150,7 +156,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Tower heater (high or auto)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
                 <TextView
                     android:id="@+id/towHeatLow"
                     android:layout_width="70dp"
@@ -159,7 +166,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Tower heater (low)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp" />
                 <TextView
                     android:id="@+id/vacuum"
                     android:layout_width="70dp"
@@ -168,7 +176,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Shark RV Vacuum"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp" />
                 <TextView
                     android:id="@+id/workComp"
                     android:layout_width="70dp"
@@ -177,7 +186,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Dad's work computer"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp" />
                 <TextView
                     android:id="@+id/laptop"
                     android:layout_width="70dp"
@@ -186,7 +196,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="13-inch laptop"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp" />
                 <TextView
                     android:id="@+id/compMon"
                     android:layout_width="70dp"
@@ -195,7 +206,8 @@
                     android:background="@android:color/holo_orange_light"
                     android:text="Standalone computer moniter"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp" />
                 <!--
                 <TextView
                     android:id="@+id/refrigerator"
@@ -372,6 +384,11 @@
                 </com.google.android.flexbox.FlexboxLayout>
         </ScrollView>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#000000"
+        android:orientation="vertical"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -417,17 +434,25 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1MBR"
                         android:layout_width="match_parent"
-                        android:layout_height="275dp"
+                        android:layout_height="320dp"
                         android:layout_weight="1"
                         android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="MBR"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+
+                        <TextView
                             android:id="@+id/MBRTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:text="MBR: Receptacles in right front compartment, receptacles by master bed (not TV), and receptacle by dinette"
+                            android:text="Receptacles in right front compartment, receptacles by master bed (not TV), and receptacle by dinette"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#33B5E5"/>

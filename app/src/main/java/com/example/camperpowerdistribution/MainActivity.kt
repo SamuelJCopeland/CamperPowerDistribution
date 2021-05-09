@@ -215,6 +215,7 @@ class MainActivity : AppCompatActivity() {
 
         //Droppable
         source.setOnDragListener(dragListener)
+        findViewById<View>(R.id.sourceScroll).setOnDragListener(sourceScrollListener)
         main1MBR.setOnDragListener(dragListener)
         main1Refer.setOnDragListener(dragListener)
         main1GFI.setOnDragListener(dragListener)
@@ -846,6 +847,230 @@ class MainActivity : AppCompatActivity() {
                 var movedItem: TextView
 
                 val destination = view as FlexboxLayout
+
+                if (destination.id != owner.id) {
+                    if ((destination.parent as View).id == R.id.mainC1 &&
+                            (owner.parent as View).id == R.id.mainC2) {
+                        val amps = components[v]!!.ampsUsed
+                        main1Used += amps
+                        main2Used -= amps
+                    } else if ((destination.parent as View).id == R.id.mainC2 &&
+                            (owner.parent as View).id == R.id.mainC1) {
+                        val amps = components[v]!!.ampsUsed
+                        main2Used += amps
+                        main1Used -= amps
+                    } else if (owner.id == R.id.source) {
+                        if ((destination.parent as View).id == R.id.mainC1) {
+                            val amps = components[v]!!.ampsUsed
+                            main1Used += amps
+                        } else if ((destination.parent as View).id == R.id.mainC2) {
+                            val amps = components[v]!!.ampsUsed
+                            main2Used += amps
+                        }
+                    } else if ((owner.parent as View).id == R.id.mainC1 && destination.id == R.id.source) {
+                        val amps = components[v]!!.ampsUsed
+                        main1Used -= amps
+                    } else if ((owner.parent as View).id == R.id.mainC2 && destination.id == R.id.source) {
+                        val amps = components[v]!!.ampsUsed
+                        main2Used -= amps
+                    }
+
+                    if (main1Used < main1Cap) {
+                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
+                                main1Cap.toString()
+                        findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
+                    } else {
+                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + main1Used.toString() + "/" +
+                                main1Cap.toString() + " OVERLOAD!"
+
+                        blink(findViewById<TextView>(R.id.mainC1Cap))
+                        findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+                    }
+
+                    if (main2Used < main2Cap) {
+                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
+                                main2Cap.toString()
+                        findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
+                    } else {
+                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + main2Used.toString() + "/" +
+                                main2Cap.toString() + " OVERLOAD!"
+
+                        blink(findViewById<TextView>(R.id.mainC2Cap))
+                        findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+                    }
+                }
+                if (circuits.containsKey(destination)) {
+                    val amps = components[v]!!.ampsUsed
+                    val ampCap = circuits[destination]!!.ampCapacity
+                    circuits[destination]!!.ampsUsed += amps
+                    val ampUsed = circuits[destination]!!.ampsUsed
+
+                    if (ampUsed <= ampCap) {
+                        circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString()
+                    } else {
+                        circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString() + " OVERLOAD!"
+                        blink(destination)
+                    }
+                }
+                if (circuits.containsKey(owner)) {
+                    val amps = components[v]!!.ampsUsed
+                    val ampCap = circuits[owner]!!.ampCapacity
+                    circuits[owner]!!.ampsUsed -= amps
+                    val ampUsed = circuits[owner]!!.ampsUsed
+
+                    if (ampUsed <= ampCap) {
+                        circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString()
+                    } else {
+                        circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + ampUsed.toString() + "/" + ampCap.toString() + " OVERLOAD!"
+                        blink(owner)
+                    }
+                }
+
+                if (owner.id == R.id.source && destination.id != owner.id) {
+                    if (genericComponents.contains(v)) {
+                        val newText = TextView(this)
+
+                        newText.height = v.height
+                        newText.width = v.width
+                        newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                        newText.background = v.background
+                        newText.text = v.text.toString()
+                        newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        newText.setTextColor(v.currentTextColor)
+
+                        destination.addView(newText)
+                        dupedComponents.add(numDupedItems, newText)
+                        newText.setOnLongClickListener {
+                            val clipText = "This is our ClipData text"
+                            val item = ClipData.Item(clipText)
+                            val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                            val data = ClipData(clipText, mimeTypes, item)
+
+                            val dragShadowBuilder = View.DragShadowBuilder(it)
+                            it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+
+                            //it.visibility = View.INVISIBLE
+                            true
+                        }
+                        val amps = components[v]!!.ampsUsed
+                        components[newText] = ElectronicComponent(amps)
+                        numDupedItems++
+                    } else {
+
+                        owner.removeView(v)
+                        destination.addView(v)
+                        if (v.id == R.id.towHeatLow) {
+                            findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                        } else if (v.id == R.id.towHeatHigh) {
+                            val other = findViewById<TextView>(R.id.towHeatLow)
+                            other.visibility = View.GONE
+                        }
+
+                        if (v.id == R.id.towHeatLow) {
+                            findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+                        } else if (v.id == R.id.towHeatHigh) {
+                            findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                        }
+                        else if(v.id == R.id.vornadoHeatFan){
+                            findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
+                        }
+                        else if(v.id == R.id.vornadoHeatLow){
+                            findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
+                        }
+                        else if(v.id == R.id.vornadoHeatHigh){
+                            findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
+                        }
+                    }
+                } else {
+                    owner.removeView(v)
+                    destination.addView(v)
+
+                }
+
+                if (destination.id == R.id.source && owner.id != destination.id
+                        && dupedComponents.contains(v)) {
+                    dupedComponents.remove(v)
+                    numDupedItems--
+                    v.visibility = View.GONE
+                    components.remove(v)
+                    destination.removeView(v)
+
+                }
+                v.visibility = View.VISIBLE
+
+                if (destination.id == R.id.source && owner.id != destination.id) {
+                    if (v.id == R.id.towHeatLow) {
+                        findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if (v.id == R.id.towHeatHigh) {
+                        findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatFan){
+                        findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatLow){
+                        findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatHigh){
+                        findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
+                    }
+                }
+
+
+
+
+
+                true
+
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                view.invalidate()
+                true
+            }
+            else->false
+        }
+
+    }
+    val sourceScrollListener = View.OnDragListener{ view, event ->
+        when(event.action){
+            DragEvent.ACTION_DRAG_STARTED -> {
+                (event.localState as TextView).visibility = View.INVISIBLE
+                event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
+            }
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                view.invalidate()
+                true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+
+                true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                view.invalidate()
+                true
+            }
+            DragEvent.ACTION_DROP -> {
+                val item = event.clipData.getItemAt(0)
+                val dragData = item.text
+
+                view.invalidate()
+
+                val v = event.localState as TextView
+                val owner = v.parent as FlexboxLayout
+
+                var movedItem: TextView
+
+                val destination = findViewById(R.id.source) as FlexboxLayout
 
                 if (destination.id != owner.id) {
                     if ((destination.parent as View).id == R.id.mainC1 &&
