@@ -95,8 +95,6 @@
                 app:flexWrap="wrap"
                 app:justifyContent="center">
 
-                <!--
-                Temporarily grayed out until Patrick gets the app.
                 <TextView
                     android:id="@+id/vornadoHeatFan"
                     android:layout_width="70dp"
@@ -124,7 +122,6 @@
                     android:text="Vornado heater (high heat)"
                     android:textAlignment="center"
                     android:textColor="@color/black" />
-                 -->
 
 
                 <TextView

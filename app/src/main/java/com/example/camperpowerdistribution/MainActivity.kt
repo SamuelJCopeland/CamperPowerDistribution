@@ -140,13 +140,13 @@ class MainActivity : AppCompatActivity() {
         components[findViewById(R.id.workComp)] = ElectronicComponent(2.5)
         components[findViewById(R.id.laptop)] = ElectronicComponent(1.5)
         components[findViewById(R.id.compMon)] = ElectronicComponent(1.5)
+        components[findViewById(R.id.vornadoHeatFan)] = ElectronicComponent(0.5)
+        components[findViewById(R.id.vornadoHeatLow)] = ElectronicComponent(9.2)
+        components[findViewById(R.id.vornadoHeatHigh)] = ElectronicComponent(12.0)
         //components[findViewById(R.id.tv)] = ElectronicComponent(1.5)
         //components[findViewById(R.id.batChar)] = ElectronicComponent(6.0)
         //components[findViewById(R.id.tankHeat)] = ElectronicComponent(2.0)
         //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
-
-        heaters["high"] = findViewById(R.id.towHeatHigh)
-        heaters["low"] = findViewById(R.id.towHeatLow)
 
         //Generic power consumers
         /*
@@ -732,6 +732,23 @@ class MainActivity : AppCompatActivity() {
         else if((findViewById<TextView>(R.id.towHeatHigh).parent as View).id != R.id.source){
             findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
         }
+
+        val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
+        val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
+        val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+
+        if((vorHFan.parent as View).id != R.id.source){
+            vorHLow.visibility = View.GONE
+            vorHHigh.visibility = View.GONE
+        }
+        else if((vorHLow.parent as View).id != R.id.source){
+            vorHFan.visibility = View.GONE
+            vorHHigh.visibility = View.GONE
+        }
+        if((vorHHigh.parent as View).id != R.id.source){
+            vorHLow.visibility = View.GONE
+            vorHFan.visibility = View.GONE
+        }
         /*
         val toasterP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.toaster.toString()))
         val kettleP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.kettle.toString()))
@@ -951,6 +968,24 @@ class MainActivity : AppCompatActivity() {
                             val other = findViewById<TextView>(R.id.towHeatLow)
                             other.visibility = View.GONE
                         }
+
+                        if (v.id == R.id.towHeatLow) {
+                            findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+                        } else if (v.id == R.id.towHeatHigh) {
+                            findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                        }
+                        else if(v.id == R.id.vornadoHeatFan){
+                            findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
+                        }
+                        else if(v.id == R.id.vornadoHeatLow){
+                            findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
+                        }
+                        else if(v.id == R.id.vornadoHeatHigh){
+                            findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
+                            findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
+                        }
                     }
                 } else {
                     owner.removeView(v)
@@ -972,8 +1007,21 @@ class MainActivity : AppCompatActivity() {
                 if (destination.id == R.id.source && owner.id != destination.id) {
                     if (v.id == R.id.towHeatLow) {
                         findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
-                    } else if (v.id == R.id.towHeatHigh) {
+                    }
+                    else if (v.id == R.id.towHeatHigh) {
                         findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatFan){
+                        findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatLow){
+                        findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
+                    }
+                    else if(v.id == R.id.vornadoHeatHigh){
+                        findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
                     }
                 }
 
@@ -1541,9 +1589,31 @@ class MainActivity : AppCompatActivity() {
             }
             if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
                 findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+                findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
             }
             else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
                 findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+            }
+
+            val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
+            val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
+            val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+
+            if((vorHFan.parent as View).id != R.id.source){
+                vorHLow.visibility = View.GONE
+                vorHHigh.visibility = View.GONE
+                vorHFan.visibility = View.VISIBLE
+            }
+            else if((vorHLow.parent as View).id != R.id.source){
+                vorHFan.visibility = View.GONE
+                vorHHigh.visibility = View.GONE
+                vorHLow.visibility = View.VISIBLE
+            }
+            if((vorHHigh.parent as View).id != R.id.source){
+                vorHLow.visibility = View.GONE
+                vorHFan.visibility = View.GONE
+                vorHLow.visibility = View.VISIBLE
             }
 
             /*
@@ -1743,7 +1813,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        //STILL NEED TO ADD LOADING FROM EXTERNAL FILE
         else if(requestCode == 2){
             val stringBuilder = StringBuilder()
 
@@ -1853,9 +1922,31 @@ class MainActivity : AppCompatActivity() {
                 }
                 if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
                     findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+                    findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
                 }
                 else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
                     findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                    findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                }
+
+                val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
+                val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
+                val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+
+                if((vorHFan.parent as View).id != R.id.source){
+                    vorHLow.visibility = View.GONE
+                    vorHHigh.visibility = View.GONE
+                    vorHFan.visibility = View.VISIBLE
+                }
+                else if((vorHLow.parent as View).id != R.id.source){
+                    vorHFan.visibility = View.GONE
+                    vorHHigh.visibility = View.GONE
+                    vorHLow.visibility = View.VISIBLE
+                }
+                if((vorHHigh.parent as View).id != R.id.source){
+                    vorHLow.visibility = View.GONE
+                    vorHFan.visibility = View.GONE
+                    vorHLow.visibility = View.VISIBLE
                 }
 
                 /*
@@ -2026,46 +2117,24 @@ class MainActivity : AppCompatActivity() {
         findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = true
         referFrigeClicked(findViewById<CheckBox>(R.id.referFrigeCheck))
 
-        //Save the locations of the dragables
-        val toaster = findViewById<TextView>(R.id.toaster)
-        val kettle = findViewById<TextView>(R.id.kettle)
-        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
-        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
-        val vacuum = findViewById<TextView>(R.id.vacuum)
-        val workComp = findViewById<TextView>(R.id.workComp)
-        val laptop = findViewById<TextView>(R.id.laptop)
-        val compMon = findViewById<TextView>(R.id.compMon)
 
-        val toasterP = (toaster.parent as FlexboxLayout)
-        val kettleP = kettle.parent as FlexboxLayout
-        val towHeatHighP = towHeatHigh.parent as FlexboxLayout
-        val towHeatLowP = towHeatLow.parent as FlexboxLayout
-        val vacuumP = vacuum.parent as FlexboxLayout
-        val workCompP = workComp.parent as FlexboxLayout
-        val laptopP = laptop.parent as FlexboxLayout
-        val compMonP = compMon.parent as FlexboxLayout
+        var i = 0
+        for(i in components){
+            var component = i.key
 
-        towHeatLow.visibility = View.VISIBLE
-        towHeatHigh.visibility = View.VISIBLE
+            var source = findViewById<FlexboxLayout>(R.id.source)
 
-        val source = findViewById<FlexboxLayout>(R.id.source)
+            var curPar = (component.parent as FlexboxLayout)
 
-        toasterP.removeView(toaster)
-        source.addView(toaster)
-        kettleP.removeView(kettle)
-        source.addView(kettle)
-        towHeatHighP.removeView(towHeatHigh)
-        source.addView(towHeatHigh)
-        towHeatLowP.removeView(towHeatLow)
-        source.addView(towHeatLow)
-        vacuumP.removeView(vacuum)
-        source.addView(vacuum)
-        workCompP.removeView(workComp)
-        source.addView(workComp)
-        laptopP.removeView(laptop)
-        source.addView(laptop)
-        compMonP.removeView(compMon)
-        source.addView(compMon)
+            curPar.removeView(component)
+            source.addView(component)
+        }
+
+        findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
 
         //Save the state of the custom inputs
         findViewById<EditText>(R.id.MBRCustomInputField).setText("")
