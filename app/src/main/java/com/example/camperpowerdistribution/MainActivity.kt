@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.DragEvent
+import android.view.Gravity
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
@@ -961,7 +962,8 @@ class MainActivity : AppCompatActivity() {
 
                         newText.height = v.height
                         newText.width = v.width
-                        newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                        newText.textSize = 10f
+                        newText.gravity = Gravity.CENTER
                         newText.background = v.background
                         newText.text = v.text.toString()
                         newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
@@ -1205,7 +1207,8 @@ class MainActivity : AppCompatActivity() {
 
                         newText.height = v.height
                         newText.width = v.width
-                        newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                        newText.textSize = 10f
+                        newText.gravity = Gravity.CENTER
                         newText.background = v.background
                         newText.text = v.text.toString()
                         newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
@@ -1903,7 +1906,8 @@ class MainActivity : AppCompatActivity() {
 
                 newText.height = v.height
                 newText.width = v.width
-                newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                newText.textSize = 10f
+                newText.gravity = Gravity.CENTER
                 newText.background = v.background
                 newText.text = v.text
                 newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
@@ -2299,7 +2303,8 @@ class MainActivity : AppCompatActivity() {
 
                     newText.height = v.height
                     newText.width = v.width
-                    newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                    newText.textSize = 10f
+                    newText.gravity = Gravity.CENTER
                     newText.background = v.background
                     newText.text = v.text
                     newText.textAlignment = View.TEXT_ALIGNMENT_CENTER

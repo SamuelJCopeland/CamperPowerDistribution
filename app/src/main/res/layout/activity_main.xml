@@ -12,11 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            app:layout_flexShrink="1">
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,61 +25,67 @@
                 android:onClick="powerSupplyClicked"
                 android:id="@+id/powerCheck"
                 android:background="@color/white"/>
+
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:text="Reset"
                 android:onClick="resetClicked"
                 android:id="@+id/resetButton"
                 android:layout_marginRight="2.5dp"
-                android:layout_marginLeft="2.5dp"
-                android:paddingLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:padding="1dp"/>
 
-        </LinearLayout>
-        <LinearLayout
+        </com.google.android.flexbox.FlexboxLayout>
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:background="@color/teal_200">
+            android:background="@color/teal_200"
+            app:layout_flexShrink="1">
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:textSize="16sp"
+                android:textSize="10sp"
                 android:text="Save"
                 android:onClick="saveClicked"
                 android:id="@+id/saveButton"
-                android:layout_marginRight="2.5dp"
-                android:layout_marginLeft="2.5dp"/>
+                android:padding="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:textSize="16sp"
+                android:textSize="10sp"
                 android:text="Load"
                 android:onClick="loadClicked"
                 android:id="@+id/loadButton"
-                android:layout_marginLeft="2.5dp"
-                android:layout_marginRight="2.5dp"/>
+                android:padding="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 android:text="Save External"
                 android:onClick="extSaveClicked"
                 android:id="@+id/extSaveButton"
-                android:layout_marginLeft="2.5dp"
-                android:layout_marginRight="2.5dp"/>
+                android:padding="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 android:text="Load External"
                 android:onClick="extLoadClicked"
                 android:id="@+id/extLoadButton"
-                android:layout_marginLeft="2.5dp"
-                android:layout_marginRight="2.5dp"/>
-        </LinearLayout>
+                android:padding="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"/>
+        </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -100,144 +107,158 @@
                     android:id="@+id/vornadoFanLow"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado fan (low)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/vornadoFanMed"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado fan (medium)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/vornadoFanHigh"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado fan (high)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/vornadoHeatFan"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (fan only)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/vornadoHeatLow"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (low heat)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/vornadoHeatHigh"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Vornado heater (high heat)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
 
 
                 <TextView
                     android:id="@+id/toaster"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Toaster"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/kettle"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Portable electric hot water kettle"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/towHeatHigh"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Tower heater (high or auto)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/towHeatLow"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Tower heater (low)"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp" />
+                    android:layout_margin="1dp"
+                    android:gravity="center" />
                 <TextView
                     android:id="@+id/vacuum"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Shark RV Vacuum"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp" />
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/workComp"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Dad's work computer"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp" />
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/laptop"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="13-inch laptop"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp" />
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <TextView
                     android:id="@+id/compMon"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
                     android:text="Standalone computer moniter"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_margin="1dp" />
+                    android:layout_margin="1dp"
+                    android:gravity="center"/>
                 <!--
                 <TextView
                     android:id="@+id/refrigerator"
@@ -468,7 +489,8 @@
                         android:layout_weight="1"
                         android:background="#33B5E5"
                         app:flexWrap="wrap"
-                        app:justifyContent="center">
+                        app:justifyContent="center"
+                        app:layout_flexShrink="1">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -502,13 +524,18 @@
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
                             />
-                        <CheckBox
+                        <com.google.android.flexbox.FlexboxLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Inverter Battery Charger in-use"
-                            android:onClick="chargerClicked"
-                            android:id="@+id/chargerCheck"
-                            android:background="#33B5E5"/>
+                            app:layout_flexShrink="1">
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Inverter Battery Charger in-use"
+                                android:onClick="chargerClicked"
+                                android:id="@+id/chargerCheck"
+                                android:background="#33B5E5"/>
+                        </com.google.android.flexbox.FlexboxLayout>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -518,11 +545,12 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1Refer"
                         android:layout_width="match_parent"
-                        android:layout_height="285dp"
+                        android:layout_height="310dp"
                         android:layout_weight="1"
                         android:background="#0099CC"
                         app:flexWrap="wrap"
-                        app:justifyContent="center">
+                        app:justifyContent="center"
+                        app:layout_flexShrink="1">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -556,20 +584,26 @@
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
                             />
-                        <CheckBox
-                            android:layout_width="150dp"
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TV in-use"
-                            android:onClick="referTVClicked"
-                            android:id="@+id/referTVCheck"
-                            android:background="#0099CC"/>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Refrigerator in-use"
-                            android:onClick="referFrigeClicked"
-                            android:id="@+id/referFrigeCheck"
-                            android:background="#0099CC"/>
+                            app:layout_flexShrink="1">
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TV in-use"
+                                android:onClick="referTVClicked"
+                                android:id="@+id/referTVCheck"
+                                android:background="#0099CC"
+                                android:layout_marginLeft="20dp"/>
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Refrigerator in-use"
+                                android:onClick="referFrigeClicked"
+                                android:id="@+id/referFrigeCheck"
+                                android:background="#0099CC"/>
+                        </com.google.android.flexbox.FlexboxLayout>
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -583,7 +617,8 @@
                         android:layout_weight="1"
                         android:background="#33B5E5"
                         app:flexWrap="wrap"
-                        app:justifyContent="center">
+                        app:justifyContent="center"
+                        app:layout_flexShrink="1">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
