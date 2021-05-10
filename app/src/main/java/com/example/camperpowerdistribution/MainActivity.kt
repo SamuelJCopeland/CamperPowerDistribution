@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         //components[findViewById(R.id.refrigerator)] = ElectronicComponent(2.0)
 
         //Generic power consumers
-        //genericComponents.add(0, findViewById(R.id.laptop))
+        genericComponents.add(0, findViewById(R.id.laptop))
         /*
         genericComponents.add(0, findViewById(R.id.g1))
         components[findViewById(R.id.g1)] = ElectronicComponent(1.0)
@@ -1758,6 +1758,7 @@ class MainActivity : AppCompatActivity() {
         file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
 
+
         file.appendText(components.size.toString() + "\n")
         var i = 0
         for(c in components){
@@ -1794,6 +1795,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
                 return
             }
+            reset()
 
             val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
 
@@ -1860,11 +1862,16 @@ class MainActivity : AppCompatActivity() {
             findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
             j++
 
+
+
+            var dupes = 0
+            var parents = mutableListOf<FlexboxLayout>()
             var repeatTimes = lines[j].toInt()
             j++
             var i = 0
             while(i < repeatTimes){
                 i++
+
 
                 var parent = findViewById<FlexboxLayout>(lines[j].toInt())
                 j++
@@ -1873,14 +1880,53 @@ class MainActivity : AppCompatActivity() {
                 var used = lines[j].toDouble()
                 j++
 
-                var source = findViewById<FlexboxLayout>(R.id.source)
+                if(component != null) {
+                    components[component] = ElectronicComponent(used)
 
-                components[component] = ElectronicComponent(used)
+                    var curPar = (component.parent as FlexboxLayout)
 
-                var curPar = (component.parent as FlexboxLayout)
+                    curPar.removeView(component)
+                    parent.addView(component)
+                }
+                else{
+                    dupes++
+                    parents.add(parent)
+                }
+            }
+            var l = 0
+            numDupedItems = 0
+            while(l < dupes){
 
-                curPar.removeView(component)
-                parent.addView(component)
+                var v = findViewById<TextView>(R.id.laptop)
+
+                var newText = TextView(this)
+
+                newText.height = v.height
+                newText.width = v.width
+                newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                newText.background = v.background
+                newText.text = v.text
+                newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                newText.setTextColor(v.currentTextColor)
+                newText.layoutParams = v.layoutParams
+
+                parents[l].addView(newText)
+                dupedComponents.add(l, newText)
+                components[newText] = ElectronicComponent(components[v]!!.ampsUsed)
+                numDupedItems++
+                newText.setOnLongClickListener {
+                    val clipText = "This is our ClipData text"
+                    val item = ClipData.Item(clipText)
+                    val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                    val data = ClipData(clipText, mimeTypes, item)
+
+                    val dragShadowBuilder = View.DragShadowBuilder(it)
+                    it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+
+                    //it.visibility = View.INVISIBLE
+                    true
+                }
+                l++
             }
             if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
                 findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
@@ -2149,6 +2195,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
                     return
                 }
+                reset()
 
                 //Save the stuff in the circuits hashmap to the bundle individually
 
@@ -2216,8 +2263,11 @@ class MainActivity : AppCompatActivity() {
                 var repeatTimes = lines[j].toInt()
                 j++
                 var i = 0
+                var dupes = 0
+                var parents = mutableListOf<FlexboxLayout>()
                 while(i < repeatTimes){
                     i++
+
 
                     var parent = findViewById<FlexboxLayout>(lines[j].toInt())
                     j++
@@ -2226,14 +2276,53 @@ class MainActivity : AppCompatActivity() {
                     var used = lines[j].toDouble()
                     j++
 
-                    var source = findViewById<FlexboxLayout>(R.id.source)
+                    if(component != null) {
+                        components[component] = ElectronicComponent(used)
 
-                    components[component] = ElectronicComponent(used)
+                        var curPar = (component.parent as FlexboxLayout)
 
-                    var curPar = (component.parent as FlexboxLayout)
+                        curPar.removeView(component)
+                        parent.addView(component)
+                    }
+                    else{
+                        dupes++
+                        parents.add(parent)
+                    }
+                }
+                var l = 0
+                numDupedItems = 0
+                while(l < dupes){
 
-                    curPar.removeView(component)
-                    parent.addView(component)
+                    var v = findViewById<TextView>(R.id.laptop)
+
+                    var newText = TextView(this)
+
+                    newText.height = v.height
+                    newText.width = v.width
+                    newText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                    newText.background = v.background
+                    newText.text = v.text
+                    newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    newText.setTextColor(v.currentTextColor)
+                    newText.layoutParams = v.layoutParams
+
+                    parents[l].addView(newText)
+                    dupedComponents.add(l, newText)
+                    components[newText] = ElectronicComponent(components[v]!!.ampsUsed)
+                    numDupedItems++
+                    newText.setOnLongClickListener {
+                        val clipText = "This is our ClipData text"
+                        val item = ClipData.Item(clipText)
+                        val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                        val data = ClipData(clipText, mimeTypes, item)
+
+                        val dragShadowBuilder = View.DragShadowBuilder(it)
+                        it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+
+                        //it.visibility = View.INVISIBLE
+                        true
+                    }
+                    l++
                 }
                 if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
                     findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
@@ -2452,17 +2541,29 @@ class MainActivity : AppCompatActivity() {
         findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = true
         referFrigeClicked(findViewById<CheckBox>(R.id.referFrigeCheck))
 
+        var removeQueue = mutableListOf<TextView>()
 
-        var i = 0
+        var source = findViewById<FlexboxLayout>(R.id.source)
+        //var i = 0
         for(i in components){
             var component = i.key
 
-            var source = findViewById<FlexboxLayout>(R.id.source)
 
             var curPar = (component.parent as FlexboxLayout)
 
             curPar.removeView(component)
             source.addView(component)
+
+            if(i.key in dupedComponents) {
+                removeQueue.add(i.key)
+            }
+        }
+        for(i in removeQueue){
+            dupedComponents.remove(i)
+            numDupedItems--
+            i.visibility = View.GONE
+            components.remove(i)
+            source.removeView(i)
         }
 
         findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
