@@ -97,6 +97,36 @@
                 app:flexWrap="wrap"
                 app:justifyContent="center">
                 <TextView
+                    android:id="@+id/vornadoFanLow"
+                    android:layout_width="70dp"
+                    android:layout_height="45dp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Vornado fan (low)"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
+                <TextView
+                    android:id="@+id/vornadoFanMed"
+                    android:layout_width="70dp"
+                    android:layout_height="45dp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Vornado fan (medium)"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
+                <TextView
+                    android:id="@+id/vornadoFanHigh"
+                    android:layout_width="70dp"
+                    android:layout_height="45dp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Vornado fan (high)"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_margin="1dp"/>
+                <TextView
                     android:id="@+id/vornadoHeatFan"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
@@ -434,7 +464,7 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1MBR"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp"
+                        android:layout_height="305dp"
                         android:layout_weight="1"
                         android:background="#33B5E5"
                         app:flexWrap="wrap"
@@ -470,7 +500,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/MBRCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="match_parent"
@@ -488,18 +518,25 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1Refer"
                         android:layout_width="match_parent"
-                        android:layout_height="275dp"
+                        android:layout_height="285dp"
                         android:layout_weight="1"
                         android:background="#0099CC"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
 
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Refer"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/referTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:text="Refer: Refrigerator, exterior receptacles, all receptacles in kitchen, receptacles at main TV and master BR TV"
+                            android:text="Refrigerator, exterior receptacles, all receptacles in kitchen, receptacles at main TV and master BR TV"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#0099CC"/>
@@ -517,7 +554,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/referCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="150dp"
@@ -542,17 +579,24 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:id="@+id/main1GFI"
                         android:layout_width="match_parent"
-                        android:layout_height="195dp"
+                        android:layout_height="220dp"
                         android:layout_weight="1"
                         android:background="#33B5E5"
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="GFI"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/GFITitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:text="GFI: Receptacles in bathroom and by couch"
+                            android:text="Receptacles in bathroom and by couch"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#33B5E5"/>
@@ -570,7 +614,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/GFICustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                     </com.google.android.flexbox.FlexboxLayout>
                     <LinearLayout
@@ -587,11 +631,18 @@
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Micro"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/microTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:text="Micro: Microwave Oven"
+                            android:text="Microwave Oven"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#0099CC"/>
@@ -609,7 +660,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/microCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="match_parent"
@@ -665,11 +716,18 @@
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Water Heater"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/waterHeaterTitle"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:inputType="textMultiLine"
-                            android:text="Water Heater: Electric water tank heater"
+                            android:text="Electric water tank heater"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#33B5E5"/>
@@ -687,12 +745,12 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/waterHeaterCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Water tank heater in-use"
+                            android:text="Electric hot water heater in use"
                             android:onClick="waterHeatClicked"
                             android:id="@+id/waterHeatCheck"
                             android:background="#33B5E5"/>
@@ -711,11 +769,18 @@
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="AC"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/ACTitle"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:inputType="textMultiLine"
-                            android:text="A/C: Rear (main) air conditioner"
+                            android:text="Rear (main) air conditioner"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#0099CC"/>
@@ -733,7 +798,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/ACCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="match_parent"
@@ -757,11 +822,18 @@
                         app:flexWrap="wrap"
                         app:justifyContent="center">
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Converter"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:textAlignment="center"/>
+                        <TextView
                             android:id="@+id/converterTitle"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:inputType="textMultiLine"
-                            android:text="Converter: DC power converter (supplies all 12 VDC loads)"
+                            android:text="DC power converter (supplies all 12 VDC loads)"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:background="#33B5E5"/>
@@ -779,7 +851,7 @@
                             android:inputType="numberDecimal"
                             android:id="@+id/converterCustomInputField"
                             android:textAlignment="center"
-                            android:hint="Enter Custom Power Consumption"
+                            android:hint="Custom Connected Amps"
                             />
                         <CheckBox
                             android:layout_width="match_parent"
