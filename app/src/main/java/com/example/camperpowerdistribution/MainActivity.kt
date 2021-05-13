@@ -18,10 +18,7 @@ import android.text.TextWatcher
 import android.view.DragEvent
 import android.view.Gravity
 import android.view.View
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
 import org.w3c.dom.Text
@@ -40,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     var main2Cap = 30.0
     var main1Used = 0.0
     var main2Used = 0.0
+    var mainTotalCap = 30.0
+    var mainTotalUsed = 0.0
     var lastCustomMBR = 0.0
     var lastCustomRefer = 0.0
     var lastCustomGFI = 0.0
@@ -74,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         var main1AmpUsageM: TextView = findViewById(R.id.mainC1Cap)
         val main2AmpUsageM: TextView = findViewById(R.id.mainC2Cap)
-        var powerCheck: CheckBox = findViewById(R.id.powerCheck)
+        var powerCheck: Switch = findViewById(R.id.powerCheck)
         var mainCircuit1Title: TextView = findViewById(R.id.mainTitle1)
         var mainCircuit2Title: TextView = findViewById(R.id.mainTitle2)
 
@@ -121,6 +120,7 @@ class MainActivity : AppCompatActivity() {
         colors[main2WaterHeater] = (main2WaterHeater.background as ColorDrawable).color
         colors[main2AC] = (main2AC.background as ColorDrawable).color
         colors[main2Converter] = (main2Converter.background as ColorDrawable).color
+        colors[findViewById(R.id.circuitTotal)] = (findViewById<TextView>(R.id.circuitTotal).background as ColorDrawable).color
 
         circuits[main1MBR] = AmpUsage(15.0, 0.0, circuitMBRCap)
         circuits[main1Refer] = AmpUsage(15.0, 0.0, circuitReferCap)
@@ -286,6 +286,18 @@ class MainActivity : AppCompatActivity() {
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
 
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
+                }
+
 
             }
 
@@ -334,6 +346,19 @@ class MainActivity : AppCompatActivity() {
                     blink(main1AmpUsageM)
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
+                }
+
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -382,6 +407,17 @@ class MainActivity : AppCompatActivity() {
                     blink(main1AmpUsageM)
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
+                }
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
                 }
             }
 
@@ -432,6 +468,18 @@ class MainActivity : AppCompatActivity() {
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -480,6 +528,18 @@ class MainActivity : AppCompatActivity() {
                     blink(main2AmpUsageM)
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
+                }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
                 }
             }
 
@@ -530,6 +590,18 @@ class MainActivity : AppCompatActivity() {
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -578,6 +650,18 @@ class MainActivity : AppCompatActivity() {
                     blink(main2AmpUsageM)
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
+                }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
                 }
             }
 
@@ -638,6 +722,8 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState.putDouble("main2Cap", main2Cap)
         savedInstanceState.putDouble("main1Used", main1Used)
         savedInstanceState.putDouble("main2Used", main2Used)
+        savedInstanceState.putDouble("totalCap", mainTotalCap)
+        savedInstanceState.putDouble("totalUsed", mainTotalUsed)
         savedInstanceState.putDouble("lastCustomMBR", lastCustomMBR)
         savedInstanceState.putDouble("lastCustomRefer", lastCustomRefer)
         savedInstanceState.putDouble("lastCustomGFI", lastCustomGFI)
@@ -647,7 +733,7 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState.putDouble("lastCustomConverter", lastCustomConverter)
 
         //Save the states of the checkboxes
-        savedInstanceState.putBoolean(R.id.powerCheck.toString(), findViewById<CheckBox>(R.id.powerCheck).isChecked)
+        savedInstanceState.putBoolean(R.id.powerCheck.toString(), findViewById<Switch>(R.id.powerCheck).isChecked)
         savedInstanceState.putBoolean(R.id.chargerCheck.toString(), findViewById<CheckBox>(R.id.chargerCheck).isChecked)
         savedInstanceState.putBoolean(R.id.ACCheck.toString(), findViewById<CheckBox>(R.id.ACCheck).isChecked)
         savedInstanceState.putBoolean(R.id.converterCheck.toString(), findViewById<CheckBox>(R.id.converterCheck).isChecked)
@@ -699,6 +785,8 @@ class MainActivity : AppCompatActivity() {
         main2Cap = savedInstanceState.getDouble("main2Cap")
         main1Used = savedInstanceState.getDouble("main1Used")
         main2Used = savedInstanceState.getDouble("main2Used")
+        mainTotalCap = savedInstanceState.getDouble("totalCap")
+        mainTotalUsed = savedInstanceState.getDouble("totalUsed")
         lastCustomMBR = savedInstanceState.getDouble("lastCustomMBR")
         lastCustomRefer = savedInstanceState.getDouble("lastCustomRefer")
         lastCustomGFI = savedInstanceState.getDouble("lastCustomGFI")
@@ -708,7 +796,7 @@ class MainActivity : AppCompatActivity() {
         lastCustomConverter = savedInstanceState.getDouble("lastCustomConverter")
 
         //Restore the states of the checkboxes
-        findViewById<CheckBox>(R.id.powerCheck).isChecked = savedInstanceState.getBoolean(R.id.powerCheck.toString())
+        findViewById<Switch>(R.id.powerCheck).isChecked = savedInstanceState.getBoolean(R.id.powerCheck.toString())
         findViewById<CheckBox>(R.id.chargerCheck).isChecked = savedInstanceState.getBoolean(R.id.chargerCheck.toString())
         findViewById<CheckBox>(R.id.ACCheck).isChecked = savedInstanceState.getBoolean(R.id.ACCheck.toString())
         findViewById<CheckBox>(R.id.converterCheck).isChecked = savedInstanceState.getBoolean(R.id.converterCheck.toString())
@@ -923,6 +1011,18 @@ class MainActivity : AppCompatActivity() {
 
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+                    }
+
+                    mainTotalUsed = main1Used + main2Used
+                    var x = findViewById<TextView>(R.id.circuitTotal)
+                    if(mainTotalUsed > mainTotalCap){
+                        x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                        x.setTextColor(Color.parseColor("#FF0000"))
+                        blink(x)
+                    }
+                    else{
+                        x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                        x.setTextColor(Color.parseColor("#000000"))
                     }
                 }
                 if (circuits.containsKey(destination)) {
@@ -1169,6 +1269,17 @@ class MainActivity : AppCompatActivity() {
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
+                    mainTotalUsed = main1Used + main2Used
+                    var x = findViewById<TextView>(R.id.circuitTotal)
+                    if(mainTotalUsed > mainTotalCap){
+                        x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                        x.setTextColor(Color.parseColor("#FF0000"))
+                        blink(x)
+                    }
+                    else{
+                        x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                        x.setTextColor(Color.parseColor("#000000"))
+                    }
                 }
                 if (circuits.containsKey(destination)) {
                     val amps = components[v]!!.ampsUsed
@@ -1381,13 +1492,15 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun powerSupplyClicked(v: View?) {
-        if((v as CheckBox).isChecked){
+        if((v as Switch).isChecked){
             main1Cap = 50.0
             main2Cap = 50.0
+            mainTotalCap = 100.0
         }
         else{
             main1Cap = 30.0
             main2Cap = 30.0
+            mainTotalCap = 30.0
         }
         if(main1Used <= main1Cap){
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
@@ -1411,6 +1524,18 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
                     round(main2Used) + "/" + main2Cap.toString() + " OVERLOAD!"
             blink(findViewById<TextView>(R.id.mainC2Cap))
+        }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
         }
 
     }
@@ -1455,6 +1580,17 @@ class MainActivity : AppCompatActivity() {
             blink(findViewById<TextView>(R.id.mainC1Cap))
         }
 
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
 
     }
 
@@ -1499,6 +1635,17 @@ class MainActivity : AppCompatActivity() {
             blink(findViewById<TextView>(R.id.mainC1Cap))
         }
 
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
 
     }
     fun converterClicked(v: View?) {
@@ -1541,6 +1688,18 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC2Cap))
+        }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
         }
 
     }
@@ -1586,6 +1745,18 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC2Cap))
         }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
     }
     fun microClicked(v: View?) {
         var micro: FlexboxLayout = findViewById(R.id.main1Micro)
@@ -1627,6 +1798,18 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
+        }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
         }
 
         findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
@@ -1681,6 +1864,17 @@ class MainActivity : AppCompatActivity() {
             blink(findViewById<TextView>(R.id.mainC2Cap))
         }
 
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
 
     }
     fun referFrigeClicked(v: View?) {
@@ -1722,6 +1916,18 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
         }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
     }
     fun saveClicked(v: View?) {
         file.writeText("")
@@ -1752,7 +1958,7 @@ class MainActivity : AppCompatActivity() {
         file.appendText("$lastCustomConverter\n")
 
         //Save the states of the checkboxes
-        file.appendText("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n")
+        file.appendText("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
@@ -1848,7 +2054,7 @@ class MainActivity : AppCompatActivity() {
             j++
 
             //Save the states of the checkboxes
-            findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+            findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
             j++
             findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
             j++
@@ -2070,6 +2276,8 @@ class MainActivity : AppCompatActivity() {
             j++
             findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
             j++
+
+            powerSupplyClicked(findViewById(R.id.powerCheck))
         }
         catch(e: Exception){
             //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
@@ -2129,7 +2337,7 @@ class MainActivity : AppCompatActivity() {
                             it.write(("$lastCustomConverter\n").toByteArray())
 
                             //Save the states of the checkboxes
-                            it.write(("" + findViewById<CheckBox>(R.id.powerCheck).isChecked + "\n").toByteArray())
+                            it.write(("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n").toByteArray())
@@ -2247,7 +2455,7 @@ class MainActivity : AppCompatActivity() {
                 j++
 
                 //Save the states of the checkboxes
-                findViewById<CheckBox>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+                findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
                 j++
@@ -2468,6 +2676,8 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
                 j++
 
+                powerSupplyClicked(findViewById(R.id.powerCheck))
+
             }
             catch(e: Exception){
                 Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
@@ -2523,6 +2733,8 @@ class MainActivity : AppCompatActivity() {
 
         main1Cap = 30.0
         main2Cap = 30.0
+        mainTotalCap = 30.0
+        mainTotalUsed = 0.0
         main1Used = 0.0
         main2Used = 0.0
         lastCustomMBR = 0.0
@@ -2534,7 +2746,7 @@ class MainActivity : AppCompatActivity() {
         lastCustomConverter = 0.0
 
         //Save the states of the checkboxes
-        findViewById<CheckBox>(R.id.powerCheck).isChecked = false
+        findViewById<Switch>(R.id.powerCheck).isChecked = false
         findViewById<CheckBox>(R.id.chargerCheck).isChecked = true
         chargerClicked(findViewById<CheckBox>(R.id.chargerCheck))
         findViewById<CheckBox>(R.id.ACCheck).isChecked = false

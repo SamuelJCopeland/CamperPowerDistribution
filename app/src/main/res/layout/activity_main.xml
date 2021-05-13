@@ -15,9 +15,31 @@
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
+            app:justifyContent="space_between"
             app:layout_flexShrink="1">
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="30"
+                android:textOn="50"
+                android:showText="true"
+                android:thumbTint="@color/white"
+                android:trackTint="#B2BEB5"
+                android:id="@+id/powerCheck"
+                android:onClick="powerSupplyClicked"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Usage: 0.0/30.0"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:id="@+id/circuitTotal"
+                android:background="#FFFFFF"/>
+            <!--
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,17 +47,18 @@
                 android:onClick="powerSupplyClicked"
                 android:id="@+id/powerCheck"
                 android:background="@color/white"/>
+                -->
 
             <Button
-                android:layout_width="85dp"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:textSize="10sp"
                 android:text="Reset"
                 android:onClick="resetClicked"
                 android:id="@+id/resetButton"
-                android:layout_marginRight="2.5dp"
-                android:layout_marginLeft="20dp"
-                android:padding="1dp"/>
+                android:padding="1dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"/>
 
         </com.google.android.flexbox.FlexboxLayout>
         <com.google.android.flexbox.FlexboxLayout
@@ -43,6 +66,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            app:justifyContent="center"
             android:background="@color/teal_200"
             app:layout_flexShrink="1">
             <Button
