@@ -29,6 +29,7 @@ import java.io.*
 
 class MainActivity : AppCompatActivity() {
 
+    var load = false
     var genericComponents = mutableListOf<TextView>()
     var components = HashMap<TextView, ElectronicComponent>(30)
     var colors = HashMap<View, Int>(15)
@@ -801,195 +802,190 @@ class MainActivity : AppCompatActivity() {
         restoreFile.createNewFile()
 
         var file = restoreFile
+        if(!load) {
 
-        try {
-            if (file.length() == 0.toLong()) {
-                return
-            }
-            reset()
-
-            val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
-
-            //Save the stuff in the circuits hashmap to the bundle individually
-
-            val lines = readResult.split("\n").toTypedArray()
-
-
-            var j = 0
-
-            for (i in circuits) {
-                var keyID = lines[j].toInt()
-                j++
-                var ampsU = lines[j].toDouble()
-                j++
-                var ampC = lines[j].toDouble()
-                j++
-                var iID = lines[j].toInt()
-                j++
-
-                var theKey = findViewById<FlexboxLayout>(keyID)
-                circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
-            }
-
-
-            main1Cap = lines[j].toDouble()
-            j++
-            main2Cap = lines[j].toDouble()
-            j++
-            main1Used = lines[j].toDouble()
-            j++
-            main2Used = lines[j].toDouble()
-            j++
-            lastCustomMBR = lines[j].toDouble()
-            j++
-            lastCustomRefer = lines[j].toDouble()
-            j++
-            lastCustomGFI = lines[j].toDouble()
-            j++
-            lastCustomMicro = lines[j].toDouble()
-            j++
-            lastCustomWaterHeater = lines[j].toDouble()
-            j++
-            lastCustomAC = lines[j].toDouble()
-            j++
-            lastCustomConverter = lines[j].toDouble()
-            j++
-
-            //Save the states of the checkboxes
-            findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
-            j++
-            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
-            j++
-
-
-
-            var dupes = 0
-            var parents = mutableListOf<FlexboxLayout>()
-            var repeatTimes = lines[j].toInt()
-            j++
-            var i = 0
-            while(i < repeatTimes){
-                i++
-
-
-                var parent = findViewById<FlexboxLayout>(lines[j].toInt())
-                j++
-                var component = findViewById<TextView>(lines[j].toInt())
-                j++
-                var used = lines[j].toDouble()
-                j++
-
-                if(component != null) {
-                    components[component] = ElectronicComponent(used)
-
-                    var curPar = (component.parent as FlexboxLayout)
-
-                    curPar.removeView(component)
-                    parent.addView(component)
+            try {
+                if (file.length() == 0.toLong()) {
+                    return
                 }
-                else{
-                    dupes++
-                    parents.add(parent)
+                reset()
+
+                val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
+
+                //Save the stuff in the circuits hashmap to the bundle individually
+
+                val lines = readResult.split("\n").toTypedArray()
+
+
+                var j = 0
+
+                for (i in circuits) {
+                    var keyID = lines[j].toInt()
+                    j++
+                    var ampsU = lines[j].toDouble()
+                    j++
+                    var ampC = lines[j].toDouble()
+                    j++
+                    var iID = lines[j].toInt()
+                    j++
+
+                    var theKey = findViewById<FlexboxLayout>(keyID)
+                    circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
                 }
-            }
-            var l = 0
-            numDupedItems = 0
-            while(l < dupes){
 
-                var v = findViewById<TextView>(R.id.laptop)
 
-                var newText = TextView(this)
+                main1Cap = lines[j].toDouble()
+                j++
+                main2Cap = lines[j].toDouble()
+                j++
+                main1Used = lines[j].toDouble()
+                j++
+                main2Used = lines[j].toDouble()
+                j++
+                lastCustomMBR = lines[j].toDouble()
+                j++
+                lastCustomRefer = lines[j].toDouble()
+                j++
+                lastCustomGFI = lines[j].toDouble()
+                j++
+                lastCustomMicro = lines[j].toDouble()
+                j++
+                lastCustomWaterHeater = lines[j].toDouble()
+                j++
+                lastCustomAC = lines[j].toDouble()
+                j++
+                lastCustomConverter = lines[j].toDouble()
+                j++
 
-                newText.height = v.height
-                newText.width = v.width
-                newText.textSize = 10f
-                newText.gravity = Gravity.CENTER
-                newText.background = v.background
-                newText.text = v.text
-                newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                newText.setTextColor(v.currentTextColor)
-                newText.layoutParams = v.layoutParams
+                //Save the states of the checkboxes
+                findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+                j++
+                findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+                j++
 
-                parents[l].addView(newText)
-                dupedComponents.add(l, newText)
-                components[newText] = ElectronicComponent(components[v]!!.ampsUsed)
-                numDupedItems++
-                newText.setOnLongClickListener {
-                    val clipText = "This is our ClipData text"
-                    val item = ClipData.Item(clipText)
-                    val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                    val data = ClipData(clipText, mimeTypes, item)
 
-                    val dragShadowBuilder = View.DragShadowBuilder(it)
-                    it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+                var dupes = 0
+                var parents = mutableListOf<FlexboxLayout>()
+                var repeatTimes = lines[j].toInt()
+                j++
+                var i = 0
+                while (i < repeatTimes) {
+                    i++
 
-                    //it.visibility = View.INVISIBLE
-                    true
+
+                    var parent = findViewById<FlexboxLayout>(lines[j].toInt())
+                    j++
+                    var component = findViewById<TextView>(lines[j].toInt())
+                    j++
+                    var used = lines[j].toDouble()
+                    j++
+
+                    if (component != null) {
+                        components[component] = ElectronicComponent(used)
+
+                        var curPar = (component.parent as FlexboxLayout)
+
+                        curPar.removeView(component)
+                        parent.addView(component)
+                    } else {
+                        dupes++
+                        parents.add(parent)
+                    }
                 }
-                l++
-            }
-            if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
-                findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
-                findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
-            }
-            else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
-                findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
-                findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
-            }
+                var l = 0
+                numDupedItems = 0
+                while (l < dupes) {
 
-            val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
-            val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
-            val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+                    var v = findViewById<TextView>(R.id.laptop)
 
-            if((vorHFan.parent as View).id != R.id.source){
-                vorHLow.visibility = View.GONE
-                vorHHigh.visibility = View.GONE
-                vorHFan.visibility = View.VISIBLE
-            }
-            else if((vorHLow.parent as View).id != R.id.source){
-                vorHFan.visibility = View.GONE
-                vorHHigh.visibility = View.GONE
-                vorHLow.visibility = View.VISIBLE
-            }
-            if((vorHHigh.parent as View).id != R.id.source){
-                vorHLow.visibility = View.GONE
-                vorHFan.visibility = View.GONE
-                vorHLow.visibility = View.VISIBLE
-            }
+                    var newText = TextView(this)
 
-            val vorFanLow = findViewById<TextView>(R.id.vornadoFanLow)
-            val vorFanMed = findViewById<TextView>(R.id.vornadoFanMed)
-            val vorFanHigh = findViewById<TextView>(R.id.vornadoFanHigh)
+                    newText.height = v.height
+                    newText.width = v.width
+                    newText.textSize = 10f
+                    newText.gravity = Gravity.CENTER
+                    newText.background = v.background
+                    newText.text = v.text
+                    newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    newText.setTextColor(v.currentTextColor)
+                    newText.layoutParams = v.layoutParams
 
-            if((vorFanLow.parent as View).id != R.id.source){
-                vorFanMed.visibility = View.GONE
-                vorFanHigh.visibility = View.GONE
-                vorFanLow.visibility = View.VISIBLE
-            }
-            else if((vorFanMed.parent as View).id != R.id.source){
-                vorFanLow.visibility = View.GONE
-                vorFanHigh.visibility = View.GONE
-                vorFanMed.visibility = View.VISIBLE
-            }
-            else if((vorFanHigh.parent as View).id != R.id.source){
-                vorFanLow.visibility = View.GONE
-                vorFanMed.visibility = View.GONE
-                vorFanHigh.visibility = View.VISIBLE
-            }
+                    parents[l].addView(newText)
+                    dupedComponents.add(l, newText)
+                    components[newText] = ElectronicComponent(components[v]!!.ampsUsed)
+                    numDupedItems++
+                    newText.setOnLongClickListener {
+                        val clipText = "This is our ClipData text"
+                        val item = ClipData.Item(clipText)
+                        val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                        val data = ClipData(clipText, mimeTypes, item)
 
-            /*
+                        val dragShadowBuilder = View.DragShadowBuilder(it)
+                        it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+
+                        //it.visibility = View.INVISIBLE
+                        true
+                    }
+                    l++
+                }
+                if ((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source) {
+                    findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+                    findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+                } else if ((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source) {
+                    findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                    findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+                }
+
+                val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
+                val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
+                val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+
+                if ((vorHFan.parent as View).id != R.id.source) {
+                    vorHLow.visibility = View.GONE
+                    vorHHigh.visibility = View.GONE
+                    vorHFan.visibility = View.VISIBLE
+                } else if ((vorHLow.parent as View).id != R.id.source) {
+                    vorHFan.visibility = View.GONE
+                    vorHHigh.visibility = View.GONE
+                    vorHLow.visibility = View.VISIBLE
+                }
+                if ((vorHHigh.parent as View).id != R.id.source) {
+                    vorHLow.visibility = View.GONE
+                    vorHFan.visibility = View.GONE
+                    vorHLow.visibility = View.VISIBLE
+                }
+
+                val vorFanLow = findViewById<TextView>(R.id.vornadoFanLow)
+                val vorFanMed = findViewById<TextView>(R.id.vornadoFanMed)
+                val vorFanHigh = findViewById<TextView>(R.id.vornadoFanHigh)
+
+                if ((vorFanLow.parent as View).id != R.id.source) {
+                    vorFanMed.visibility = View.GONE
+                    vorFanHigh.visibility = View.GONE
+                    vorFanLow.visibility = View.VISIBLE
+                } else if ((vorFanMed.parent as View).id != R.id.source) {
+                    vorFanLow.visibility = View.GONE
+                    vorFanHigh.visibility = View.GONE
+                    vorFanMed.visibility = View.VISIBLE
+                } else if ((vorFanHigh.parent as View).id != R.id.source) {
+                    vorFanLow.visibility = View.GONE
+                    vorFanMed.visibility = View.GONE
+                    vorFanHigh.visibility = View.VISIBLE
+                }
+
+                /*
             //Save the locations of the dragables
             val toaster = findViewById<TextView>(R.id.toaster)
             val kettle = findViewById<TextView>(R.id.kettle)
@@ -1063,28 +1059,31 @@ class MainActivity : AppCompatActivity() {
 
              */
 
-            //Save the state of the custom inputs
-            findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
-            j++
-            findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
-            j++
+                //Save the state of the custom inputs
+                findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+                j++
+                findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+                j++
 
-            powerSupplyClicked(findViewById(R.id.powerCheck))
-            alphabetize(findViewById(R.id.source))
+                powerSupplyClicked(findViewById(R.id.powerCheck))
+                alphabetize(findViewById(R.id.source))
+            } catch (e: Exception) {
+                //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(getApplicationContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
         }
-        catch (e: Exception){
-            //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
-            //Toast.makeText(getApplicationContext(), e.message, Toast.LENGTH_SHORT).show()
+        else{
+            load = false
         }
 
     }
@@ -2578,12 +2577,14 @@ class MainActivity : AppCompatActivity() {
             }
             var fileInput = stringBuilder.toString()
 
+            reset()
+            load = true
+
             try {
                 if (fileInput == "") {
                     Toast.makeText(getApplicationContext(), "No Save State", Toast.LENGTH_SHORT).show()
                     return
                 }
-                reset()
 
                 //Save the stuff in the circuits hashmap to the bundle individually
 
