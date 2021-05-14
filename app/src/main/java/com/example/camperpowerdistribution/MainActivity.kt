@@ -824,6 +824,7 @@ class MainActivity : AppCompatActivity() {
             parent.addView(component)
 
         }
+
         if((findViewById<TextView>(R.id.towHeatLow).parent as View).id != R.id.source){
             findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
         }
@@ -864,6 +865,8 @@ class MainActivity : AppCompatActivity() {
             vorFanLow.visibility = View.GONE
             vorFanMed.visibility = View.GONE
         }
+
+        alphabetize(findViewById(R.id.source))
         /*
         val toasterP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.toaster.toString()))
         val kettleP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.kettle.toString()))
@@ -928,6 +931,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(savedInstanceState.getString(R.id.waterHeaterCustomInputField.toString()))
         findViewById<EditText>(R.id.ACCustomInputField).setText(savedInstanceState.getString(R.id.ACCustomInputField.toString()))
         findViewById<EditText>(R.id.converterCustomInputField).setText(savedInstanceState.getString(R.id.converterCustomInputField.toString()))
+
+
     }
 
 
@@ -1173,7 +1178,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-
+                alphabetize(findViewById(R.id.source))
 
 
 
@@ -1435,8 +1440,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
-
-
+                alphabetize(findViewById(R.id.source))
 
                 true
 
@@ -2278,6 +2282,7 @@ class MainActivity : AppCompatActivity() {
             j++
 
             powerSupplyClicked(findViewById(R.id.powerCheck))
+            alphabetize(findViewById(R.id.source))
         }
         catch(e: Exception){
             //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
@@ -2677,6 +2682,7 @@ class MainActivity : AppCompatActivity() {
                 j++
 
                 powerSupplyClicked(findViewById(R.id.powerCheck))
+                alphabetize(findViewById(R.id.source))
 
             }
             catch(e: Exception){
@@ -2800,6 +2806,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.waterHeaterCustomInputField).setText("")
         findViewById<EditText>(R.id.ACCustomInputField).setText("")
         findViewById<EditText>(R.id.converterCustomInputField).setText("")
+
+        alphabetize(source)
     }
 
     fun round(x: Double): String{
@@ -2831,5 +2839,36 @@ class MainActivity : AppCompatActivity() {
         return result
 
     }
+
+    fun alphabetize(container: FlexboxLayout){
+
+        //Add all the draggables into a mutable list
+        var contents = mutableListOf<TextView>()
+        var i = 0
+        var j = 0
+
+        //Toast.makeText(getApplicationContext(), container.childCount.toString(), Toast.LENGTH_SHORT).show()
+
+        while(i < container.childCount){
+            var child = container.getChildAt(i)
+            if(child is TextView && child in components) {
+                contents.add(j, child)
+                j++
+                i++
+            }
+        }
+
+        //sort the mutable list
+        contents.sortWith(TextViewComparator())
+
+        for(c in contents){
+            container.removeView(c)
+        }
+        for(c in contents){
+            container.addView(c)
+        }
+    }
+
+
 }
 
