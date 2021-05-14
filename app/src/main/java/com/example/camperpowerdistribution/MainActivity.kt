@@ -7,11 +7,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipDescription
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.opengl.Visibility
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,7 +24,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
-import org.w3c.dom.Text
 import java.io.*
 
 
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     var lastCustomAC = 0.0
     var lastCustomConverter = 0.0
     var file: File = File("invalidPath")
+    var restoreFile: File = File("invalidPath")
     var main1CapColor: Drawable = ColorDrawable(0xFFFFFF)
     var main2CapColor: Drawable = ColorDrawable(0xFFFFFF)
     var mbrCapColor: Drawable = ColorDrawable(0xFFFFFF)
@@ -288,12 +291,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -349,12 +351,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -410,12 +411,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -471,12 +471,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -532,12 +531,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -593,12 +591,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -654,12 +651,11 @@ class MainActivity : AppCompatActivity() {
 
                 mainTotalUsed = main1Used + main2Used
                 var x = findViewById<TextView>(R.id.circuitTotal)
-                if(mainTotalUsed > mainTotalCap){
+                if (mainTotalUsed > mainTotalCap) {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
-                }
-                else{
+                } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
                 }
@@ -690,248 +686,406 @@ class MainActivity : AppCompatActivity() {
     var lastCustomAC = 0.0
     var lastCustomConverter = 0.0*/
 
+
     override fun onPause() {
         super.onPause()
     }
 
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        super.onSaveInstanceState(savedInstanceState)
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted
 
+
+    override fun onStop() {
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val camManager = this.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            var cameraId: String? = null
+            try {
+                cameraId = camManager.cameraIdList[0]
+                camManager.setTorchMode(cameraId, true) //Turn ON
+            } catch (e: CameraAccessException) {
+                e.printStackTrace()
+            }
+        }
+
+         */
+        var file = restoreFile
+
+        file.writeText("")
 
         //Save the stuff in the circuits hashmap to the bundle individually
         var j = 0
 
         for(i in circuits){
-            var myKey = "kID$j"
-            var ampUNum = "aUNum$j"
-            var ampCNum = "aCNum$j"
-            var ampUINum = "aUINum$j"
             j++
 
-            savedInstanceState.putInt(myKey, i.key.id)
-            savedInstanceState.putDouble(ampUNum, circuits[i.key]!!.ampsUsed)
-            savedInstanceState.putDouble(ampCNum, circuits[i.key]!!.ampCapacity)
-            savedInstanceState.putInt(ampUINum, circuits[i.key]!!.userInterface.id)
+            file.appendText("" + i.key.id + "\n")
+            file.appendText("" + circuits[i.key]!!.ampsUsed + "\n")
+            file.appendText("" + circuits[i.key]!!.ampCapacity + "\n")
+            file.appendText("" + circuits[i.key]!!.userInterface.id + "\n")
         }
 
 
-        savedInstanceState.putDouble("main1Cap", main1Cap)
-        savedInstanceState.putDouble("main2Cap", main2Cap)
-        savedInstanceState.putDouble("main1Used", main1Used)
-        savedInstanceState.putDouble("main2Used", main2Used)
-        savedInstanceState.putDouble("totalCap", mainTotalCap)
-        savedInstanceState.putDouble("totalUsed", mainTotalUsed)
-        savedInstanceState.putDouble("lastCustomMBR", lastCustomMBR)
-        savedInstanceState.putDouble("lastCustomRefer", lastCustomRefer)
-        savedInstanceState.putDouble("lastCustomGFI", lastCustomGFI)
-        savedInstanceState.putDouble("lastCustomMicro", lastCustomMicro)
-        savedInstanceState.putDouble("lastCustomWaterHeater", lastCustomWaterHeater)
-        savedInstanceState.putDouble("lastCustomAC", lastCustomAC)
-        savedInstanceState.putDouble("lastCustomConverter", lastCustomConverter)
+        file.appendText("$main1Cap\n")
+        file.appendText("$main2Cap\n")
+        file.appendText("$main1Used\n")
+        file.appendText("$main2Used\n")
+        file.appendText("$lastCustomMBR\n")
+        file.appendText("$lastCustomRefer\n")
+        file.appendText("$lastCustomGFI\n")
+        file.appendText("$lastCustomMicro\n")
+        file.appendText("$lastCustomWaterHeater\n")
+        file.appendText("$lastCustomAC\n")
+        file.appendText("$lastCustomConverter\n")
 
         //Save the states of the checkboxes
-        savedInstanceState.putBoolean(R.id.powerCheck.toString(), findViewById<Switch>(R.id.powerCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.chargerCheck.toString(), findViewById<CheckBox>(R.id.chargerCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.ACCheck.toString(), findViewById<CheckBox>(R.id.ACCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.converterCheck.toString(), findViewById<CheckBox>(R.id.converterCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.waterHeatCheck.toString(), findViewById<CheckBox>(R.id.waterHeatCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.microCheck.toString(), findViewById<CheckBox>(R.id.microCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.referTVCheck.toString(), findViewById<CheckBox>(R.id.referTVCheck).isChecked)
-        savedInstanceState.putBoolean(R.id.referFrigeCheck.toString(), findViewById<CheckBox>(R.id.referFrigeCheck).isChecked)
+        file.appendText("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.waterHeatCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.microCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
+        file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
 
-        //Save the state of the custom inputs
-        savedInstanceState.putString(R.id.MBRCustomInputField.toString(), findViewById<EditText>(R.id.MBRCustomInputField).text.toString())
-        savedInstanceState.putString(R.id.referCustomInputField.toString(), findViewById<EditText>(R.id.referCustomInputField).text.toString())
-        savedInstanceState.putString(R.id.GFICustomInputField.toString(), findViewById<EditText>(R.id.GFICustomInputField).text.toString())
-        savedInstanceState.putString(R.id.microCustomInputField.toString(), findViewById<EditText>(R.id.microCustomInputField).text.toString())
-        savedInstanceState.putString(R.id.waterHeaterCustomInputField.toString(), findViewById<EditText>(R.id.waterHeaterCustomInputField).text.toString())
-        savedInstanceState.putString(R.id.ACCustomInputField.toString(), findViewById<EditText>(R.id.ACCustomInputField).text.toString())
-        savedInstanceState.putString(R.id.converterCustomInputField.toString(), findViewById<EditText>(R.id.converterCustomInputField).text.toString())
 
-        //Save the locations of the dragables
-        savedInstanceState.putInt("compSize", components.size)
+        file.appendText(components.size.toString() + "\n")
         var i = 0
         for(c in components){
-            var parKey = "compP$i"
-            var compKey = "comp$i"
-            var usedKey = "compUsed$i"
             i++
-            savedInstanceState.putInt(parKey, (c.key.parent as View).id)
-            savedInstanceState.putInt(compKey, c.key.id)
-            savedInstanceState.putDouble(usedKey, components[c.key]!!.ampsUsed)
+            file.appendText((c.key.parent as View).id.toString() + "\n")
+            file.appendText(c.key.id.toString() + "\n")
+            file.appendText(components[c.key]!!.ampsUsed.toString() + "\n")
         }
-
         /*
-        savedInstanceState.putInt(R.id.toaster.toString(), (findViewById<View>(R.id.toaster).parent as View).id)
-        savedInstanceState.putInt(R.id.kettle.toString(), (findViewById<View>(R.id.kettle).parent as View).id)
-        savedInstanceState.putInt(R.id.towHeatHigh.toString(), (findViewById<View>(R.id.towHeatHigh).parent as View).id)
-        savedInstanceState.putInt(R.id.towHeatLow.toString(), (findViewById<View>(R.id.towHeatLow).parent as View).id)
-        savedInstanceState.putInt(R.id.vacuum.toString(), (findViewById<View>(R.id.vacuum).parent as View).id)
-        savedInstanceState.putInt(R.id.workComp.toString(), (findViewById<View>(R.id.workComp).parent as View).id)
-        savedInstanceState.putInt(R.id.laptop.toString(), (findViewById<View>(R.id.laptop).parent as View).id)
-        savedInstanceState.putInt(R.id.compMon.toString(), (findViewById<View>(R.id.compMon).parent as View).id)
-        */
-    }
-
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        main1Cap = savedInstanceState.getDouble("main1Cap")
-        main2Cap = savedInstanceState.getDouble("main2Cap")
-        main1Used = savedInstanceState.getDouble("main1Used")
-        main2Used = savedInstanceState.getDouble("main2Used")
-        mainTotalCap = savedInstanceState.getDouble("totalCap")
-        mainTotalUsed = savedInstanceState.getDouble("totalUsed")
-        lastCustomMBR = savedInstanceState.getDouble("lastCustomMBR")
-        lastCustomRefer = savedInstanceState.getDouble("lastCustomRefer")
-        lastCustomGFI = savedInstanceState.getDouble("lastCustomGFI")
-        lastCustomMicro = savedInstanceState.getDouble("lastCustomMicro")
-        lastCustomWaterHeater = savedInstanceState.getDouble("lastCustomWaterHeater")
-        lastCustomAC = savedInstanceState.getDouble("lastCustomAC")
-        lastCustomConverter = savedInstanceState.getDouble("lastCustomConverter")
-
-        //Restore the states of the checkboxes
-        findViewById<Switch>(R.id.powerCheck).isChecked = savedInstanceState.getBoolean(R.id.powerCheck.toString())
-        findViewById<CheckBox>(R.id.chargerCheck).isChecked = savedInstanceState.getBoolean(R.id.chargerCheck.toString())
-        findViewById<CheckBox>(R.id.ACCheck).isChecked = savedInstanceState.getBoolean(R.id.ACCheck.toString())
-        findViewById<CheckBox>(R.id.converterCheck).isChecked = savedInstanceState.getBoolean(R.id.converterCheck.toString())
-        findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = savedInstanceState.getBoolean(R.id.waterHeatCheck.toString())
-        findViewById<CheckBox>(R.id.microCheck).isChecked = savedInstanceState.getBoolean(R.id.microCheck.toString())
-        findViewById<CheckBox>(R.id.referTVCheck).isChecked = savedInstanceState.getBoolean(R.id.referTVCheck.toString())
-        findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = savedInstanceState.getBoolean(R.id.referFrigeCheck.toString())
-
-
-        //Restore the locations of the dragables
-        var i = 0
-        while(i < savedInstanceState.getInt("compSize")){
-            var parKey = "compP$i"
-            var compKey = "comp$i"
-            var usedKey = "compUsed$i"
-            i++
-
-            var parent = findViewById<FlexboxLayout>(savedInstanceState.getInt(parKey))
-            var component = findViewById<TextView>(savedInstanceState.getInt(compKey))
-            var used = savedInstanceState.getDouble(usedKey)
-            var source = findViewById<FlexboxLayout>(R.id.source)
-
-            components[component] = ElectronicComponent(used)
-            source.removeView(component)
-            parent.addView(component)
-
-        }
-
-        if((findViewById<TextView>(R.id.towHeatLow).parent as View).id != R.id.source){
-            findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
-        }
-        else if((findViewById<TextView>(R.id.towHeatHigh).parent as View).id != R.id.source){
-            findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
-        }
-
-        val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
-        val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
-        val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
-
-        if((vorHFan.parent as View).id != R.id.source){
-            vorHLow.visibility = View.GONE
-            vorHHigh.visibility = View.GONE
-        }
-        else if((vorHLow.parent as View).id != R.id.source){
-            vorHFan.visibility = View.GONE
-            vorHHigh.visibility = View.GONE
-        }
-        else if((vorHHigh.parent as View).id != R.id.source){
-            vorHLow.visibility = View.GONE
-            vorHFan.visibility = View.GONE
-        }
-
-        val vorFanLow = findViewById<TextView>(R.id.vornadoFanLow)
-        val vorFanMed = findViewById<TextView>(R.id.vornadoFanMed)
-        val vorFanHigh = findViewById<TextView>(R.id.vornadoFanHigh)
-
-        if((vorFanLow.parent as View).id != R.id.source){
-            vorFanMed.visibility = View.GONE
-            vorFanHigh.visibility = View.GONE
-        }
-        else if((vorFanMed.parent as View).id != R.id.source){
-            vorFanLow.visibility = View.GONE
-            vorFanHigh.visibility = View.GONE
-        }
-        if((vorFanHigh.parent as View).id != R.id.source){
-            vorFanLow.visibility = View.GONE
-            vorFanMed.visibility = View.GONE
-        }
-
-        alphabetize(findViewById(R.id.source))
-        /*
-        val toasterP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.toaster.toString()))
-        val kettleP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.kettle.toString()))
-        val towHeatHighP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.towHeatHigh.toString()))
-        val towHeatLowP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.towHeatLow.toString()))
-        val vacuumP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.vacuum.toString()))
-        val workCompP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.workComp.toString()))
-        val laptopP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.laptop.toString()))
-        val compMonP = findViewById<FlexboxLayout>(savedInstanceState.getInt(R.id.compMon.toString()))
-
-        val toaster = findViewById<TextView>(R.id.toaster)
-        val kettle = findViewById<TextView>(R.id.kettle)
-        val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
-        val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
-        val vacuum = findViewById<TextView>(R.id.vacuum)
-        val workComp = findViewById<TextView>(R.id.workComp)
-        val laptop = findViewById<TextView>(R.id.laptop)
-        val compMon = findViewById<TextView>(R.id.compMon)
-
-        val source = findViewById<FlexboxLayout>(R.id.source)
-
-        source.removeView(toaster)
-        toasterP.addView(toaster)
-        source.removeView(kettle)
-        kettleP.addView(kettle)
-        source.removeView(towHeatHigh)
-        towHeatHighP.addView(towHeatHigh)
-        source.removeView(towHeatLow)
-        towHeatLowP.addView(towHeatLow)
-        source.removeView(vacuum)
-        vacuumP.addView(vacuum)
-        source.removeView(workComp)
-        workCompP.addView(workComp)
-        source.removeView(laptop)
-        laptopP.addView(laptop)
-        source.removeView(compMon)
-        compMonP.addView(compMon)
+        //Save the locations of the dragables
+        file.appendText("" + (findViewById<View>(R.id.toaster).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.kettle).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.towHeatHigh).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.towHeatLow).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.vacuum).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.workComp).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.laptop).parent as View).id + "\n")
+        file.appendText("" + (findViewById<View>(R.id.compMon).parent as View).id + "\n")
 
          */
 
+        //Save the state of the custom inputs
+        file.appendText(findViewById<EditText>(R.id.MBRCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.referCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.GFICustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.microCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.waterHeaterCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.ACCustomInputField).text.toString() + "\n")
+        file.appendText(findViewById<EditText>(R.id.converterCustomInputField).text.toString() + "\n")
 
 
-        var j = 0
-        for(i in circuits){
-            var myKey = "kID$j"
-            var ampUNum = "aUNum$j"
-            var ampCNum = "aCNum$j"
-            var ampUINum = "aUINum$j"
-            j++
+        super.onStop()
+    }
 
-            var theKey = findViewById<FlexboxLayout>(savedInstanceState.getInt(myKey))
-            circuits[theKey] = AmpUsage(savedInstanceState.getDouble(ampCNum), savedInstanceState.getDouble(ampUNum), findViewById(savedInstanceState.getInt(ampUINum)))
+    override fun onStart(){
+        super.onStart()
 
-
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val camManager = this.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            var cameraId: String? = null
+            try {
+                cameraId = camManager.cameraIdList[0]
+                camManager.setTorchMode(cameraId, false) //Turn OFF
+            } catch (e: CameraAccessException) {
+                e.printStackTrace()
+            }
         }
 
-        //Restore the state of the custom inputs
-        findViewById<EditText>(R.id.MBRCustomInputField).setText(savedInstanceState.getString(R.id.MBRCustomInputField.toString()))
-        findViewById<EditText>(R.id.referCustomInputField).setText(savedInstanceState.getString(R.id.referCustomInputField.toString()))
-        findViewById<EditText>(R.id.GFICustomInputField).setText(savedInstanceState.getString(R.id.GFICustomInputField.toString()))
-        findViewById<EditText>(R.id.microCustomInputField).setText(savedInstanceState.getString(R.id.microCustomInputField.toString()))
-        findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(savedInstanceState.getString(R.id.waterHeaterCustomInputField.toString()))
-        findViewById<EditText>(R.id.ACCustomInputField).setText(savedInstanceState.getString(R.id.ACCustomInputField.toString()))
-        findViewById<EditText>(R.id.converterCustomInputField).setText(savedInstanceState.getString(R.id.converterCustomInputField.toString()))
+         */
+        restoreFile = File(this.filesDir, "restore_saved_state.txt")
+        restoreFile.createNewFile()
 
+        var file = restoreFile
+
+        try {
+            if (file.length() == 0.toLong()) {
+                return
+            }
+            reset()
+
+            val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
+
+            //Save the stuff in the circuits hashmap to the bundle individually
+
+            val lines = readResult.split("\n").toTypedArray()
+
+
+            var j = 0
+
+            for (i in circuits) {
+                var keyID = lines[j].toInt()
+                j++
+                var ampsU = lines[j].toDouble()
+                j++
+                var ampC = lines[j].toDouble()
+                j++
+                var iID = lines[j].toInt()
+                j++
+
+                var theKey = findViewById<FlexboxLayout>(keyID)
+                circuits[theKey] = AmpUsage(ampC, ampsU, findViewById(iID))
+            }
+
+
+            main1Cap = lines[j].toDouble()
+            j++
+            main2Cap = lines[j].toDouble()
+            j++
+            main1Used = lines[j].toDouble()
+            j++
+            main2Used = lines[j].toDouble()
+            j++
+            lastCustomMBR = lines[j].toDouble()
+            j++
+            lastCustomRefer = lines[j].toDouble()
+            j++
+            lastCustomGFI = lines[j].toDouble()
+            j++
+            lastCustomMicro = lines[j].toDouble()
+            j++
+            lastCustomWaterHeater = lines[j].toDouble()
+            j++
+            lastCustomAC = lines[j].toDouble()
+            j++
+            lastCustomConverter = lines[j].toDouble()
+            j++
+
+            //Save the states of the checkboxes
+            findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.converterCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.waterHeatCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.microCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
+            j++
+            findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+            j++
+
+
+
+            var dupes = 0
+            var parents = mutableListOf<FlexboxLayout>()
+            var repeatTimes = lines[j].toInt()
+            j++
+            var i = 0
+            while(i < repeatTimes){
+                i++
+
+
+                var parent = findViewById<FlexboxLayout>(lines[j].toInt())
+                j++
+                var component = findViewById<TextView>(lines[j].toInt())
+                j++
+                var used = lines[j].toDouble()
+                j++
+
+                if(component != null) {
+                    components[component] = ElectronicComponent(used)
+
+                    var curPar = (component.parent as FlexboxLayout)
+
+                    curPar.removeView(component)
+                    parent.addView(component)
+                }
+                else{
+                    dupes++
+                    parents.add(parent)
+                }
+            }
+            var l = 0
+            numDupedItems = 0
+            while(l < dupes){
+
+                var v = findViewById<TextView>(R.id.laptop)
+
+                var newText = TextView(this)
+
+                newText.height = v.height
+                newText.width = v.width
+                newText.textSize = 10f
+                newText.gravity = Gravity.CENTER
+                newText.background = v.background
+                newText.text = v.text
+                newText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                newText.setTextColor(v.currentTextColor)
+                newText.layoutParams = v.layoutParams
+
+                parents[l].addView(newText)
+                dupedComponents.add(l, newText)
+                components[newText] = ElectronicComponent(components[v]!!.ampsUsed)
+                numDupedItems++
+                newText.setOnLongClickListener {
+                    val clipText = "This is our ClipData text"
+                    val item = ClipData.Item(clipText)
+                    val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+                    val data = ClipData(clipText, mimeTypes, item)
+
+                    val dragShadowBuilder = View.DragShadowBuilder(it)
+                    it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+
+                    //it.visibility = View.INVISIBLE
+                    true
+                }
+                l++
+            }
+            if((findViewById<TextView>(R.id.towHeatHigh).parent as FlexboxLayout).id != R.id.source){
+                findViewById<TextView>(R.id.towHeatLow).visibility = View.GONE
+                findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
+            }
+            else if((findViewById<TextView>(R.id.towHeatLow).parent as FlexboxLayout).id != R.id.source){
+                findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
+                findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
+            }
+
+            val vorHFan = findViewById<TextView>(R.id.vornadoHeatFan)
+            val vorHLow = findViewById<TextView>(R.id.vornadoHeatLow)
+            val vorHHigh = findViewById<TextView>(R.id.vornadoHeatHigh)
+
+            if((vorHFan.parent as View).id != R.id.source){
+                vorHLow.visibility = View.GONE
+                vorHHigh.visibility = View.GONE
+                vorHFan.visibility = View.VISIBLE
+            }
+            else if((vorHLow.parent as View).id != R.id.source){
+                vorHFan.visibility = View.GONE
+                vorHHigh.visibility = View.GONE
+                vorHLow.visibility = View.VISIBLE
+            }
+            if((vorHHigh.parent as View).id != R.id.source){
+                vorHLow.visibility = View.GONE
+                vorHFan.visibility = View.GONE
+                vorHLow.visibility = View.VISIBLE
+            }
+
+            val vorFanLow = findViewById<TextView>(R.id.vornadoFanLow)
+            val vorFanMed = findViewById<TextView>(R.id.vornadoFanMed)
+            val vorFanHigh = findViewById<TextView>(R.id.vornadoFanHigh)
+
+            if((vorFanLow.parent as View).id != R.id.source){
+                vorFanMed.visibility = View.GONE
+                vorFanHigh.visibility = View.GONE
+                vorFanLow.visibility = View.VISIBLE
+            }
+            else if((vorFanMed.parent as View).id != R.id.source){
+                vorFanLow.visibility = View.GONE
+                vorFanHigh.visibility = View.GONE
+                vorFanMed.visibility = View.VISIBLE
+            }
+            else if((vorFanHigh.parent as View).id != R.id.source){
+                vorFanLow.visibility = View.GONE
+                vorFanMed.visibility = View.GONE
+                vorFanHigh.visibility = View.VISIBLE
+            }
+
+            /*
+            //Save the locations of the dragables
+            val toaster = findViewById<TextView>(R.id.toaster)
+            val kettle = findViewById<TextView>(R.id.kettle)
+            val towHeatHigh = findViewById<TextView>(R.id.towHeatHigh)
+            val towHeatLow = findViewById<TextView>(R.id.towHeatLow)
+            val vacuum = findViewById<TextView>(R.id.vacuum)
+            val workComp = findViewById<TextView>(R.id.workComp)
+            val laptop = findViewById<TextView>(R.id.laptop)
+            val compMon = findViewById<TextView>(R.id.compMon)
+
+            val toasterP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val kettleP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatHighP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val towHeatLowP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val vacuumP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val workCompP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val laptopP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+            val compMonP = findViewById<FlexboxLayout>(lines[j].toInt())
+            j++
+
+            if (towHeatHighP != findViewById(R.id.source)) {
+                towHeatLow.visibility = View.GONE
+            } else if (towHeatLowP != findViewById(R.id.source)) {
+                towHeatHigh.visibility = View.GONE
+            }
+
+            val source = findViewById<FlexboxLayout>(R.id.source)
+
+            if ((toaster.parent as FlexboxLayout) == source) {
+                source.removeView(toaster)
+                toasterP.addView(toaster)
+            }
+            if ((kettle.parent as FlexboxLayout) == source) {
+                source.removeView(kettle)
+                kettleP.addView(kettle)
+            }
+            if ((toaster.parent as FlexboxLayout) == source)
+                source.removeView(toaster)
+            toasterP.addView(toaster)
+            if ((towHeatHigh.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatHigh)
+                towHeatHighP.addView(towHeatHigh)
+            }
+            if ((towHeatLow.parent as FlexboxLayout) == source) {
+                source.removeView(towHeatLow)
+                towHeatLowP.addView(towHeatLow)
+            }
+            if ((vacuum.parent as FlexboxLayout) == source) {
+                source.removeView(vacuum)
+                vacuumP.addView(vacuum)
+            }
+            if ((workComp.parent as FlexboxLayout) == source) {
+                source.removeView(workComp)
+                workCompP.addView(workComp)
+            }
+            if ((laptop.parent as FlexboxLayout) == source) {
+                source.removeView(laptop)
+                laptopP.addView(laptop)
+            }
+            if ((compMon.parent as FlexboxLayout) == source) {
+                source.removeView(compMon)
+                compMonP.addView(compMon)
+            }
+
+             */
+
+            //Save the state of the custom inputs
+            findViewById<EditText>(R.id.MBRCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.referCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.GFICustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.microCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.waterHeaterCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.ACCustomInputField).setText(lines[j])
+            j++
+            findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
+            j++
+
+            powerSupplyClicked(findViewById(R.id.powerCheck))
+            alphabetize(findViewById(R.id.source))
+        }
+        catch (e: Exception){
+            //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(getApplicationContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
 
     }
 
@@ -969,12 +1123,14 @@ class MainActivity : AppCompatActivity() {
 
                 if (destination.id != owner.id) {
                     if ((destination.parent as View).id == R.id.mainC1 &&
-                            (owner.parent as View).id == R.id.mainC2) {
+                        (owner.parent as View).id == R.id.mainC2
+                    ) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
                         main2Used -= amps
                     } else if ((destination.parent as View).id == R.id.mainC2 &&
-                            (owner.parent as View).id == R.id.mainC1) {
+                        (owner.parent as View).id == R.id.mainC1
+                    ) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
                         main1Used -= amps
@@ -995,24 +1151,36 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (main1Used < main1Cap) {
-                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
-                                main1Cap.toString()
+                        findViewById<TextView>(R.id.mainC1Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main1Used
+                            ) + "/" +
+                                    main1Cap.toString()
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
-                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
-                                main1Cap.toString() + " OVERLOAD!"
+                        findViewById<TextView>(R.id.mainC1Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main1Used
+                            ) + "/" +
+                                    main1Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC1Cap))
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
 
                     if (main2Used < main2Cap) {
-                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
-                                main2Cap.toString()
+                        findViewById<TextView>(R.id.mainC2Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main2Used
+                            ) + "/" +
+                                    main2Cap.toString()
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
-                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
-                                main2Cap.toString() + " OVERLOAD!"
+                        findViewById<TextView>(R.id.mainC2Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main2Used
+                            ) + "/" +
+                                    main2Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
@@ -1020,12 +1188,11 @@ class MainActivity : AppCompatActivity() {
 
                     mainTotalUsed = main1Used + main2Used
                     var x = findViewById<TextView>(R.id.circuitTotal)
-                    if(mainTotalUsed > mainTotalCap){
+                    if (mainTotalUsed > mainTotalCap) {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#FF0000"))
                         blink(x)
-                    }
-                    else{
+                    } else {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#000000"))
                     }
@@ -1038,10 +1205,14 @@ class MainActivity : AppCompatActivity() {
 
                     if (ampUsed <= ampCap) {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
-                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString()
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString()
                     } else {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
-                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString() + " OVERLOAD!"
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(destination)
                     }
                 }
@@ -1053,10 +1224,14 @@ class MainActivity : AppCompatActivity() {
 
                     if (ampUsed <= ampCap) {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
-                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString()
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString()
                     } else {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
-                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString() + " OVERLOAD!"
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(owner)
                     }
                 }
@@ -1098,32 +1273,25 @@ class MainActivity : AppCompatActivity() {
                         destination.addView(v)
                         if (v.id == R.id.towHeatLow) {
                             findViewById<TextView>(R.id.towHeatHigh).visibility = View.GONE
-                        }
-                        else if (v.id == R.id.towHeatHigh) {
+                        } else if (v.id == R.id.towHeatHigh) {
                             val other = findViewById<TextView>(R.id.towHeatLow)
                             other.visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoHeatFan){
+                        } else if (v.id == R.id.vornadoHeatFan) {
                             findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoHeatLow){
+                        } else if (v.id == R.id.vornadoHeatLow) {
                             findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoHeatHigh){
+                        } else if (v.id == R.id.vornadoHeatHigh) {
                             findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanLow){
+                        } else if (v.id == R.id.vornadoFanLow) {
                             findViewById<TextView>(R.id.vornadoFanMed).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanMed){
+                        } else if (v.id == R.id.vornadoFanMed) {
                             findViewById<TextView>(R.id.vornadoFanLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanHigh){
+                        } else if (v.id == R.id.vornadoFanHigh) {
                             findViewById<TextView>(R.id.vornadoFanMed).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanLow).visibility = View.GONE
                         }
@@ -1135,7 +1303,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                        && dupedComponents.contains(v)) {
+                    && dupedComponents.contains(v)
+                ) {
                     dupedComponents.remove(v)
                     numDupedItems--
                     v.visibility = View.GONE
@@ -1148,31 +1317,24 @@ class MainActivity : AppCompatActivity() {
                 if (destination.id == R.id.source && owner.id != destination.id) {
                     if (v.id == R.id.towHeatLow) {
                         findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if (v.id == R.id.towHeatHigh) {
+                    } else if (v.id == R.id.towHeatHigh) {
                         findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatFan){
+                    } else if (v.id == R.id.vornadoHeatFan) {
                         findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatLow){
+                    } else if (v.id == R.id.vornadoHeatLow) {
                         findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatHigh){
+                    } else if (v.id == R.id.vornadoHeatHigh) {
                         findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanLow){
+                    } else if (v.id == R.id.vornadoFanLow) {
                         findViewById<TextView>(R.id.vornadoFanMed).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanMed){
+                    } else if (v.id == R.id.vornadoFanMed) {
                         findViewById<TextView>(R.id.vornadoFanLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanHigh){
+                    } else if (v.id == R.id.vornadoFanHigh) {
                         findViewById<TextView>(R.id.vornadoFanMed).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanLow).visibility = View.VISIBLE
                     }
@@ -1226,12 +1388,14 @@ class MainActivity : AppCompatActivity() {
 
                 if (destination.id != owner.id) {
                     if ((destination.parent as View).id == R.id.mainC1 &&
-                            (owner.parent as View).id == R.id.mainC2) {
+                        (owner.parent as View).id == R.id.mainC2
+                    ) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
                         main2Used -= amps
                     } else if ((destination.parent as View).id == R.id.mainC2 &&
-                            (owner.parent as View).id == R.id.mainC1) {
+                        (owner.parent as View).id == R.id.mainC1
+                    ) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
                         main1Used -= amps
@@ -1252,36 +1416,47 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (main1Used < main1Cap) {
-                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
-                                main1Cap.toString()
+                        findViewById<TextView>(R.id.mainC1Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main1Used
+                            ) + "/" +
+                                    main1Cap.toString()
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
-                        findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
-                                main1Cap.toString() + " OVERLOAD!"
+                        findViewById<TextView>(R.id.mainC1Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main1Used
+                            ) + "/" +
+                                    main1Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC1Cap))
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
 
                     if (main2Used < main2Cap) {
-                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
-                                main2Cap.toString()
+                        findViewById<TextView>(R.id.mainC2Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main2Used
+                            ) + "/" +
+                                    main2Cap.toString()
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
-                        findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
-                                main2Cap.toString() + " OVERLOAD!"
+                        findViewById<TextView>(R.id.mainC2Cap).text =
+                            "Amps vs Rated Amps: " + round(
+                                main2Used
+                            ) + "/" +
+                                    main2Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
                     }
                     mainTotalUsed = main1Used + main2Used
                     var x = findViewById<TextView>(R.id.circuitTotal)
-                    if(mainTotalUsed > mainTotalCap){
+                    if (mainTotalUsed > mainTotalCap) {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#FF0000"))
                         blink(x)
-                    }
-                    else{
+                    } else {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#000000"))
                     }
@@ -1294,10 +1469,14 @@ class MainActivity : AppCompatActivity() {
 
                     if (ampUsed <= ampCap) {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
-                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString()
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString()
                     } else {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
-                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString() + " OVERLOAD!"
+                        circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(destination)
                     }
                 }
@@ -1309,10 +1488,14 @@ class MainActivity : AppCompatActivity() {
 
                     if (ampUsed <= ampCap) {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
-                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString()
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString()
                     } else {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
-                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(ampUsed) + "/" + ampCap.toString() + " OVERLOAD!"
+                        circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
+                            ampUsed
+                        ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(owner)
                     }
                 }
@@ -1363,28 +1546,22 @@ class MainActivity : AppCompatActivity() {
                             findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
                         } else if (v.id == R.id.towHeatHigh) {
                             findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
-                        }
-                        else if(v.id == R.id.vornadoHeatFan){
+                        } else if (v.id == R.id.vornadoHeatFan) {
                             findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoHeatLow){
+                        } else if (v.id == R.id.vornadoHeatLow) {
                             findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoHeatHigh){
+                        } else if (v.id == R.id.vornadoHeatHigh) {
                             findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanLow){
+                        } else if (v.id == R.id.vornadoFanLow) {
                             findViewById<TextView>(R.id.vornadoFanMed).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanMed){
+                        } else if (v.id == R.id.vornadoFanMed) {
                             findViewById<TextView>(R.id.vornadoFanLow).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.GONE
-                        }
-                        else if(v.id == R.id.vornadoFanHigh){
+                        } else if (v.id == R.id.vornadoFanHigh) {
                             findViewById<TextView>(R.id.vornadoFanMed).visibility = View.GONE
                             findViewById<TextView>(R.id.vornadoFanLow).visibility = View.GONE
                         }
@@ -1396,7 +1573,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                        && dupedComponents.contains(v)) {
+                    && dupedComponents.contains(v)
+                ) {
                     dupedComponents.remove(v)
                     numDupedItems--
                     v.visibility = View.GONE
@@ -1409,31 +1587,24 @@ class MainActivity : AppCompatActivity() {
                 if (destination.id == R.id.source && owner.id != destination.id) {
                     if (v.id == R.id.towHeatLow) {
                         findViewById<TextView>(R.id.towHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if (v.id == R.id.towHeatHigh) {
+                    } else if (v.id == R.id.towHeatHigh) {
                         findViewById<TextView>(R.id.towHeatLow).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatFan){
+                    } else if (v.id == R.id.vornadoHeatFan) {
                         findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatLow){
+                    } else if (v.id == R.id.vornadoHeatLow) {
                         findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoHeatHigh){
+                    } else if (v.id == R.id.vornadoHeatHigh) {
                         findViewById<TextView>(R.id.vornadoHeatLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoHeatFan).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanLow){
+                    } else if (v.id == R.id.vornadoFanLow) {
                         findViewById<TextView>(R.id.vornadoFanMed).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanMed){
+                    } else if (v.id == R.id.vornadoFanMed) {
                         findViewById<TextView>(R.id.vornadoFanLow).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanHigh).visibility = View.VISIBLE
-                    }
-                    else if(v.id == R.id.vornadoFanHigh){
+                    } else if (v.id == R.id.vornadoFanHigh) {
                         findViewById<TextView>(R.id.vornadoFanMed).visibility = View.VISIBLE
                         findViewById<TextView>(R.id.vornadoFanLow).visibility = View.VISIBLE
                     }
@@ -2284,7 +2455,7 @@ class MainActivity : AppCompatActivity() {
             powerSupplyClicked(findViewById(R.id.powerCheck))
             alphabetize(findViewById(R.id.source))
         }
-        catch(e: Exception){
+        catch (e: Exception){
             //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
             Toast.makeText(getApplicationContext(), e.message, Toast.LENGTH_SHORT).show()
         }
@@ -2685,7 +2856,7 @@ class MainActivity : AppCompatActivity() {
                 alphabetize(findViewById(R.id.source))
 
             }
-            catch(e: Exception){
+            catch (e: Exception){
                 Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
             }
         }
@@ -2715,7 +2886,7 @@ class MainActivity : AppCompatActivity() {
         anim.start()
     }
 
-    fun resetClicked(v:View?){
+    fun resetClicked(v: View?){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Reset Confirmation")
         builder.setMessage("Are you sure you want to reset?")
@@ -2733,7 +2904,11 @@ class MainActivity : AppCompatActivity() {
     }
     fun reset(){
         for(i in circuits){
-            circuits[i.key] = AmpUsage(circuits[i.key]!!.ampCapacity, 0.0, circuits[i.key]!!.userInterface)
+            circuits[i.key] = AmpUsage(
+                circuits[i.key]!!.ampCapacity,
+                0.0,
+                circuits[i.key]!!.userInterface
+            )
         }
 
 
