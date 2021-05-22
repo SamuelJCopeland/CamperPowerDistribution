@@ -12,10 +12,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraManager
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.DragEvent
@@ -23,6 +24,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexboxLayout
 import java.io.*
 
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     var waterHeaterCapColor: Drawable = ColorDrawable(0xFFFFFF)
     var acCapColor: Drawable = ColorDrawable(0xFFFFFF)
     var converterCapColor: Drawable = ColorDrawable(0xFFFFFF)
+    var menuIntent = Intent()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -272,6 +275,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main1MBR]!!.ampsUsed) + "/" +
                             circuits[main1MBR]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main1MBR)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main1MBR]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -286,6 +292,9 @@ class MainActivity : AppCompatActivity() {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
                             main1Cap.toString() + " OVERLOAD!"
                     blink(main1AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -296,6 +305,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -347,6 +359,9 @@ class MainActivity : AppCompatActivity() {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
                             main1Cap.toString() + " OVERLOAD!"
                     blink(main1AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
 
@@ -356,6 +371,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -393,6 +411,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main1GFI]!!.ampsUsed) + "/" +
                             circuits[main1GFI]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main1GFI)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main1GFI]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -407,6 +428,9 @@ class MainActivity : AppCompatActivity() {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
                             main1Cap.toString() + " OVERLOAD!"
                     blink(main1AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -416,6 +440,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -452,6 +479,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main1Micro]!!.ampsUsed) + "/" +
                             circuits[main1Micro]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main1Micro)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main1Micro]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -466,6 +496,9 @@ class MainActivity : AppCompatActivity() {
                     main1AmpUsageM.text = "Amps vs Rated Amps: " + round(main1Used) + "/" +
                             main1Cap.toString() + " OVERLOAD!"
                     blink(main1AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main1AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -476,6 +509,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -512,6 +548,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main2WaterHeater]!!.ampsUsed) + "/" +
                             circuits[main2WaterHeater]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main2WaterHeater)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main2WaterHeater]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -526,6 +565,9 @@ class MainActivity : AppCompatActivity() {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
                             main2Cap.toString() + " OVERLOAD!"
                     blink(main2AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -536,6 +578,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -572,6 +617,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main2AC]!!.ampsUsed) + "/" +
                             circuits[main2AC]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main2AC)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main2AC]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -586,6 +634,9 @@ class MainActivity : AppCompatActivity() {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
                             main2Cap.toString() + " OVERLOAD!"
                     blink(main2AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -596,6 +647,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -632,6 +686,9 @@ class MainActivity : AppCompatActivity() {
                             round(circuits[main2Converter]!!.ampsUsed) + "/" +
                             circuits[main2Converter]!!.ampCapacity.toString() + " OVERLOAD!"
                     blink(main2Converter)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     circuits[main2Converter]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
@@ -646,6 +703,9 @@ class MainActivity : AppCompatActivity() {
                     main2AmpUsageM.text = "Amps vs Rated Amps: " + round(main2Used) + "/" +
                             main2Cap.toString() + " OVERLOAD!"
                     blink(main2AmpUsageM)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
 
                     main2AmpUsageM.setTextColor(Color.parseColor("#FF0000"))
                 }
@@ -656,6 +716,9 @@ class MainActivity : AppCompatActivity() {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#FF0000"))
                     blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
                 } else {
                     x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                     x.setTextColor(Color.parseColor("#000000"))
@@ -1122,13 +1185,13 @@ class MainActivity : AppCompatActivity() {
 
                 if (destination.id != owner.id) {
                     if ((destination.parent as View).id == R.id.mainC1 &&
-                        (owner.parent as View).id == R.id.mainC2
+                            (owner.parent as View).id == R.id.mainC2
                     ) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
                         main2Used -= amps
                     } else if ((destination.parent as View).id == R.id.mainC2 &&
-                        (owner.parent as View).id == R.id.mainC1
+                            (owner.parent as View).id == R.id.mainC1
                     ) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
@@ -1151,38 +1214,44 @@ class MainActivity : AppCompatActivity() {
 
                     if (main1Used < main1Cap) {
                         findViewById<TextView>(R.id.mainC1Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main1Used
-                            ) + "/" +
-                                    main1Cap.toString()
+                                "Amps vs Rated Amps: " + round(
+                                        main1Used
+                                ) + "/" +
+                                        main1Cap.toString()
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
                         findViewById<TextView>(R.id.mainC1Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main1Used
-                            ) + "/" +
-                                    main1Cap.toString() + " OVERLOAD!"
+                                "Amps vs Rated Amps: " + round(
+                                        main1Used
+                                ) + "/" +
+                                        main1Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC1Cap))
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
 
                     if (main2Used < main2Cap) {
                         findViewById<TextView>(R.id.mainC2Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main2Used
-                            ) + "/" +
-                                    main2Cap.toString()
+                                "Amps vs Rated Amps: " + round(
+                                        main2Used
+                                ) + "/" +
+                                        main2Cap.toString()
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
                         findViewById<TextView>(R.id.mainC2Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main2Used
-                            ) + "/" +
-                                    main2Cap.toString() + " OVERLOAD!"
+                                "Amps vs Rated Amps: " + round(
+                                        main2Used
+                                ) + "/" +
+                                        main2Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
 
                     mainTotalUsed = main1Used + main2Used
@@ -1191,6 +1260,9 @@ class MainActivity : AppCompatActivity() {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#FF0000"))
                         blink(x)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     } else {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#000000"))
@@ -1205,14 +1277,17 @@ class MainActivity : AppCompatActivity() {
                     if (ampUsed <= ampCap) {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString()
                     } else {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(destination)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
                 }
                 if (circuits.containsKey(owner)) {
@@ -1224,14 +1299,17 @@ class MainActivity : AppCompatActivity() {
                     if (ampUsed <= ampCap) {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString()
                     } else {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(owner)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
                 }
 
@@ -1302,7 +1380,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                    && dupedComponents.contains(v)
+                        && dupedComponents.contains(v)
                 ) {
                     dupedComponents.remove(v)
                     numDupedItems--
@@ -1387,13 +1465,13 @@ class MainActivity : AppCompatActivity() {
 
                 if (destination.id != owner.id) {
                     if ((destination.parent as View).id == R.id.mainC1 &&
-                        (owner.parent as View).id == R.id.mainC2
+                            (owner.parent as View).id == R.id.mainC2
                     ) {
                         val amps = components[v]!!.ampsUsed
                         main1Used += amps
                         main2Used -= amps
                     } else if ((destination.parent as View).id == R.id.mainC2 &&
-                        (owner.parent as View).id == R.id.mainC1
+                            (owner.parent as View).id == R.id.mainC1
                     ) {
                         val amps = components[v]!!.ampsUsed
                         main2Used += amps
@@ -1416,38 +1494,44 @@ class MainActivity : AppCompatActivity() {
 
                     if (main1Used < main1Cap) {
                         findViewById<TextView>(R.id.mainC1Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main1Used
-                            ) + "/" +
-                                    main1Cap.toString()
+                                "Amps vs Rated Amps: " + round(
+                                        main1Used
+                                ) + "/" +
+                                        main1Cap.toString()
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
                         findViewById<TextView>(R.id.mainC1Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main1Used
-                            ) + "/" +
-                                    main1Cap.toString() + " OVERLOAD!"
+                                "Amps vs Rated Amps: " + round(
+                                        main1Used
+                                ) + "/" +
+                                        main1Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC1Cap))
                         findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
 
                     if (main2Used < main2Cap) {
                         findViewById<TextView>(R.id.mainC2Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main2Used
-                            ) + "/" +
-                                    main2Cap.toString()
+                                "Amps vs Rated Amps: " + round(
+                                        main2Used
+                                ) + "/" +
+                                        main2Cap.toString()
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
                     } else {
                         findViewById<TextView>(R.id.mainC2Cap).text =
-                            "Amps vs Rated Amps: " + round(
-                                main2Used
-                            ) + "/" +
-                                    main2Cap.toString() + " OVERLOAD!"
+                                "Amps vs Rated Amps: " + round(
+                                        main2Used
+                                ) + "/" +
+                                        main2Cap.toString() + " OVERLOAD!"
 
                         blink(findViewById<TextView>(R.id.mainC2Cap))
                         findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
                     mainTotalUsed = main1Used + main2Used
                     var x = findViewById<TextView>(R.id.circuitTotal)
@@ -1455,6 +1539,9 @@ class MainActivity : AppCompatActivity() {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#FF0000"))
                         blink(x)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     } else {
                         x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
                         x.setTextColor(Color.parseColor("#000000"))
@@ -1469,14 +1556,17 @@ class MainActivity : AppCompatActivity() {
                     if (ampUsed <= ampCap) {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString()
                     } else {
                         circuits[destination]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[destination]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(destination)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
                 }
                 if (circuits.containsKey(owner)) {
@@ -1488,14 +1578,17 @@ class MainActivity : AppCompatActivity() {
                     if (ampUsed <= ampCap) {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#000000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString()
                     } else {
                         circuits[owner]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
                         circuits[owner]!!.userInterface.text = "Amps vs Rated Amps: " + round(
-                            ampUsed
+                                ampUsed
                         ) + "/" + ampCap.toString() + " OVERLOAD!"
                         blink(owner)
+                        val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                        buzzer.start()
+                    vibratePhone()
                     }
                 }
 
@@ -1572,7 +1665,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (destination.id == R.id.source && owner.id != destination.id
-                    && dupedComponents.contains(v)
+                        && dupedComponents.contains(v)
                 ) {
                     dupedComponents.remove(v)
                     numDupedItems--
@@ -1665,6 +1758,19 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    fun menuClicked(v: View?){
+        menuIntent = Intent(this, PopUpMenu::class.java)
+
+        menuIntent.putExtra("numComponents", 2)
+
+        menuIntent.putExtra("cT0", "test 1")
+        menuIntent.putExtra("cU0", 1.0)
+
+        menuIntent.putExtra("cT1", "test 2")
+        menuIntent.putExtra("cU1", 2.0)
+        startActivity(menuIntent)
+    }
+
     fun powerSupplyClicked(v: View?) {
         if((v as Switch).isChecked){
             main1Cap = 50.0
@@ -1686,6 +1792,9 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
                     round(main1Used) + "/" + main1Cap.toString() + " OVERLOAD!"
             blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         if(main2Used <= main2Cap){
@@ -1698,6 +1807,9 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
                     round(main2Used) + "/" + main2Cap.toString() + " OVERLOAD!"
             blink(findViewById<TextView>(R.id.mainC2Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1706,6 +1818,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -1736,6 +1851,9 @@ class MainActivity : AppCompatActivity() {
                     circuits[mbr]!!.ampCapacity.toString() + " OVERLOAD!"
 
             blink(mbr)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
             circuits[mbr]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
@@ -1752,6 +1870,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1760,6 +1881,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -1791,6 +1915,9 @@ class MainActivity : AppCompatActivity() {
                     circuits[refer]!!.ampCapacity.toString() + " OVERLOAD!"
 
             blink(refer)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
             circuits[refer]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
 
 
@@ -1807,6 +1934,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1815,6 +1945,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -1847,6 +1980,9 @@ class MainActivity : AppCompatActivity() {
 
             circuits[converter]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
             blink(converter)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
 
 
         }
@@ -1862,6 +1998,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC2Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1870,6 +2009,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -1903,6 +2045,9 @@ class MainActivity : AppCompatActivity() {
 
             circuits[airCon]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
             blink(airCon)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
 
 
         }
@@ -1918,6 +2063,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC2Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1926,6 +2074,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -1957,6 +2108,9 @@ class MainActivity : AppCompatActivity() {
 
             circuits[micro]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
             blink(micro)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
 
 
         }
@@ -1972,6 +2126,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -1980,6 +2137,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -2021,6 +2181,9 @@ class MainActivity : AppCompatActivity() {
 
             circuits[water]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
             blink(water)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
 
 
         }
@@ -2036,6 +2199,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC2Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -2044,6 +2210,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -2074,6 +2243,9 @@ class MainActivity : AppCompatActivity() {
 
             circuits[refer]!!.userInterface.setTextColor(Color.parseColor("#FF0000"))
             blink(refer)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
 
 
         }
@@ -2089,6 +2261,9 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
             blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
 
         mainTotalUsed = main1Used + main2Used
@@ -2097,6 +2272,9 @@ class MainActivity : AppCompatActivity() {
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
             x.setTextColor(Color.parseColor("#FF0000"))
             blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+                    vibratePhone()
         }
         else{
             x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
@@ -2906,9 +3084,9 @@ class MainActivity : AppCompatActivity() {
     fun reset(){
         for(i in circuits){
             circuits[i.key] = AmpUsage(
-                circuits[i.key]!!.ampCapacity,
-                0.0,
-                circuits[i.key]!!.userInterface
+                    circuits[i.key]!!.ampCapacity,
+                    0.0,
+                    circuits[i.key]!!.userInterface
             )
         }
 
@@ -2994,8 +3172,11 @@ class MainActivity : AppCompatActivity() {
         if(roundVal >= 5){
             num += 0.01
         }
+        else if(roundVal <= -5){
+            num -= 0.01
+        }
 
-        if(num > 0.001){
+        if(num > 0.001 || num < -0.001){
             var splitUp = num.toString().split(".").toTypedArray()
 
             if(splitUp[1].length > 1) {
@@ -3043,6 +3224,11 @@ class MainActivity : AppCompatActivity() {
         for(c in contents){
             container.addView(c)
         }
+    }
+
+    fun vibratePhone(){
+        val vibratorService = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibratorService.vibrate(500)
     }
 
 

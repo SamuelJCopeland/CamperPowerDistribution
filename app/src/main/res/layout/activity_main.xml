@@ -64,11 +64,9 @@
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
             app:justifyContent="center"
             android:background="@color/teal_200"
-            app:layout_flexShrink="1">
+            app:flexWrap="wrap">
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
@@ -77,8 +75,7 @@
                 android:onClick="saveClicked"
                 android:id="@+id/saveButton"
                 android:padding="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginLeft="1dp"/>
+                android:layout_margin="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
@@ -87,8 +84,7 @@
                 android:onClick="loadClicked"
                 android:id="@+id/loadButton"
                 android:padding="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"/>
+                android:layout_margin="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
@@ -97,8 +93,7 @@
                 android:onClick="extSaveClicked"
                 android:id="@+id/extSaveButton"
                 android:padding="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"/>
+                android:layout_margin="1dp"/>
             <Button
                 android:layout_width="85dp"
                 android:layout_height="45dp"
@@ -107,8 +102,16 @@
                 android:onClick="extLoadClicked"
                 android:id="@+id/extLoadButton"
                 android:padding="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"/>
+                android:layout_margin="1dp"/>
+            <!--Button
+                android:layout_width="85dp"
+                android:layout_height="45dp"
+                android:textSize="10sp"
+                android:text="Menu"
+                android:onClick="menuClicked"
+                android:id="@+id/menuButton"
+                android:padding="1dp"
+                android:layout_margin="1dp"/-->
         </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>
     <LinearLayout
@@ -278,7 +281,7 @@
                     android:layout_height="45dp"
                     android:textSize="10sp"
                     android:background="@android:color/holo_orange_light"
-                    android:text="Standalone computer moniter"
+                    android:text="Standalone computer monitor"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:layout_margin="1dp"
@@ -456,7 +459,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/black" />
                     -->
-                </com.google.android.flexbox.FlexboxLayout>
+            </com.google.android.flexbox.FlexboxLayout>
         </ScrollView>
     </LinearLayout>
     <LinearLayout
@@ -543,7 +546,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/MBRCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -603,7 +606,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/referCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -670,7 +673,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/GFICustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -716,7 +719,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/microCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -801,7 +804,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/waterHeaterCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -854,7 +857,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/ACCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
@@ -907,7 +910,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberSigned"
                             android:id="@+id/converterCustomInputField"
                             android:textAlignment="center"
                             android:hint="Custom Connected Amps"
