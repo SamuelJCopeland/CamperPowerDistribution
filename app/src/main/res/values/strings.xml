@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Camper Power Distribution</string>
+    <string-array name="powerSupplies">
+        <item>15.0</item>
+        <item>20.0</item>
+        <item>23.3</item>
+        <item>30.0</item>
+        <item>50.0</item>
+    </string-array>
+</resources>

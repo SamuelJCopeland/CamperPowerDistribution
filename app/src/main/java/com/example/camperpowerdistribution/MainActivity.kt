@@ -68,6 +68,78 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val powerSources = resources.getStringArray(R.array.powerSupplies)
+        val spinner = findViewById<Spinner>(R.id.powerSpinner)
+        val adapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, powerSources)
+        spinner.adapter = adapter
+        spinner.setSelection(3)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Toast.makeText(applicationContext, "This is a test", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                mainTotalCap = powerSources[position].toDouble()
+
+                main1Cap = mainTotalCap
+                main2Cap = mainTotalCap
+
+                if(mainTotalCap == 50.0){
+                    mainTotalCap = 100.0
+                }
+
+                if(main1Used <= main1Cap){
+                    findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
+                    findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                            round(main1Used) + "/" + main1Cap.toString()
+                }
+                else{
+                    findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+                    findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                            round(main1Used) + "/" + main1Cap.toString() + " OVERLOAD!"
+                    blink(findViewById<TextView>(R.id.mainC1Cap))
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
+                }
+
+                if(main2Used <= main2Cap){
+                    findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
+                    findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                            round(main2Used) + "/" + main2Cap.toString()
+                }
+                else{
+                    findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+                    findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                            round(main2Used) + "/" + main2Cap.toString() + " OVERLOAD!"
+                    blink(findViewById<TextView>(R.id.mainC2Cap))
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
+                }
+
+                mainTotalUsed = main1Used + main2Used
+                var x = findViewById<TextView>(R.id.circuitTotal)
+                if(mainTotalUsed > mainTotalCap){
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#FF0000"))
+                    blink(x)
+                    val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+                    buzzer.start()
+                    vibratePhone()
+                }
+                else{
+                    x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+                    x.setTextColor(Color.parseColor("#000000"))
+                }
+            }
+
+        }
+
+
+
         file = File(this.filesDir, "saved_state.txt")
         file.createNewFile()
 
@@ -810,6 +882,8 @@ class MainActivity : AppCompatActivity() {
         file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
 
+        file.appendText("" + findViewById<Spinner>(R.id.powerSpinner).selectedItemPosition + "\n")
+
 
         file.appendText(components.size.toString() + "\n")
         var i = 0
@@ -936,6 +1010,9 @@ class MainActivity : AppCompatActivity() {
                 findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+                j++
+
+                findViewById<Spinner>(R.id.powerSpinner).setSelection(lines[j].toInt())
                 j++
 
 
@@ -1138,7 +1215,8 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
                 j++
 
-                powerSupplyClicked(findViewById(R.id.powerCheck))
+                //powerSupplyClicked(findViewById(R.id.powerCheck))
+                checkMainLoad()
                 alphabetize(findViewById(R.id.source))
             } catch (e: Exception) {
                 //Toast.makeText(getApplicationContext(), "Problem Loading Save", Toast.LENGTH_SHORT).show()
@@ -2319,6 +2397,8 @@ class MainActivity : AppCompatActivity() {
         file.appendText("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n")
 
+        file.appendText("" + findViewById<Spinner>(R.id.powerSpinner).selectedItemPosition + "\n")
+
 
         file.appendText(components.size.toString() + "\n")
         var i = 0
@@ -2421,6 +2501,9 @@ class MainActivity : AppCompatActivity() {
             findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
             j++
             findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+            j++
+
+            findViewById<Spinner>(R.id.powerSpinner).setSelection(lines[j].toInt())
             j++
 
 
@@ -2629,7 +2712,8 @@ class MainActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
             j++
 
-            powerSupplyClicked(findViewById(R.id.powerCheck))
+            //powerSupplyClicked(findViewById(R.id.powerCheck))
+            checkMainLoad()
             alphabetize(findViewById(R.id.source))
         }
         catch (e: Exception){
@@ -2698,6 +2782,8 @@ class MainActivity : AppCompatActivity() {
                             it.write(("" + findViewById<CheckBox>(R.id.microCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.referTVCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.referFrigeCheck).isChecked + "\n").toByteArray())
+
+                            it.write(("" + findViewById<Spinner>(R.id.powerSpinner).selectedItemPosition + "\n").toByteArray())
 
                             it.write((components.size.toString() + "\n").toByteArray())
                             var i = 0
@@ -2825,6 +2911,9 @@ class MainActivity : AppCompatActivity() {
                 findViewById<CheckBox>(R.id.referTVCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = lines[j].toBoolean()
+                j++
+
+                findViewById<Spinner>(R.id.powerSpinner).setSelection(lines[j].toInt())
                 j++
 
                 var repeatTimes = lines[j].toInt()
@@ -3031,7 +3120,8 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
                 j++
 
-                powerSupplyClicked(findViewById(R.id.powerCheck))
+                //powerSupplyClicked(findViewById(R.id.powerCheck))
+                checkMainLoad()
                 alphabetize(findViewById(R.id.source))
 
             }
@@ -3117,6 +3207,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<CheckBox>(R.id.referTVCheck).isChecked = false
         findViewById<CheckBox>(R.id.referFrigeCheck).isChecked = true
         referFrigeClicked(findViewById<CheckBox>(R.id.referFrigeCheck))
+
+        findViewById<Spinner>(R.id.powerSpinner).setSelection(3)
 
         var removeQueue = mutableListOf<TextView>()
 
@@ -3231,6 +3323,63 @@ class MainActivity : AppCompatActivity() {
         vibratorService.vibrate(500)
     }
 
+    fun checkMainLoad(){
+        val powerSources = resources.getStringArray(R.array.powerSupplies)
+        val spinner = findViewById<Spinner>(R.id.powerSpinner)
 
+        mainTotalCap = powerSources[spinner.selectedItemPosition].toDouble()
+
+        main1Cap = mainTotalCap
+        main2Cap = mainTotalCap
+
+        if(mainTotalCap == 50.0){
+            mainTotalCap = 100.0
+        }
+
+        if(main1Used <= main1Cap){
+            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
+            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                    round(main1Used) + "/" + main1Cap.toString()
+        }
+        else{
+            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
+            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
+                    round(main1Used) + "/" + main1Cap.toString() + " OVERLOAD!"
+            blink(findViewById<TextView>(R.id.mainC1Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+            vibratePhone()
+        }
+
+        if(main2Used <= main2Cap){
+            findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
+            findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                    round(main2Used) + "/" + main2Cap.toString()
+        }
+        else{
+            findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
+            findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
+                    round(main2Used) + "/" + main2Cap.toString() + " OVERLOAD!"
+            blink(findViewById<TextView>(R.id.mainC2Cap))
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+            vibratePhone()
+        }
+
+        mainTotalUsed = main1Used + main2Used
+        var x = findViewById<TextView>(R.id.circuitTotal)
+        if(mainTotalUsed > mainTotalCap){
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#FF0000"))
+            blink(x)
+            val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
+            buzzer.start()
+            vibratePhone()
+        }
+        else{
+            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
+            x.setTextColor(Color.parseColor("#000000"))
+        }
+    }
 }
 
