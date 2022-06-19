@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,32 +20,32 @@
             app:layout_flexShrink="1">
 
             <Switch
+                android:id="@+id/powerCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOff="30"
-                android:textOn="50"
-                android:showText="true"
-                android:thumbTint="@color/white"
-                android:trackTint="#B2BEB5"
-                android:id="@+id/powerCheck"
-                android:onClick="powerSupplyClicked"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:visibility="gone"
-                />
+                android:onClick="powerSupplyClicked"
+                android:showText="true"
+                android:textOff="30"
+                android:textOn="50"
+                android:thumbTint="@color/white"
+                android:trackTint="#B2BEB5"
+                android:visibility="gone" />
+
             <Spinner
+                android:id="@+id/powerSpinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/powerSpinner"/>
+                android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/circuitTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:text="Total Usage: 0.0/30.0"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:id="@+id/circuitTotal"
-                android:background="#FFFFFF"/>
+                android:textSize="14sp" />
             <!--
             <CheckBox
                 android:layout_width="wrap_content"
@@ -56,22 +57,23 @@
                 -->
 
             <Button
+                android:id="@+id/resetButton"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:textSize="10sp"
-                android:text="Reset"
-                android:onClick="resetClicked"
-                android:id="@+id/resetButton"
-                android:padding="1dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="2dp"/>
+                android:layout_marginRight="2dp"
+                android:onClick="resetClicked"
+                android:padding="1dp"
+                android:text="Reset"
+                android:textSize="10sp" />
 
         </com.google.android.flexbox.FlexboxLayout>
+
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:justifyContent="center"
-            android:background="@color/teal_200"
+            android:background="#bee9f7"
             app:flexWrap="wrap">
             <Button
                 android:layout_width="85dp"
@@ -128,12 +130,12 @@
             android:id="@+id/sourceScroll"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:background="@android:color/holo_green_dark">
+            android:background="#9cc7d5">
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_green_dark"
+                android:background="#9cc7d5"
                 app:flexWrap="wrap"
                 app:justifyContent="center">
                 <TextView
@@ -141,10 +143,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado fan (low)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -152,10 +154,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado fan (medium)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -163,10 +165,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado fan (high)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -174,10 +176,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado heater (fan only)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -185,10 +187,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado heater (low heat)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -196,10 +198,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Vornado heater (high heat)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
 
@@ -209,10 +211,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Toaster"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -220,10 +222,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Portable electric hot water kettle"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -231,10 +233,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Tower heater (high or auto)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -242,10 +244,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Tower heater (low)"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center" />
                 <TextView
@@ -253,10 +255,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Shark RV Vacuum"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -264,10 +266,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Dad's work computer"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -275,10 +277,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="13-inch laptop"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <TextView
@@ -286,10 +288,10 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:textSize="10sp"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Standalone computer monitor"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="#ffffff"
                     android:layout_margin="1dp"
                     android:gravity="center"/>
                 <!--
@@ -298,172 +300,172 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Refrigerator"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/batChar"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Battery charger for inverter"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/tankHeat"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="Tank heaters (not hot water)"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/tv"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="TV"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g1"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="1-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g2"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="2-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g3"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="3-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g4"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="4-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g5"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="5-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g6"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="6-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g7"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="7-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g8"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="8-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g9"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="9-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g10"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="10-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g11"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="11-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g12"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="12-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g13"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="13-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g14"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="14-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                 <TextView
                     android:id="@+id/g15"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:autoSizeTextType="uniform"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="#2247ab"
                     android:text="15-Amp"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="#ffffff" />
                     -->
             </com.google.android.flexbox.FlexboxLayout>
         </ScrollView>

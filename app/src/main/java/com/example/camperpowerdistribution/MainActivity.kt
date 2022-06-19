@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                     val buzzer: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.error_buzzer)
                     buzzer.start()
                     vibratePhone()
+                    buzzer.release()
                 }
 
                 if(main2Used <= main2Cap){
