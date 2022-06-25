@@ -65,14 +65,14 @@ class MainActivity : AppCompatActivity() {
     var converterCapColor: Drawable = ColorDrawable(0xFFFFFF)
     var menuIntent = Intent()
 
+    //When the App is started
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val powerSources = resources.getStringArray(R.array.powerSupplies)
         val spinner = findViewById<Spinner>(R.id.powerSpinner)
-        val adapter = ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, powerSources)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, powerSources)
         spinner.adapter = adapter
         spinner.setSelection(3)
 
@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
 
         var main1AmpUsageM: TextView = findViewById(R.id.mainC1Cap)
         val main2AmpUsageM: TextView = findViewById(R.id.mainC2Cap)
-        var powerCheck: Switch = findViewById(R.id.powerCheck)
         var mainCircuit1Title: TextView = findViewById(R.id.mainTitle1)
         var mainCircuit2Title: TextView = findViewById(R.id.mainTitle2)
 
@@ -267,7 +266,6 @@ class MainActivity : AppCompatActivity() {
 
         mainCircuit1Title.setOnDragListener(inertDragListener)
         mainCircuit2Title.setOnDragListener(inertDragListener)
-        powerCheck.setOnDragListener(inertDragListener)
         main1AmpUsageM.setOnDragListener(inertDragListener)
         main2AmpUsageM.setOnDragListener(inertDragListener)
 
@@ -828,7 +826,6 @@ class MainActivity : AppCompatActivity() {
         file.appendText("$lastCustomConverter\n")
 
         //Save the states of the checkboxes
-        file.appendText("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
@@ -950,8 +947,6 @@ class MainActivity : AppCompatActivity() {
                 j++
 
                 //Save the states of the checkboxes
-                findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-                j++
                 findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
@@ -1170,7 +1165,6 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
                 j++
 
-                //powerSupplyClicked(findViewById(R.id.powerCheck))
                 checkMainLoad()
                 alphabetize(findViewById(R.id.source))
             } catch (e: Exception) {
@@ -1784,57 +1778,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(menuIntent)
     }
 
-    fun powerSupplyClicked(v: View?) {
-        if((v as Switch).isChecked){
-            main1Cap = 50.0
-            main2Cap = 50.0
-            mainTotalCap = 100.0
-        }
-        else{
-            main1Cap = 30.0
-            main2Cap = 30.0
-            mainTotalCap = 30.0
-        }
-        if(main1Used <= main1Cap){
-            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#000000"))
-            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
-                    round(main1Used) + "/" + main1Cap.toString()
-        }
-        else{
-            findViewById<TextView>(R.id.mainC1Cap).setTextColor(Color.parseColor("#FF0000"))
-            findViewById<TextView>(R.id.mainC1Cap).text = "Amps vs Rated Amps: " +
-                    round(main1Used) + "/" + main1Cap.toString() + " OVERLOAD!"
-            blink(findViewById<TextView>(R.id.mainC1Cap))
-            soundBuzzer()
-        }
-
-        if(main2Used <= main2Cap){
-            findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#000000"))
-            findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
-                    round(main2Used) + "/" + main2Cap.toString()
-        }
-        else{
-            findViewById<TextView>(R.id.mainC2Cap).setTextColor(Color.parseColor("#FF0000"))
-            findViewById<TextView>(R.id.mainC2Cap).text = "Amps vs Rated Amps: " +
-                    round(main2Used) + "/" + main2Cap.toString() + " OVERLOAD!"
-            blink(findViewById<TextView>(R.id.mainC2Cap))
-            soundBuzzer()
-        }
-
-        mainTotalUsed = main1Used + main2Used
-        var x = findViewById<TextView>(R.id.circuitTotal)
-        if(mainTotalUsed > mainTotalCap){
-            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
-            x.setTextColor(Color.parseColor("#FF0000"))
-            blink(x)
-            soundBuzzer()
-        }
-        else{
-            x.text = "Total Usage: " + round(mainTotalUsed) + "/$mainTotalCap"
-            x.setTextColor(Color.parseColor("#000000"))
-        }
-
-    }
     fun chargerClicked(v: View?) {
         var mbr: FlexboxLayout = findViewById(R.id.main1MBR)
         if((v as CheckBox).isChecked){
@@ -2275,7 +2218,6 @@ class MainActivity : AppCompatActivity() {
         file.appendText("$lastCustomConverter\n")
 
         //Save the states of the checkboxes
-        file.appendText("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n")
         file.appendText("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n")
@@ -2373,8 +2315,6 @@ class MainActivity : AppCompatActivity() {
             j++
 
             //Save the states of the checkboxes
-            findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-            j++
             findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
             j++
             findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
@@ -2599,7 +2539,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
             j++
 
-            //powerSupplyClicked(findViewById(R.id.powerCheck))
             checkMainLoad()
             alphabetize(findViewById(R.id.source))
         }
@@ -2661,7 +2600,6 @@ class MainActivity : AppCompatActivity() {
                             it.write(("$lastCustomConverter\n").toByteArray())
 
                             //Save the states of the checkboxes
-                            it.write(("" + findViewById<Switch>(R.id.powerCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.chargerCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.ACCheck).isChecked + "\n").toByteArray())
                             it.write(("" + findViewById<CheckBox>(R.id.converterCheck).isChecked + "\n").toByteArray())
@@ -2783,8 +2721,6 @@ class MainActivity : AppCompatActivity() {
                 j++
 
                 //Save the states of the checkboxes
-                findViewById<Switch>(R.id.powerCheck).isChecked = lines[j].toBoolean()
-                j++
                 findViewById<CheckBox>(R.id.chargerCheck).isChecked = lines[j].toBoolean()
                 j++
                 findViewById<CheckBox>(R.id.ACCheck).isChecked = lines[j].toBoolean()
@@ -3007,7 +2943,6 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.converterCustomInputField).setText(lines[j])
                 j++
 
-                //powerSupplyClicked(findViewById(R.id.powerCheck))
                 checkMainLoad()
                 alphabetize(findViewById(R.id.source))
 
@@ -3083,7 +3018,6 @@ class MainActivity : AppCompatActivity() {
         lastCustomConverter = 0.0
 
         //Save the states of the checkboxes
-        findViewById<Switch>(R.id.powerCheck).isChecked = false
         findViewById<CheckBox>(R.id.chargerCheck).isChecked = true
         chargerClicked(findViewById<CheckBox>(R.id.chargerCheck))
         findViewById<CheckBox>(R.id.ACCheck).isChecked = false
